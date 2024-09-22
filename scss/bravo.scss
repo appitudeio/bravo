@@ -1,12 +1,21 @@
-// Import Bootstrap's core SCSS and utilities, but hide this complexity from the consuming project
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-//@import 'bootstrap/scss/variables-dark';
-@import 'bootstrap/scss/maps';
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/utilities';
+/**
+ *  Import default Bootstrap SCSS
+ */
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/helpers";
+@import "bootstrap/scss/utilities/api";
 
-@import 'bootstrap/scss/root';
-@import 'bootstrap/scss/helpers';
-@import 'bootstrap/scss/utilities/api';
-@import 'bootstrap/scss/reboot';
+/**
+ *  Extend with Bravo's custom SCSS
+ */
+
+/**
+ *  Consume incoming maps (such as colors, sizes, etc.)
+ */
