@@ -1,8 +1,20 @@
 {
+  "scripts": {
+    "docs": "npm-run-all docs-build docs-lint",
+    "docs-build": "hugo --cleanDestinationDir --printUnusedTemplates",
+    "docs-compile": "npm run docs-build",
+    "docs-vnu": "node build/vnu-jar.mjs",
+    "docs-lint": "npm run docs-vnu",
+    "docs-serve": "hugo server --port 9001 --disableFastRender --noHTTPCache --renderToMemory --printPathWarnings --printUnusedTemplates",
+    "docs-serve-only": "npx sirv-cli _site --port 9001"
+  },
   "dependencies": {
     "bootstrap": "5.3.3"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "postcss-cli": "^11.0.0",
     "sass": "^1.79.3"
   }
 }
