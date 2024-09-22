@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "scss": "sass --no-source-map scss/bravo.scss dist/css/bravo.css",
+    "build": "npm run scss && npm run js"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3"
+  },
+  "devDependencies": {
+    "sass": "^1.79.3"
+  }
+}
