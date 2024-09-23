@@ -95,8 +95,3 @@ params:
   anchors:
     min: 2
     max: 5
-
-# Add this section to include SCSS paths
-sass:
-  includePaths:
-    - "node_modules/bootstrap/scss"
