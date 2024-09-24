@@ -2,7 +2,7 @@
  *  Extend with Bravo's custom SCSS
  */
 $prefix: "bravo" !default;
- 
+
 @import "bravo/color";
 
 /**
@@ -22,3 +22,16 @@ $prefix: "bravo" !default;
 /**
  *  Consume incoming maps (such as colors, sizes, etc.)
  */
+
+/**
+ *  Make colors available in css
+ */
+$all-colors: ($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
+
+:root {
+    @each $colors in $all-colors {
+        @each $name, $color in $colors {
+            --#{$name}: #{$color};
+        }
+    }
+}
