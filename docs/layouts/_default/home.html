@@ -1,0 +1,10 @@
+{{ define "main" }}
+  <main>
+    {{ partial "home/masthead" . }}
+    <div class="container-xxl bd-gutter masthead-followup">
+      {{ partial "home/get-started" . }}
+    </div>
+  </main>
+
+  {{ .Content }}
+{{ end }}

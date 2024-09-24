@@ -1,0 +1,16 @@
+<link href="{{ .Site.Params.cdn.css }}" rel="stylesheet">
+
+{{- if (ne .Page.Layout "examples") }}
+{{- $sassOptions := dict "outputStyle" "expanded" "precision" 6 -}}
+{{- $postcssOptions := dict "use" "autoprefixer" "noMap" true -}}
+
+{{- $targetDocsCssPath := path.Join "/docs" .Site.Params.docs_version "assets/css/docs.css" -}}
+
+{{ if hugo.IsProduction -}}
+  {{- $sassOptions = merge $sassOptions (dict "outputStyle" "compressed") -}}
+{{- end -}}
+
+{{- $docsCss := resources.Get "scss/docs.scss" | toCSS (merge (dict "targetPath" $targetDocsCssPath) $sassOptions) | postCSS $postcssOptions -}}
+
+<link href="{{ $docsCss.RelPermalink }}" rel="stylesheet">
+{{- end }}

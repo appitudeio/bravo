@@ -1,0 +1,35 @@
+# This file holds all sidebar menu's entries.
+# The logic for the sidebar generation is in "site/layouts/partials/docs-sidebar.html".
+
+- title: Getting started
+  icon: book-half
+  icon_color: indigo
+  pages:
+    - title: Introduction
+    - title: Webpack
+
+- title: Layout
+  icon: grid-fill
+  icon_color: teal
+  pages:
+    - title: Containers
+    - title: Grid
+    - title: Columns
+    - title: CSS Grid
+
+- title: Content
+  icon: file-earmark-richtext
+  icon_color: gray
+  pages:
+    - title: Typography
+
+- title: Components
+  icon: menu-button-wide-fill
+  icon_color: cyan
+  pages:
+    - title: Accordion
+    - title: Buttons
+    - title: Collapse
+    - title: Modal
+    - title: Offcanvas
+    - title: Spinners

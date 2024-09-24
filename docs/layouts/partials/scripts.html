@@ -1,0 +1,16 @@
+{{ if hugo.IsProduction -}}
+  <script defer src="/docs/{{ .Site.Params.docs_version }}/dist/js/bootstrap.bundle.min.js" {{ printf "integrity=%q" .Site.Params.cdn.js_bundle_hash | safeHTMLAttr }}></script>
+{{ else -}}
+  <script defer src="{{ .Site.Params.cdn.popper }}"></script>
+  <script defer src="{{ .Site.Params.cdn.js }}"></script>
+{{- end }}
+
+{{- $esbuildOptions := dict "target" "es2019" -}}
+{{- $targetDocsJSPath := path.Join "/docs" .Site.Params.docs_version -}}
+
+{{- if hugo.IsProduction -}}
+  {{- $esbuildOptions = merge $esbuildOptions (dict "minify" "true") -}}
+{{- end }}
+
+{{- $applicationJs := resources.Get "js/application.js" | js.Build $esbuildOptions | resources.Copy (path.Join $targetDocsJSPath "/assets/js/application.js") }}
+<script defer src="{{ $applicationJs.RelPermalink }}"></script>
