@@ -1,4 +1,11 @@
 /**
+ *  Extend with Bravo's custom SCSS
+ */
+$prefix: "bravo" !default;
+ 
+@import "bravo/color";
+
+/**
  *  Import default Bootstrap SCSS
  */
 @import "bootstrap/scss/functions";
@@ -11,10 +18,6 @@
 @import "bootstrap/scss/reboot";
 @import "bootstrap/scss/helpers";
 @import "bootstrap/scss/utilities/api";
-
-/**
- *  Extend with Bravo's custom SCSS
- */
 
 /**
  *  Consume incoming maps (such as colors, sizes, etc.)
