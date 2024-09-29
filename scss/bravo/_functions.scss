@@ -62,6 +62,12 @@ $color-tints: (
                 $colors: map-merge($colors, map-merge-multiple($color-variations));
                 $colors: map-merge($colors, ("#{$color-key}": $base-color));
             }
+            @else {
+                // Just merge the colors as-is
+                @each $shade, $color in $color-value {
+                    $colors: map-merge($colors, ("#{$color-key}-#{$shade}": $color));
+                }
+            }
         }
         @else { // Handle simple key-value pairs like "brown": #964B00
             // Generate color variations starting from the base color
