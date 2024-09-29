@@ -12,6 +12,7 @@ $enable-deprecation-messages: false !default;
  */
 @import "bravo/functions";
 @import "bravo/color";
+@import "bravo/typograph";
 
 /**
  *  Import default Bootstrap SCSS
@@ -56,3 +57,4 @@ $colors: map-merge-multiple($theme-custom-colors, $blues, $indigos, $purples, $p
  *  Map bootstrap scss-variables into css-variables for even more flexibility
  */
 @import "bravo/color-patch";
+@import "bravo/typograph-patch";
