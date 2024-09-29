@@ -2,7 +2,15 @@
  *  Extend with Bravo's custom SCSS
  */
 $prefix: "bravo" !default;
+$enable-grid-classes: false !default;
+$enable-container-classes: false !default;
+$enable-deprecation-messages: false !default;
+//$color-mode-type: "media-query" !default;
 
+/**
+ *  Import Bravo's custom color scheme
+ */
+@import "bravo/functions";
 @import "bravo/color";
 
 /**
@@ -14,24 +22,37 @@ $prefix: "bravo" !default;
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
-@import "bootstrap/scss/root";
 @import "bootstrap/scss/reboot";
 @import "bootstrap/scss/helpers";
 @import "bootstrap/scss/utilities/api";
 
 /**
- *  Consume incoming maps (such as colors, sizes, etc.)
+ *  Overwrite Bootstrap's $colors, since it only contains the base-colors and not the adjustments
  */
+$theme-custom-colors: generate-custom-colors($theme-colors);
+$colors: map-merge-multiple($theme-custom-colors, $blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
+
+@if variable-exists(bravo-colors) {
+   $colors: map-merge($colors, generate-custom-colors($bravo-colors));
+}
+
+// Map all theme colors with potential adjustments
+@each $color-name, $color-value in $theme-colors {
+    $theme-colors: map-merge($theme-colors, ("#{$color-name}": map-get($colors, #{$color-name}-500)));
+    $theme-colors-text: map-merge($theme-colors-text, ("#{$color-name}": map-get($colors, #{$color-name}-500)));
+    $theme-colors-bg-subtle: map-merge($theme-colors-bg-subtle, ("#{$color-name}": map-get($colors, #{$color-name}-100)));
+    $theme-colors-border-subtle: map-merge($theme-colors-border-subtle, ("#{$color-name}": map-get($colors, #{$color-name}-200)));
+    $theme-colors-text-dark: map-merge($theme-colors-text-dark, ("#{$color-name}": map-get($colors, #{$color-name}-200)));
+    $theme-colors-bg-subtle-dark: map-merge($theme-colors-bg-subtle-dark, ("#{$color-name}": map-get($colors, #{$color-name}-900)));
+    $theme-colors-border-subtle-dark: map-merge($theme-colors-border-subtle-dark, ("#{$color-name}": map-get($colors, #{$color-name}-700)));
+}
 
 /**
- *  Make colors available in css
+ *  Output all colors as css-variables
  */
-$all-colors: ($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
+@import "bootstrap/scss/root";
 
-:root {
-    @each $colors in $all-colors {
-        @each $name, $color in $colors {
-            --#{$name}: #{$color};
-        }
-    }
-}
+/**
+ *  Map bootstrap scss-variables into css-variables for even more flexibility
+ */
+@import "bravo/color-patch";
