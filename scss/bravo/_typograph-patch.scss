@@ -50,7 +50,7 @@ p {
         }
     }
 
-    /*:root {
-        @include rfs($bravo-base-font-size * 0.9, font-size);  // Reduce base font size for smaller screens
-    }*/
+    :root {
+        font-size: #{$bravo-base-font-size-sm};
+    }
 }
