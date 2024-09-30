@@ -1,2 +1,36 @@
+/**
+ *  Bootstrap's buttons are great, but we want to default a focus ring to them
+ */
 @import "bootstrap/scss/buttons";
 @import "bootstrap/scss/button-group";
+
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  
+  &:focus:not(:focus-visible), &:focus-visible {
+    outline-offset: 2px;
+    outline-color: var(--#{$prefix}btn-active-bg);
+    outline-width: 2px;
+    outline-style: solid;
+  }
+
+  &:focus-visible {
+    box-shadow: none;
+  }
+}
+
+.btn-rounded {
+  border-radius: 100px;
+}
+
+.btn-icon {
+  padding: 0;
+  width: calc(calc(var(--btn-padding-y) * 2) + calc(var(--btn-font-size) * var(--btn-line-height)) + calc(var(--btn-border-width) * 2));
+  height: calc(calc(var(--btn-padding-y) * 2) + calc(var(--btn-font-size) * var(--btn-line-height)) + calc(var(--btn-border-width) * 2));
+}
+
+.btn-block {
+  width: 100%;
+}
