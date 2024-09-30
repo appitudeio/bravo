@@ -1,0 +1,42 @@
+/**
+ *  Bootstrap's grid system has some nesting flaws and weird names of the columns, let's fix that
+ */
+.grid {
+   // grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
+/**
+ *  Create grid spacing utilities, based of Bootstrap's $spacers, where $space-4 (1.5rem) is the default
+ */
+@each $size, $value in $spacers {
+    // Unified .gap-{size} class
+    .g-#{$size} {
+        gap: #{$value};
+    }
+
+    // Individual .gx-{size} and .gy-{size} classes
+    .gx-#{$size} {
+        column-gap: #{$value};
+    }
+
+    .gy-#{$size} {
+        row-gap: #{$value};
+    }
+
+    // Responsive Classes
+    @each $breakpoint, $min-width in $grid-breakpoints {
+        @include media-breakpoint-up($breakpoint) {
+            .g-#{$size}-#{$breakpoint} {
+                gap: #{$value};
+            }
+
+            .gx-#{$size}-#{$breakpoint} {
+                column-gap: #{$value};
+            }
+
+            .gy-#{$size}-#{$breakpoint} {
+                row-gap: #{$value};
+            }
+        }
+    }
+}
