@@ -1,28 +1,41 @@
 /**
  *  Bootstrap's grid system has some nesting flaws and weird names of the columns, let's fix that
  */
+.grid {
+   // grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
 
 /**
- *  Overwrite Bootstrap's column classes so we can have e.g .column-3-sm which means 3/12 size in mobile
+ *  Create grid spacing utilities, based of Bootstrap's $spacers, where $space-4 (1.5rem) is the default
  */
-@mixin make-cssgrid($columns: $grid-columns, $breakpoints: $grid-breakpoints) {
-    @each $breakpoint in map-keys($breakpoints) {
-        $infix: breakpoint-infix($breakpoint, $breakpoints);
+@each $size, $value in $spacers {
+    // Unified .gap-{size} class
+    .g-#{$size} {
+        gap: #{$value};
+    }
 
-        // Use media-breakpoint-down to apply styles below the breakpoint
-        @include media-breakpoint-down($breakpoint, $breakpoints) {
-            @for $i from 1 through $columns {
-                .column-#{$i}#{$infix} {
-                    grid-column: auto / span $i;
-                }
+    // Individual .gx-{size} and .gy-{size} classes
+    .gx-#{$size} {
+        column-gap: #{$value};
+    }
+
+    .gy-#{$size} {
+        row-gap: #{$value};
+    }
+
+    // Responsive Classes
+    @each $breakpoint, $min-width in $grid-breakpoints {
+        @include media-breakpoint-up($breakpoint) {
+            .g-#{$size}-#{$breakpoint} {
+                gap: #{$value};
             }
 
-            // Start with `1` because `0` is an invalid value.
-            // Ends with `$columns - 1` because offsetting by the width of an entire row isn't possible.
-            @for $i from 1 through ($columns - 1) {
-                .column-offset-#{$i}#{$infix} {
-                    grid-column-start: $i;
-                }
+            .gx-#{$size}-#{$breakpoint} {
+                column-gap: #{$value};
+            }
+
+            .gy-#{$size}-#{$breakpoint} {
+                row-gap: #{$value};
             }
         }
     }

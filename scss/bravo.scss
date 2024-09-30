@@ -28,9 +28,6 @@ $enable-deprecation-messages: false !default;
 @import "bootstrap/scss/helpers";
 @import "bootstrap/scss/utilities/api";
 
-@import "bravo/grid-patch";
-@import "bootstrap/scss/grid";
-
 /**
  *  Overwrite Bootstrap's $colors, since it only contains the base-colors and not the adjustments
  */
