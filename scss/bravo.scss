@@ -3,6 +3,7 @@
  */
 $prefix: "bravo" !default;
 $enable-grid-classes: false !default;
+$enable-cssgrid: true !default;
 $enable-container-classes: false !default;
 $enable-deprecation-messages: false !default;
 //$color-mode-type: "media-query" !default;
@@ -26,6 +27,9 @@ $enable-deprecation-messages: false !default;
 @import "bootstrap/scss/reboot";
 @import "bootstrap/scss/helpers";
 @import "bootstrap/scss/utilities/api";
+
+@import "bravo/grid-patch";
+@import "bootstrap/scss/grid";
 
 /**
  *  Overwrite Bootstrap's $colors, since it only contains the base-colors and not the adjustments
