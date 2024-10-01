@@ -1,5 +1,5 @@
 {
-  "name": "ccwebpack",
+  "name": "bravowebpack",
   "version": "1.0.0",
   "main": "index.js",
   "keywords": [],
@@ -10,7 +10,7 @@
     "@babel/plugin-transform-runtime": "^7.25.4",
     "@babel/preset-env": "^7.25.4",
     "autoprefixer": "^10.4.20",
-    "babel-loader": "^8.3.0",
+    "babel-loader": "^9.2.0",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.1.2",

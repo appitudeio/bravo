@@ -29,7 +29,8 @@ header {
 }
 
 section {
-    padding: $spacer * 2;
+    padding-top: $spacer * 2;
+    padding-bottom: $spacer * 2;
     border-bottom: 6px dashed var(--tertiary-bg);
 }
 
