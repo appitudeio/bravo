@@ -1,7 +1,7 @@
 /**
  *  Bootstrap's css-grid is awefule, let's fix it
  */
-$grid-gap: map-get($spacers, 4) !default; // 24px
+$grid-gap: map-get($spacers, 4) !default; // 1.5rem, 24px
 
 /**
  *  Overwrite Bootstrap's column classes so we can have e.g .column-3-sm which means 3/12 size in mobile
