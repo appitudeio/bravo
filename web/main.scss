@@ -1,0 +1,38 @@
+$prefix: "";
+
+$bravo-colors: (
+    "brown": #964B00,
+    "beige": #CDC5B8,
+);
+
+$bravo-base-font-size: 1.125rem;
+
+@import "bravo/scss/bravo";
+@import "bravo/scss/bravo-grid";
+@import "bravo/scss/alert";
+@import "bravo/scss/card";
+@import "bravo/scss/buttons";
+
+header {
+    background: var(--tertiary-bg);
+    height: 80px;
+}
+
+.box-colors {
+    display: flex;
+
+    & > div {
+        width: 100%;
+        height: 50px;
+        background-color: var(--color);
+    }
+}
+
+section {
+    padding: $spacer * 2;
+    border-bottom: 6px dashed var(--tertiary-bg);
+}
+
+.card {
+    background: var(--tertiary-bg);
+}
