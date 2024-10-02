@@ -1,4 +1,6 @@
 {
+  "name": "bravo",
+  "main": "js/index.js",
   "scripts": {
     "docs": "npm-run-all docs-build docs-lint",
     "docs-build": "hugo --cleanDestinationDir --printUnusedTemplates",
