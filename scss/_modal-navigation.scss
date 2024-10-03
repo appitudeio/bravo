@@ -1,0 +1,163 @@
+/**
+ *  Bootstrap's modal's are great, but not so flexible. Let's fix that with a navigation.
+ */
+@import "bootstrap/scss/modal";
+
+:root {
+    --modal-stack-animation-slide-duration: 350ms;
+    --modal-stack-animation-slide-out: -10px;
+    --modal-stack-animation-slide-in: 10px;
+    --modal-stack-animation-morph-duration: 300ms;
+    --modal-stack-animation-morph-scale: .95;
+}
+
+.modal {
+    .btn[rel=back] {
+        @extend .modal-header-back-btn_default;
+    }
+}
+
+/**
+ *  Transitions
+ */
+.modal-navigation-stacked {
+    .btn[rel=back] {
+        @extend .modal-header-back-btn_visible;
+    }
+}
+
+// BackBtn
+.modal-header-back-btn_default {
+    transition: margin var(--modal-stack-animation-duration) ease, opacity var(--modal-stack-animation-duration) ease;
+
+    opacity: 0;
+    margin: 0 0 0 calc(var(--btn-width) * -1);
+}
+
+.modal-header-back-btn_visible {
+    opacity: 1;
+    margin: 0 10px 0 0;
+}
+
+// Activate transition effect
+.modal-animation-transition {
+    .modal-content {
+        overflow: hidden;
+    }
+
+    &.modal-animation-slide {
+        @extend .modal-animation-transition-slide; 
+    }
+
+    &.modal-animation-morph {
+        @extend .modal-animation-transition-morph;
+    }
+}
+
+// Slide 
+.modal-animation-transition-slide {
+    --modal-stack-animation-duration: var(--modal-stack-animation-slide-duration);
+    --modal-stack-animation-out: modal-body-slide-out;
+    --modal-stack-animation-in: modal-body-slide-in;
+
+    @extend .modal-navigation-transition_slide-out;
+
+    &.modal-animation-transition-in {
+        @extend .modal-navigation-transition_slide-in;
+    }
+}
+
+.modal-navigation-transition_slide-out {
+    --modal-stack-travel: var(--modal-stack-animation-slide-out);
+
+    .modal-body, .modal-header h5 {
+        transition: height var(--modal-stack-animation-duration) ease, opacity var(--modal-stack-animation-duration) ease;
+        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-out) ease forwards;
+    }
+}
+
+.modal-navigation-transition_slide-in {
+    --modal-stack-travel: var(--modal-stack-animation-slide-in);
+
+    .modal-body, .modal-header h5 {
+        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-in) ease forwards;
+    }
+}
+
+// Morph
+.modal-animation-transition-morph {
+    --modal-stack-animation-duration: var(--modal-stack-animation-morph-duration);
+    --modal-stack-animation-out: modal-body-morph-out;
+    --modal-stack-animation-in: modal-body-morph-in;
+    --modal-stack-travel: var(--modal-stack-animation-morph-scale);
+
+    @extend .modal-navigation-transition_morph-out;
+
+    &.modal-animation-transition-in {
+        @extend .modal-navigation-transition_morph-in;
+    }    
+}
+
+.modal-navigation-transition_morph-out {
+    .modal-body {
+        transition: height var(--modal-stack-animation-duration) ease;
+        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-out) ease forwards;
+    }
+
+    .modal-header h5 {
+        transition: opacity var(--modal-stack-animation-duration) ease;
+        opacity: 0;
+    }
+}
+
+.modal-navigation-transition_morph-in {
+    .modal-body {
+        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-in) ease forwards;
+    }
+
+    .modal-header h5 {
+        opacity: 1;
+    }
+}
+
+@keyframes modal-body-slide-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translateX(var(--modal-stack-travel));
+    }
+}
+
+@keyframes modal-body-slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(var(--modal-stack-travel));
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes modal-body-morph-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: scale(var(--modal-stack-travel));
+    }
+}
+
+@keyframes modal-body-morph-in {
+    from {
+        opacity: 0;
+        transform: scale(var(--modal-stack-travel));
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

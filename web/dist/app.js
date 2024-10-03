@@ -2274,6 +2274,41 @@ class ModalNavigationTransitionSlide extends Animation {
 }
 class ModalNavigationTransitionMorph extends Animation {
   className = "modal-animation-morph";
+  heightMultiplyer = .85;
+  out = (directionBack = false) => new Promise(resolve => {
+    // 1) Set current height of the Modal body
+    const ModalBody = this.Modal._element.querySelector(".modal-body");
+    const currentBodyHeight = ModalBody.offsetHeight;
+    ModalBody.style.height = `${currentBodyHeight}px`;
+
+    // 2) Start the animation w setting the animation class
+    this.Modal._element.classList.add(this.className, CLASS_NAVIGATION_TRANSITION);
+    setTimeout(() => ModalBody.style.height = `${currentBodyHeight * this.heightMultiplyer}px`, 10);
+    const transitionDuration = this.getAnimationDuration();
+    setTimeout(() => resolve(), transitionDuration);
+  });
+  in = directionBack => new Promise(resolve => {
+    // 1) Calculate the new height to be
+    const hiddenFakeBody = this.createFakeModalBody();
+    const hiddenFakeBodyHeight = this.calculateFakeModalBodyHeight(hiddenFakeBody);
+
+    // 2) Animate in the new content
+    this.Modal._element.classList.add(CLASS_NAVIGATION_TRANSITION_IN);
+    this.Modal._element.querySelector(".modal-body").style.height = `${hiddenFakeBodyHeight}px`;
+    this.Modal.handleUpdate(); // Adjust modal size
+
+    const transitionDuration = this.getAnimationDuration();
+
+    // Everything's done
+    setTimeout(() => {
+      // Clear all classes that trigger transitions
+      [Animation.className, CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN].forEach(c => this.Modal._element.classList.remove(c));
+
+      // Remove height on the body
+      this.Modal._element.querySelector(".modal-body").removeAttribute("style");
+      resolve();
+    }, transitionDuration);
+  });
 }
 const animationsMap = {
   slide: ModalNavigationTransitionSlide,
@@ -2364,7 +2399,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const testModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   title: "Hallå!",
-  content: "Här är text!!"
+  content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??"
   /*footerButtons: [
       { text: "Cancel", class: "btn-warning" },
       { text: "Submit", type: "submit", class: "btn-danger", name: "submit" }
@@ -2373,22 +2408,28 @@ const testModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
 });
 const childModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   title: "CHILD!",
-  content: "Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??"
+  content: "NNNNed är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram o?"
 });
 const grandchildModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   title: "GRANDCHILD!",
-  content: "Hejsan ?"
+  content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??"
 });
-const Nav = new bravo__WEBPACK_IMPORTED_MODULE_0__.ModalNavigation();
+const Nav = new bravo__WEBPACK_IMPORTED_MODULE_0__.ModalNavigation({
+  animation: "morph"
+});
 Nav.push(testModal);
 Nav.show();
 setTimeout(() => Nav.push(childModal), 1000);
-setTimeout(() => Nav.push(grandchildModal), 3000);
+
+/*setTimeout(() => Nav.push(grandchildModal), 3000);
+
 testModal.addEventListener("submit.bs.modal", e => {
-  e.preventDefault();
-  console.log(e.target);
-  alert("SUBMIT");
-});
+    e.preventDefault();
+
+    console.log(e.target);
+
+    alert("SUBMIT");
+});*/
 })();
 
 /******/ })()
