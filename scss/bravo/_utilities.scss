@@ -1,0 +1,44 @@
+/**
+ *  Grab potantially incoming colors and merge them into Bootstrap's "core"
+ */
+$theme-custom-colors: generate-custom-colors($theme-colors);
+$colors: map-merge-multiple($theme-custom-colors, $blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
+
+/**
+ *  If any incoming colors, merge them into the general map of colors and finally put them into utilities
+ */
+@if variable-exists(bravo-colors) {
+    $custom-bravo-colors: generate-custom-colors($bravo-colors);
+    $colors: map-merge($colors, $bravo-colors);
+
+    // Pair the new colors with utilities
+    @each $util in ("color", "background-color", "border-color") {
+        $utilities: map-merge(
+            $utilities,
+            (
+                $util: map-merge(
+                    map-get($utilities, $util),
+                    (
+                        values: map-merge(
+                            map-get(map-get($utilities, $util), "values"),
+                            (
+                                $custom-bravo-colors
+                            )
+                        )
+                    )
+                )
+            )
+        );
+    }
+}
+
+// Map all theme colors with potential adjustments
+@each $color-name, $color-value in $theme-colors {
+    $theme-colors: map-merge($theme-colors, ("#{$color-name}": map-get($colors, #{$color-name}-500)));
+    $theme-colors-text: map-merge($theme-colors-text, ("#{$color-name}": map-get($colors, #{$color-name}-500)));
+    $theme-colors-bg-subtle: map-merge($theme-colors-bg-subtle, ("#{$color-name}": map-get($colors, #{$color-name}-100)));
+    $theme-colors-border-subtle: map-merge($theme-colors-border-subtle, ("#{$color-name}": map-get($colors, #{$color-name}-200)));
+    $theme-colors-text-dark: map-merge($theme-colors-text-dark, ("#{$color-name}": map-get($colors, #{$color-name}-200)));
+    $theme-colors-bg-subtle-dark: map-merge($theme-colors-bg-subtle-dark, ("#{$color-name}": map-get($colors, #{$color-name}-900)));
+    $theme-colors-border-subtle-dark: map-merge($theme-colors-border-subtle-dark, ("#{$color-name}": map-get($colors, #{$color-name}-700)));
+}
