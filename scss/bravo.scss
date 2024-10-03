@@ -26,6 +26,7 @@ $enable-deprecation-messages: false !default;
 @import "bootstrap/scss/utilities";
 @import "bootstrap/scss/reboot";
 @import "bootstrap/scss/helpers";
+@import "bootstrap/scss/transitions";
 
 /**
  *  Overwrite Bootstrap's $colors, since it only contains the base-colors and not the adjustments
