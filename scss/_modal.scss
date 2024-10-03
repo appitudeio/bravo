@@ -1,1 +1,30 @@
+/**
+ *  Bootstrap's modal's are great, but not so flexible. Let's fix that with a navigation.
+ */
 @import "bootstrap/scss/modal";
+@import "modal-navigation";
+
+.modal {
+   
+}
+
+
+.modal-header-buttons {
+    margin-left: auto;
+}
+
+.modal-navigation {
+    .modal-header {
+        & > * {
+            z-index: 1;
+        }
+
+        h5 {
+            position: absolute;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 0;
+        }
+    }
+}

@@ -26,9 +26,11 @@
 }
 
 .btn-icon {
+  --btn-width: calc(calc(var(--btn-padding-y) * 2) + calc(var(--btn-font-size) * var(--btn-line-height)) + calc(var(--btn-border-width) * 2));
+  
   padding: 0;
-  width: calc(calc(var(--btn-padding-y) * 2) + calc(var(--btn-font-size) * var(--btn-line-height)) + calc(var(--btn-border-width) * 2));
-  height: calc(calc(var(--btn-padding-y) * 2) + calc(var(--btn-font-size) * var(--btn-line-height)) + calc(var(--btn-border-width) * 2));
+  width: var(--btn-width);
+  height: var(--btn-width);
 }
 
 .btn-block {
