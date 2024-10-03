@@ -32,7 +32,7 @@ $colors: map-merge-multiple($theme-custom-colors, $blues, $indigos, $purples, $p
     }
 }
 
-// Map all theme colors with potential adjustments
+// Map all theme colors with potential adjustments 
 @each $color-name, $color-value in $theme-colors {
     $theme-colors: map-merge($theme-colors, ("#{$color-name}": map-get($colors, #{$color-name}-500)));
     $theme-colors-text: map-merge($theme-colors-text, ("#{$color-name}": map-get($colors, #{$color-name}-500)));
