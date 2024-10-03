@@ -498,6 +498,10 @@ class Animation {
     }
 }
 
+/**
+ *  Slide-effect;
+ *      iOS-window slide animation
+ */
 class ModalNavigationTransitionSlide extends Animation {
     className = "modal-animation-slide";
 
@@ -546,6 +550,10 @@ class ModalNavigationTransitionSlide extends Animation {
     });
 }
 
+/**
+ *  Morhp-effect;
+ *      Go from current size to less, then animate to new size
+ */
 class ModalNavigationTransitionMorph extends Animation {
     className = "modal-animation-morph";
     heightMultiplyer = .85;

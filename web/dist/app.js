@@ -2230,6 +2230,11 @@ class Animation {
     return parseFloat((_computedStyle$animat = computedStyle['animation-duration']) !== null && _computedStyle$animat !== void 0 ? _computedStyle$animat : computedStyle['transition-duration']) * 1000;
   };
 }
+
+/**
+ *  Slide-effect;
+ *      iOS-window slide animation
+ */
 class ModalNavigationTransitionSlide extends Animation {
   className = "modal-animation-slide";
   out = (directionBack = false) => new Promise(resolve => {
@@ -2272,6 +2277,11 @@ class ModalNavigationTransitionSlide extends Animation {
     }, transitionDuration);
   });
 }
+
+/**
+ *  Morhp-effect;
+ *      Go from current size to less, then animate to new size
+ */
 class ModalNavigationTransitionMorph extends Animation {
   className = "modal-animation-morph";
   heightMultiplyer = .85;
