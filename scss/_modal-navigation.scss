@@ -29,7 +29,7 @@
 
 .modal {
     .btn[rel=back] {
-        @extend .modal-header-back-btn_default;
+        @extend %modal-header-back-btn_default;
     }
 }
 
@@ -38,19 +38,19 @@
  */
 .modal-navigation-stacked {
     .btn[rel=back] {
-        @extend .modal-header-back-btn_visible;
+        @extend %modal-header-back-btn_visible;
     }
 }
 
 // BackBtn
-.modal-header-back-btn_default {
+%modal-header-back-btn_default {
     transition: margin var(--modal-stack-animation-duration) ease, opacity var(--modal-stack-animation-duration) ease;
 
     opacity: 0;
     margin: 0 0 0 calc(var(--btn-width) * -1);
 }
 
-.modal-header-back-btn_visible {
+%modal-header-back-btn_visible {
     opacity: 1;
     margin: 0 10px 0 0;
 }
@@ -76,14 +76,14 @@
     --modal-stack-animation-out: modal-body-slide-out;
     --modal-stack-animation-in: modal-body-slide-in;
 
-    @extend .modal-navigation-transition_slide-out;
+    @extend %modal-navigation-transition_slide-out;
 
     &.modal-animation-transition-in {
-        @extend .modal-navigation-transition_slide-in;
+        @extend %modal-navigation-transition_slide-in;
     }
 }
 
-.modal-navigation-transition_slide-out {
+%modal-navigation-transition_slide-out {
     --modal-stack-travel: var(--modal-stack-animation-slide-out);
 
     .modal-body, .modal-title {
@@ -92,7 +92,7 @@
     }
 }
 
-.modal-navigation-transition_slide-in {
+%modal-navigation-transition_slide-in {
     --modal-stack-travel: var(--modal-stack-animation-slide-in);
 
     .modal-body, .modal-title {
@@ -107,14 +107,14 @@
     --modal-stack-animation-in: modal-body-morph-in;
     --modal-stack-travel: var(--modal-stack-animation-morph-scale);
 
-    @extend .modal-navigation-transition_morph-out;
+    @extend %modal-navigation-transition_morph-out;
 
     &.modal-animation-transition-in {
-        @extend .modal-navigation-transition_morph-in;
+        @extend %modal-navigation-transition_morph-in;
     }    
 }
 
-.modal-navigation-transition_morph-out {
+%modal-navigation-transition_morph-out {
     .modal-body {
         transition: height var(--modal-stack-animation-duration) ease;
         animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-out) ease forwards;
@@ -126,7 +126,7 @@
     }
 }
 
-.modal-navigation-transition_morph-in {
+%modal-navigation-transition_morph-in {
     .modal-body {
         animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-in) ease forwards;
     }

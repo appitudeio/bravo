@@ -15,7 +15,7 @@ $modal-content-box-shadow-xs: 0 5px 25px rgba(0, 0, 0, .15) !default;
 $modal-backdrop-bg: var(--#{$prefix}body-bg) !default;
 $modal-backdrop-opacity: .75 !default;
 $modal-fade-transform: translate(0, 25px) !default;
-//$secondary: #f0f0eb;
+$btn-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, transform .15s ease-in-out !default;
 
 /**
  *  Modals
@@ -65,9 +65,10 @@ $modal-fade-transform: translate(0, 25px) !default;
  *  Buttons
  */
 .btn {
-    transition-property: box-shadow, transform, opacity, background-color, color;
-    transition-duration: 150ms;
-    transition-timing-function: ease;
+    &:focus:not(:focus-visible), &:focus-visible {
+        outline-offset: 0 !important;
+        outline-width: 0 !important;
+    }
 
     &:active {
         transform: scale(.95);

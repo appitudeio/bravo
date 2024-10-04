@@ -48,14 +48,19 @@
 
 /**
  *  In darkmode- we switch light with dark
+ *  (--Only works with the light-btn for now)
  */
+%btn-dark_copy {
+  @extend .btn-dark;
+}
+
 %btn-light_copy {
   @extend .btn-light;
 }
 
 @include color-mode(dark) {
   .btn-light {
-    @extend .btn-dark;
+    @extend %btn-dark_copy;
   }
 
   .btn-dark {
