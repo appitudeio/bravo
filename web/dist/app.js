@@ -1858,6 +1858,7 @@ class Modal extends (bootstrap_js_dist_modal__WEBPACK_IMPORTED_MODULE_0___defaul
   registerEventListeners() {
     // On closing this generatedModal - remove it
     bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(this._element, 'hidden.bs.modal', () => {
+      console.log("HIDe");
       this._element.remove();
     });
 
@@ -1942,7 +1943,7 @@ class Navigation {
     if (this.stack.length == 0) {
       this.setBaseModal(childModal);
     }
-    this.stack.push([childModal._element.querySelector(".modal-header").cloneNode(true), childModal._element.querySelector(".modal-body").cloneNode(true), (_childModal$_element$ = childModal._element.querySelector(".modal-footer")) === null || _childModal$_element$ === void 0 ? void 0 : _childModal$_element$.cloneNode(true)]);
+    this.stack.push([childModal._element.querySelector(".modal-header").cloneNode(true), childModal._element.querySelector(".modal-body").cloneNode(true), (_childModal$_element$ = childModal._element.querySelector(".modal-footer")) === null || _childModal$_element$ === void 0 ? void 0 : _childModal$_element$.cloneNode(true), childModal]);
     if (this.stack.length > 1) {
       return new Promise(resolve => {
         this.replace(this.stack[this.stack.length - 1]).then(resolve);
@@ -1959,11 +1960,17 @@ class Navigation {
     const prevStack = this.stack[this.stack.length - 1]; // Revert back to the prevous stack
 
     this.replace(prevStack, true).then(() => {
+      currentStack[3]._element.remove();
       currentStack = null;
     });
   }
   closeNavigation() {
+    this.stack.forEach(stack => {
+      stack[3]._element.remove();
+    });
     this.stack = [];
+    this.Modal._element.remove();
+    this.Modal = null;
   }
   show() {
     this.Modal.show();
@@ -2056,13 +2063,13 @@ class Navigation {
     const shouldHaveBackButton = this.stack.length > 1 && (this.options.backButton.disabled == undefined || this.options.backButton.disabled === false) && this.stack.length > 1 ? true : false;
     const shouldHaveCloseButton = this.options.closeButton.disabled == undefined || this.options.closeButton.disabled === false ? true : false;
     let header = this.Modal._element.querySelector(".modal-header"); // If current header
-    let h5;
+    let title;
     let backButton;
     let closeButton;
 
     // Use existing Header
     if (header) {
-      h5 = header.querySelector("h5");
+      title = header.querySelector(".modal-title");
       backButton = header.querySelector("button[rel=back]");
       closeButton = header.querySelector("button[rel=close]");
       if (!backButton && shouldHaveBackButton) {
@@ -2071,20 +2078,20 @@ class Navigation {
     } else {
       // Create new header
       header = document.createElement("div");
-      h5 = document.createElement("h5");
+      title = document.createElement("h4");
       backButton = this.Template.backButton(() => this.pop());
       closeButton = this.Template.closeButton();
       header.classList.add("modal-header");
-      h5.classList.add("modal-title");
+      title.classList.add("modal-title");
       if (shouldHaveBackButton) {
         header.append(backButton);
       }
-      header.append(h5);
+      header.append(title);
       if (shouldHaveCloseButton) {
         header.append(closeButton);
       }
     }
-    h5.innerHTML = (_newHeader$querySelec = newHeader.querySelector("h5").innerHTML) !== null && _newHeader$querySelec !== void 0 ? _newHeader$querySelec : "";
+    title.innerHTML = (_newHeader$querySelec = newHeader.querySelector(".modal-title").innerHTML) !== null && _newHeader$querySelec !== void 0 ? _newHeader$querySelec : "";
     return header;
   }
   setFooter(footerContent) {
@@ -2140,7 +2147,7 @@ class ModalTemplate {
     }).join('');
     return title ? `
             <div class="modal-header">
-                <h5 class="modal-title">${title}</h5>
+                <h4 class="modal-title">${title}</h4>
 
                 <div class="modal-header-buttons">
                     ${buttonElements}
@@ -2174,7 +2181,8 @@ class ModalTemplate {
     let closeBtn = document.createElement("button");
     closeBtn.innerHTML = this.options.closeButton.text;
     closeBtn.setAttribute("rel", "close");
-    closeBtn.classList.add("btn", "btn-secondary", "btn-icon", "btn-rounded");
+    closeBtn.setAttribute("type", "button");
+    closeBtn.classList.add("btn", "btn-sm", "btn-light", "btn-icon", "btn-rounded");
     closeBtn.dataset.bsDismiss = "modal";
     return closeBtn;
   };
@@ -2182,7 +2190,8 @@ class ModalTemplate {
     let backButton = document.createElement("button");
     backButton.innerHTML = this.options.backButton.text;
     backButton.setAttribute("rel", "back");
-    backButton.classList.add("btn", "btn-icon", "btn-rounded");
+    backButton.setAttribute("type", "button");
+    backButton.classList.add("btn", "btn-sm", "btn-light", "btn-icon", "btn-rounded");
     backButton.addEventListener("click", e => {
       e.preventDefault();
       backButton.blur();
@@ -2409,27 +2418,28 @@ __webpack_require__.r(__webpack_exports__);
 
 const testModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   title: "Hallå!",
-  content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??"
-  /*footerButtons: [
-      { text: "Cancel", class: "btn-warning" },
-      { text: "Submit", type: "submit", class: "btn-danger", name: "submit" }
-  ],
-  isForm: true*/
+  content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
+  footerButtons: [{
+    text: "Stäng"
+  }],
+  isForm: true
 });
 const childModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   title: "CHILD!",
-  content: "NNNNed är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram o?"
+  content: "NNNNed är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram o?",
+  footerButtons: [{
+    text: "Lnapp"
+  }]
 });
 const grandchildModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   title: "GRANDCHILD!",
   content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??"
 });
 const Nav = new bravo__WEBPACK_IMPORTED_MODULE_0__.ModalNavigation({
-  animation: "morph"
+  // animation: "morph"
 });
 Nav.push(testModal);
-//Nav.show();
-
+Nav.show();
 setTimeout(() => Nav.push(childModal), 1000);
 
 /*setTimeout(() => Nav.push(grandchildModal), 3000);

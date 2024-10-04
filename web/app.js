@@ -3,15 +3,17 @@ import { Modal, ModalNavigation } from "bravo";
 const testModal = new Modal({
     title: "Hallå!",
     content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
-    /*footerButtons: [
-        { text: "Cancel", class: "btn-warning" },
-        { text: "Submit", type: "submit", class: "btn-danger", name: "submit" }
+    footerButtons: [
+        { text: "Stäng" }
     ],
-    isForm: true*/
+    isForm: true
 });
 const childModal = new Modal({
     title: "CHILD!",
-    content: "NNNNed är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram o?"
+    content: "NNNNed är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram o?",
+    footerButtons: [
+        { text: "Lnapp" }
+    ]
 });
 const grandchildModal = new Modal({
     title: "GRANDCHILD!",
@@ -19,10 +21,10 @@ const grandchildModal = new Modal({
 });
 
 const Nav = new ModalNavigation({
-    animation: "morph"
+   // animation: "morph"
 });
 Nav.push(testModal);
-//Nav.show();
+Nav.show();
 
 setTimeout(() => Nav.push(childModal), 1000);
 
