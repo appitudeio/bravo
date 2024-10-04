@@ -22,7 +22,7 @@ const Nav = new ModalNavigation({
     animation: "morph"
 });
 Nav.push(testModal);
-//Nav.show();
+Nav.show();
 
 setTimeout(() => Nav.push(childModal), 1000);
 

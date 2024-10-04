@@ -16,6 +16,11 @@ $enable-deprecation-messages: false !default;
 @import "bravo/typograph";
 
 /**
+ *  Defaultly import Bravo's design system modifiers
+ */
+@import "bravo/themes/bravo";
+
+/**
  *  Import default Bootstrap SCSS
  */
 @import "bootstrap/scss/functions";

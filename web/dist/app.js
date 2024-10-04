@@ -1858,6 +1858,7 @@ class Modal extends (bootstrap_js_dist_modal__WEBPACK_IMPORTED_MODULE_0___defaul
   registerEventListeners() {
     // On closing this generatedModal - remove it
     bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(this._element, 'hidden.bs.modal', () => {
+      console.log("HIDe");
       this._element.remove();
     });
 
@@ -1942,7 +1943,7 @@ class Navigation {
     if (this.stack.length == 0) {
       this.setBaseModal(childModal);
     }
-    this.stack.push([childModal._element.querySelector(".modal-header").cloneNode(true), childModal._element.querySelector(".modal-body").cloneNode(true), (_childModal$_element$ = childModal._element.querySelector(".modal-footer")) === null || _childModal$_element$ === void 0 ? void 0 : _childModal$_element$.cloneNode(true)]);
+    this.stack.push([childModal._element.querySelector(".modal-header").cloneNode(true), childModal._element.querySelector(".modal-body").cloneNode(true), (_childModal$_element$ = childModal._element.querySelector(".modal-footer")) === null || _childModal$_element$ === void 0 ? void 0 : _childModal$_element$.cloneNode(true), childModal]);
     if (this.stack.length > 1) {
       return new Promise(resolve => {
         this.replace(this.stack[this.stack.length - 1]).then(resolve);
@@ -1959,11 +1960,17 @@ class Navigation {
     const prevStack = this.stack[this.stack.length - 1]; // Revert back to the prevous stack
 
     this.replace(prevStack, true).then(() => {
+      currentStack[3]._element.remove();
       currentStack = null;
     });
   }
   closeNavigation() {
+    this.stack.forEach(stack => {
+      stack[3]._element.remove();
+    });
     this.stack = [];
+    this.Modal._element.remove();
+    this.Modal = null;
   }
   show() {
     this.Modal.show();
@@ -2428,8 +2435,7 @@ const Nav = new bravo__WEBPACK_IMPORTED_MODULE_0__.ModalNavigation({
   animation: "morph"
 });
 Nav.push(testModal);
-//Nav.show();
-
+Nav.show();
 setTimeout(() => Nav.push(childModal), 1000);
 
 /*setTimeout(() => Nav.push(grandchildModal), 3000);

@@ -49,6 +49,7 @@ class Modal extends BootstrapModal {
     registerEventListeners() {
         // On closing this generatedModal - remove it
         EventHandler.on(this._element, 'hidden.bs.modal', () => {
+            console.log("HIDe");
             this._element.remove();
         });
 
@@ -143,7 +144,8 @@ class Navigation {
 		this.stack.push([
 			childModal._element.querySelector(".modal-header").cloneNode(true),
 			childModal._element.querySelector(".modal-body").cloneNode(true),
-			childModal._element.querySelector(".modal-footer")?.cloneNode(true)
+			childModal._element.querySelector(".modal-footer")?.cloneNode(true),
+            childModal
 		]);
 
         if(this.stack.length > 1) {
@@ -163,12 +165,18 @@ class Navigation {
         const prevStack = this.stack[this.stack.length - 1]; // Revert back to the prevous stack
 
 		this.replace(prevStack, true).then(() => {
+            currentStack[3]._element.remove();
 			currentStack = null;
 		});
     }
 
     closeNavigation() {
+        this.stack.forEach(stack => {
+            stack[3]._element.remove();
+        });
         this.stack = [];
+        this.Modal._element.remove();
+        this.Modal = null;
     }
 
     show() {
