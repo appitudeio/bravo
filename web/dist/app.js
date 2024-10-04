@@ -2428,7 +2428,8 @@ const Nav = new bravo__WEBPACK_IMPORTED_MODULE_0__.ModalNavigation({
   animation: "morph"
 });
 Nav.push(testModal);
-Nav.show();
+//Nav.show();
+
 setTimeout(() => Nav.push(childModal), 1000);
 
 /*setTimeout(() => Nav.push(grandchildModal), 3000);
