@@ -4,9 +4,12 @@ const testModal = new Modal({
     title: "Hallå!",
     content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
     footerButtons: [
-        { text: "Stäng" }
+        { text: "Stäng", class: "btn-light" }
     ],
-    isForm: true
+    isForm: true,
+   /* closeButton: {
+        disabled: true
+    }*/
 });
 const childModal = new Modal({
     title: "CHILD!",
@@ -22,6 +25,9 @@ const grandchildModal = new Modal({
 
 const Nav = new ModalNavigation({
    // animation: "morph"
+   closeButton: {
+    disabled: true
+   }
 });
 Nav.push(testModal);
 Nav.show();

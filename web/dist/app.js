@@ -1858,7 +1858,6 @@ class Modal extends (bootstrap_js_dist_modal__WEBPACK_IMPORTED_MODULE_0___defaul
   registerEventListeners() {
     // On closing this generatedModal - remove it
     bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(this._element, 'hidden.bs.modal', () => {
-      console.log("HIDe");
       this._element.remove();
     });
 
@@ -2114,6 +2113,7 @@ class ModalTemplate {
   };
   constructor(options) {
     this.options = (0,_functions__WEBPACK_IMPORTED_MODULE_2__.merge)(this.options, options);
+    console.log("opt", this.options);
   }
   generate = (id, title, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation) => {
     const sizeClass = size === 'sm' ? 'modal-sm' : size === 'lg' ? 'modal-lg' : 'modal-md'; // Default to medium
@@ -2149,13 +2149,17 @@ class ModalTemplate {
             <div class="modal-header">
                 <h4 class="modal-title">${title}</h4>
 
-                <div class="modal-header-buttons">
-                    ${buttonElements}
+                ${buttonElements}
 
-                    ${!this.options.closeButton.disabled ? this.closeButton().outerHTML.toString() : ""}
-                </div>
+                ${!this.options.closeButton.disabled ? this.closeButton().outerHTML.toString() : ""}
             </div>
         ` : "";
+
+    /*
+                    <div class="modal-header-buttons">
+                ${buttonElements}
+                 ${!this.options.closeButton.disabled ? this.closeButton().outerHTML.toString() : ""}
+            </div>*/
   };
   footer = (buttons = []) => {
     const buttonElements = buttons.map(button => {
@@ -2420,9 +2424,13 @@ const testModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   title: "Hallå!",
   content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
   footerButtons: [{
-    text: "Stäng"
+    text: "Stäng",
+    class: "btn-light"
   }],
   isForm: true
+  /* closeButton: {
+       disabled: true
+   }*/
 });
 const childModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   title: "CHILD!",
@@ -2437,6 +2445,9 @@ const grandchildModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
 });
 const Nav = new bravo__WEBPACK_IMPORTED_MODULE_0__.ModalNavigation({
   // animation: "morph"
+  closeButton: {
+    disabled: true
+  }
 });
 Nav.push(testModal);
 Nav.show();

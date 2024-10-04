@@ -1,0 +1,92 @@
+/**
+ *  Patch existing Boostrap styles into Bravo-overrides
+ */
+.modal {
+    .btn[rel=back], .btn[rel=close] {
+        font-size: 0;
+
+        &:before {
+            content: "";
+            mask-repeat: no-repeat;
+            mask-size: cover;
+            background-color: currentColor;
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    .btn[rel=back]:before {
+        mask-image: #{$icon-back};
+    }
+
+    .btn[rel=close]:before {
+        mask-image: #{$icon-close};
+    //    width: 10px;
+    //    height: 10px;
+    }    
+}
+
+.modal-header +
+    .modal-body {
+        margin-top: calc(calc(var(--#{$prefix}modal-header-padding-y) + .5rem) * -1);
+}
+
+.modal-content {
+    --#{$prefix}modal-box-shadow: #{$modal-content-box-shadow-xs};
+    box-shadow: var(--modal-box-shadow);
+}
+
+.modal-footer {
+    --#{$prefix}modal-footer-padding-y: calc(var(--modal-header-padding-x) - calc(var(--#{$prefix}modal-footer-gap) / 2));
+    --#{$prefix}modal-footer-padding: 0 var(--#{$prefix}modal-footer-padding-y) var(--modal-header-padding-y) var(--#{$prefix}modal-footer-padding-y);
+    margin-top: -.5rem;
+    padding: var(--#{$prefix}modal-footer-padding) !important;
+    justify-content: center !important;
+
+    & > * {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+.modal-header, .modal-footer {
+    position: relative;
+    z-index: 1;
+}
+
+/**
+ *  Buttons
+ */
+.btn {
+    &:focus:not(:focus-visible), &:focus-visible {
+        outline-offset: 0 !important;
+        outline-width: 0 !important;
+    }
+
+    &:active {
+        transform: scale(.95);
+    }
+}
+
+/**
+ *  Dark theme adjustments
+ */
+@include color-mode(dark) {
+    .modal {
+        --#{$prefix}modal-border-width: 1px;
+    }
+
+    .modal-content {
+        --#{$prefix}modal-box-shadow: none;
+    }
+}
+
+/**
+ *  Responsive rules
+ *  - breakpoint-sm
+ */
+@include media-breakpoint-down(sm) {
+    .modal {
+        --modal-padding: 1rem !important;
+    }
+}
