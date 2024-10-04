@@ -1,0 +1,33 @@
+$icon-size-base: 16px; 
+$icon-size-sm: 12px;
+$icon-size-md: 20px;
+$icon-size-lg: 24px;
+
+.icon {
+    --icon-size: #{$icon-size-base};
+    --icon-size-sm: #{$icon-size-sm};
+    --icon-size-md: #{$icon-size-md};
+    --icon-size-lg: #{$icon-size-lg};
+
+	display: inline-block;
+	width: var(--icon-size);
+	height: var(--icon-size);
+    background-color: currentColor;
+	mask-repeat: no-repeat;
+    mask-size: cover;
+	mask: var(--icon);
+    margin: 0;
+    padding: 0;
+}
+
+.icon-sm {
+    --icon-size: var(--icon-size-sm);
+}
+
+.icon-md {
+    --icon-size: var(--icon-size-md);
+}
+
+.icon-lg {
+    --icon-size: var(--icon-size-lg);
+}

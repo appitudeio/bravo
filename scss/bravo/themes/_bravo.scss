@@ -18,11 +18,40 @@ $modal-fade-transform: translate(0, 25px) !default;
 $btn-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, transform .15s ease-in-out !default;
 
 /**
+ *  Icons overrides
+ *  - https://www.streamlinehq.com/icons/core-solid
+ */
+$icon-back: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 14 14'><path fill='currentColor' fill-rule='evenodd' d='M5.207 4.207a1 1 0 0 0-1.414-1.414l-3.5 3.5a1 1 0 0 0 0 1.414l3.5 3.5a1 1 0 0 0 1.414-1.414L3.414 8H13a1 1 0 1 0 0-2H3.414l1.793-1.793z' clip-rule='evenodd'/></svg>") !default;
+$icon-close: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 14 14'><path fill='currentColor' fill-rule='evenodd' d='M12.708 2.706a1 1 0 0 0-1.414-1.414L7 5.586 2.706 1.292a1 1 0 0 0-1.414 1.414L5.586 7l-4.294 4.294a1 1 0 1 0 1.414 1.414L7 8.414l4.294 4.294a1 1 0 0 0 1.414-1.414L8.414 7l4.294-4.294z' clip-rule='evenodd'/></svg>") !default;
+
+/**
  *  Modals
  */
 .modal {
-    //--#{$prefix}modal-footer-gap: 0 #{$modal-footer-margin-between};
+    .btn[rel=back], .btn[rel=close] {
+        font-size: 0;
+
+        &:before {
+            content: "";
+            mask-repeat: no-repeat;
+            mask-size: cover;
+            background-color: currentColor;
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    .btn[rel=back]:before {
+        mask-image: #{$icon-back};
+    }
+
+    .btn[rel=close]:before {
+        mask-image: #{$icon-close};
+    //    width: 10px;
+    //    height: 10px;
+    }    
 }
+
 .modal-header +
     .modal-body {
         margin-top: calc(calc(var(--#{$prefix}modal-header-padding-y) + .5rem) * -1);
