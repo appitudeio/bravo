@@ -292,13 +292,13 @@ class Navigation {
         const shouldHaveCloseButton = (this.options.closeButton.disabled == undefined || this.options.closeButton.disabled === false) ? true : false;
 
         let header = this.Modal._element.querySelector(".modal-header"); // If current header
-        let h5;
+        let title;
         let backButton;
         let closeButton;
 
         // Use existing Header
         if(header) {
-            h5 = header.querySelector("h5");
+            title = header.querySelector(".modal-title");
             backButton = header.querySelector("button[rel=back]");
             closeButton = header.querySelector("button[rel=close]");
 
@@ -309,25 +309,25 @@ class Navigation {
         else {
             // Create new header
             header = document.createElement("div");
-            h5 = document.createElement("h5");
+            title = document.createElement("h4");
             backButton = this.Template.backButton(() => this.pop());
             closeButton = this.Template.closeButton();
     
             header.classList.add("modal-header");
-            h5.classList.add("modal-title");    
+            title.classList.add("modal-title");    
         
             if(shouldHaveBackButton) {
                 header.append(backButton);
             }
 
-            header.append(h5);
+            header.append(title);
 
             if(shouldHaveCloseButton) {
                 header.append(closeButton);
             }       
         }
 
-        h5.innerHTML = newHeader.querySelector("h5").innerHTML ?? "";
+        title.innerHTML = newHeader.querySelector(".modal-title").innerHTML ?? "";
 
         return header;
     }
@@ -396,7 +396,7 @@ class ModalTemplate {
 
         return title ? `
             <div class="modal-header">
-                <h5 class="modal-title">${title}</h5>
+                <h4 class="modal-title">${title}</h4>
 
                 <div class="modal-header-buttons">
                     ${buttonElements}
@@ -436,7 +436,8 @@ class ModalTemplate {
         let closeBtn = document.createElement("button");
         closeBtn.innerHTML = this.options.closeButton.text;
         closeBtn.setAttribute("rel", "close");
-        closeBtn.classList.add("btn", "btn-secondary", "btn-icon", "btn-rounded");
+        closeBtn.setAttribute("type", "button");
+        closeBtn.classList.add("btn", "btn-sm", "btn-light", "btn-icon", "btn-rounded");
         closeBtn.dataset.bsDismiss = "modal";
 
         return closeBtn;
@@ -446,7 +447,8 @@ class ModalTemplate {
         let backButton = document.createElement("button");
         backButton.innerHTML = this.options.backButton.text;
         backButton.setAttribute("rel", "back");
-        backButton.classList.add("btn", "btn-icon", "btn-rounded");
+        backButton.setAttribute("type", "button");
+        backButton.classList.add("btn", "btn-sm", "btn-light", "btn-icon", "btn-rounded");
         backButton.addEventListener("click", e => {
             e.preventDefault();
             backButton.blur();

@@ -11,6 +11,22 @@
     --modal-stack-animation-morph-scale: .95;
 }
 
+.modal-navigation {
+    .modal-header {
+        & > * {
+            z-index: 1;
+        }
+
+        .modal-title {
+            position: absolute;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 0;
+        }
+    }
+}
+
 .modal {
     .btn[rel=back] {
         @extend .modal-header-back-btn_default;
@@ -70,7 +86,7 @@
 .modal-navigation-transition_slide-out {
     --modal-stack-travel: var(--modal-stack-animation-slide-out);
 
-    .modal-body, .modal-header h5 {
+    .modal-body, .modal-title {
         transition: height var(--modal-stack-animation-duration) ease, opacity var(--modal-stack-animation-duration) ease;
         animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-out) ease forwards;
     }
@@ -79,7 +95,7 @@
 .modal-navigation-transition_slide-in {
     --modal-stack-travel: var(--modal-stack-animation-slide-in);
 
-    .modal-body, .modal-header h5 {
+    .modal-body, .modal-title {
         animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-in) ease forwards;
     }
 }
@@ -104,7 +120,7 @@
         animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-out) ease forwards;
     }
 
-    .modal-header h5 {
+    .modal-title {
         transition: opacity var(--modal-stack-animation-duration) ease;
         opacity: 0;
     }
@@ -115,7 +131,7 @@
         animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-in) ease forwards;
     }
 
-    .modal-header h5 {
+    .modal-title {
         opacity: 1;
     }
 }

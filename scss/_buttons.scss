@@ -35,4 +35,30 @@
 
 .btn-block {
   width: 100%;
+  
+  & + .btn-block {
+    margin-bottom: 1rem;
+  }
+}
+
+.btn-transparent {
+  @extend .btn-light;
+  background-color: transparent;
+}
+
+/**
+ *  In darkmode- we switch light with dark
+ */
+%btn-light_copy {
+  @extend .btn-light;
+}
+
+@include color-mode(dark) {
+  .btn-light {
+    @extend .btn-dark;
+  }
+
+  .btn-dark {
+    @extend %btn-light_copy;
+  }
 }

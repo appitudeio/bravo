@@ -2,3 +2,74 @@
  *  Default styling for Bravo's design system and feeling
  */
 $border-radius: 1rem !default;
+$btn-border-radius: 10rem; // "circle"
+$btn-padding-x: 1.5rem;
+$modal-content-border-radius: $border-radius * 1.5 !default;
+$modal-header-border-width: 0 !default;
+$modal-inner-padding: 2rem !default;
+$modal-header-padding-x: 2rem !default;
+$modal-header-padding-y: 1.5rem !default;
+$modal-header-padding: 1.5rem 2rem !default;
+$modal-content-border-width: 0 !default;
+$modal-content-box-shadow-xs: 0 5px 25px rgba(0, 0, 0, .15) !default;
+$modal-backdrop-bg: var(--#{$prefix}body-bg) !default;
+$modal-backdrop-opacity: .75 !default;
+$modal-fade-transform: translate(0, 25px) !default;
+//$secondary: #f0f0eb;
+
+/**
+ *  Modals
+ */
+.modal {
+    //--#{$prefix}modal-footer-gap: 0 #{$modal-footer-margin-between};
+}
+.modal-header +
+    .modal-body {
+        margin-top: calc(calc(var(--#{$prefix}modal-header-padding-y) + .5rem) * -1);
+}
+
+.modal-content {
+    --#{$prefix}modal-box-shadow: #{$modal-content-box-shadow-xs};
+    box-shadow: var(--modal-box-shadow);
+}
+
+.modal-footer {
+    --#{$prefix}modal-footer-padding-y: calc(var(--modal-header-padding-x) - calc(var(--#{$prefix}modal-footer-gap) / 2));
+    --#{$prefix}modal-footer-padding: 0 var(--#{$prefix}modal-footer-padding-y) var(--modal-header-padding-y) var(--#{$prefix}modal-footer-padding-y);
+    margin-top: -.5rem;
+    padding: var(--#{$prefix}modal-footer-padding) !important;
+    justify-content: center !important;
+
+    & > * {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+.modal-header, .modal-footer {
+    position: relative;
+    z-index: 1;
+}
+
+[data-bs-theme=dark] {
+    .modal {
+        --#{$prefix}modal-border-width: 1px;
+    }
+
+    .modal-content {
+        --#{$prefix}modal-box-shadow: none;
+    }
+}
+
+/**
+ *  Buttons
+ */
+.btn {
+    transition-property: box-shadow, transform, opacity, background-color, color;
+    transition-duration: 150ms;
+    transition-timing-function: ease;
+
+    &:active {
+        transform: scale(.95);
+    }
+}
