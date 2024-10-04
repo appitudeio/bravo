@@ -14,7 +14,7 @@ $grid-gap: map-get($spacers, 4) !default; // 1.5rem, 24px
         // Use media-breakpoint-down to apply styles below the breakpoint
         @include media-breakpoint-down($breakpoint, $breakpoints) {
             @for $i from 1 through $columns {
-                .column-#{$i}#{$infix} {
+                .column#{$infix}-#{$i} {
                     grid-column: auto / span $i;
                 }
             }
@@ -22,7 +22,7 @@ $grid-gap: map-get($spacers, 4) !default; // 1.5rem, 24px
             // Start with `1` because `0` is an invalid value.
             // Ends with `$columns - 1` because offsetting by the width of an entire row isn't possible.
             @for $i from 1 through ($columns - 1) {
-                .column-offset-#{$i}#{$infix} {
+                .column-offset#{$infix}-#{$i} {
                     grid-column-start: ($i + 1);
                 }
             }

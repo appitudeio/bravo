@@ -37,7 +37,7 @@ $enable-deprecation-messages: false !default;
  *  Output all colors as css-variables
  */
 @import "bootstrap/scss/root";
-//@import "bootstrap/scss/utilities/api";
+@import "bootstrap/scss/utilities/api";
 
 /**
  *  Map bootstrap scss-variables into css-variables for even more flexibility
