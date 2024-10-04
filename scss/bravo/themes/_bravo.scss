@@ -80,16 +80,6 @@ $icon-close: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fil
     z-index: 1;
 }
 
-[data-bs-theme=dark] {
-    .modal {
-        --#{$prefix}modal-border-width: 1px;
-    }
-
-    .modal-content {
-        --#{$prefix}modal-box-shadow: none;
-    }
-}
-
 /**
  *  Buttons
  */
@@ -101,5 +91,28 @@ $icon-close: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fil
 
     &:active {
         transform: scale(.95);
+    }
+}
+
+/**
+ *  Dark theme adjustments
+ */
+[data-bs-theme=dark] {
+    .modal {
+        --#{$prefix}modal-border-width: 1px;
+    }
+
+    .modal-content {
+        --#{$prefix}modal-box-shadow: none;
+    }
+}
+
+/**
+ *  Responsive rules
+ *  - breakpoint-sm
+ */
+@media (max-width: 576px) {
+    .modal {
+        --modal-padding: 1rem !important;
     }
 }

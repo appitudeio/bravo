@@ -49,7 +49,6 @@ class Modal extends BootstrapModal {
     registerEventListeners() {
         // On closing this generatedModal - remove it
         EventHandler.on(this._element, 'hidden.bs.modal', () => {
-            console.log("HIDe");
             this._element.remove();
         });
 
@@ -355,6 +354,8 @@ class ModalTemplate {
 
     constructor(options) {
         this.options = merge(this.options, options);
+
+        console.log("opt", this.options);
     }
 
     generate = (id, title, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation) => {
@@ -398,13 +399,18 @@ class ModalTemplate {
             <div class="modal-header">
                 <h4 class="modal-title">${title}</h4>
 
-                <div class="modal-header-buttons">
+                ${buttonElements}
+
+                ${!this.options.closeButton.disabled ? this.closeButton().outerHTML.toString() : ""}
+            </div>
+        ` : "";
+
+        /*
+                        <div class="modal-header-buttons">
                     ${buttonElements}
 
                     ${!this.options.closeButton.disabled ? this.closeButton().outerHTML.toString() : ""}
-                </div>
-            </div>
-        ` : "";
+                </div>*/
     }
 
     footer = (buttons = []) => {

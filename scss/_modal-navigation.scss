@@ -12,24 +12,38 @@
 }
 
 .modal-navigation {
-    .modal-header {
-        & > * {
-            z-index: 1;
-        }
+    .modal-header > * {
+        z-index: 1;
+    }
 
-        .modal-title {
-            position: absolute;
-            left: 0;
-            right: 0;
-            text-align: center;
-            z-index: 0;
-        }
+    .modal-title {
+   /*     position: absolute;
+        left: 0;
+        right: 0;*/
+        width: 100%;
+        text-align: center;
+        z-index: 0;
     }
 }
 
 .modal {
     .btn[rel=back] {
         @extend %modal-header-back-btn_default;
+    }
+}
+
+.modal-header {
+    .btn {
+        position: absolute;
+        //top: var(--modal-header-padding-y);
+
+        &:first-child:not(:only-child) {
+            left: var(--modal-header-padding-x);
+        }
+
+        &:last-child {
+            right: var(--modal-header-padding-x);
+        }
     }
 }
 
