@@ -2,7 +2,7 @@ import { Modal, ModalNavigation } from "bravo";
 
 const testModal = new Modal({
     title: "Hallå!",
-    content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
+    content: "Hejsan ? Hejsan här är jag från ett child med lite mer <button rel='child' class='btn btn-warning'>Rel child</button> innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
     footerButtons: [
         { text: "Stäng", class: "btn-light" }
     ],
@@ -12,6 +12,7 @@ const testModal = new Modal({
     }*/
 });
 const childModal = new Modal({
+    id: "child",
     title: "CHILD!",
     content: "NNNNed är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram o?",
     footerButtons: [
@@ -24,15 +25,21 @@ const grandchildModal = new Modal({
 });
 
 const Nav = new ModalNavigation({
-   // animation: "morph"
+   animation: "morph",
    closeButton: {
     disabled: true
-   }
+   },
+   /*backButton: {
+    disabled: true
+   }*/
 });
 Nav.push(testModal);
+Nav.addEventListener("close.bs.nav", e => {
+    e.stack.forEach(modal => modal.remove());
+});
 Nav.show();
 
-setTimeout(() => Nav.push(childModal), 1000);
+//setTimeout(() => Nav.push(childModal), 1000);
 
 /*setTimeout(() => Nav.push(grandchildModal), 3000);
 
