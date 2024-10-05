@@ -1,5 +1,7 @@
 /**
  *  Bootstrap's buttons are great, but we want to default a focus ring to them
+ *  + .btn-default which is a dynamic button which changes color based on the theme
+ *  + in dark mode, switch hover/active state logic to become lighter instead of darker
  */
 @import "bootstrap/scss/buttons";
 @import "bootstrap/scss/button-group";
@@ -19,6 +21,19 @@
   &:focus-visible {
     box-shadow: none;
   }
+}
+
+.btn-default {
+  @include button-variant(
+      #f6f8fa, //$gray-100,
+      #d0d7de, //$gray-400,
+      #24292f, //$gray-800,
+      #eef1f4, //$hover-background: $gray-200,
+      #d0d7de, //$hover-border: $gray-400,
+      #24292f, //$gray-800,
+      #e7ebef, //$active-background: $gray-300,
+      #d0d7de //$active-border: $gray-400
+  );    
 }
 
 .btn-rounded {
@@ -41,10 +56,10 @@
   }
 }
 
-.btn-transparent {
+/*.btn-transparent {
   @extend .btn-light;
   background-color: transparent;
-}
+}*/
 
 /**
  *  In darkmode- we switch light with dark
@@ -65,5 +80,38 @@
 
   .btn-dark {
     @extend %btn-light_copy;
+  }
+
+  .btn-default {
+      /*@include button-variant(
+          #21262d, //$gray-800,
+          #30363d, //$gray-600,
+          #c9d1d9,
+          #292e36, //$hover-background: $gray-700,
+          #30363d, //$hover-border: $gray-600,
+          #c9d1d9,
+          #31363e, //$active-background: $gray-600,
+          #30363d //$active-border: $gray-600
+      );*/
+
+      @include button-variant(
+        tint-color($body-bg-dark, 10%),
+        tint-color($body-bg-dark, 20%),
+        $gray-300,
+        tint-color($body-bg-dark, 13%), //$btn-hover-bg-tint-amount),
+        tint-color($body-bg-dark, 20%),
+        $gray-300,
+        tint-color($body-bg-dark, 15%), //$btn-active-bg-tint-amount),
+        tint-color($body-bg-dark, 20%) //$btn-active-border-tint-amount)
+      );
+  }
+
+  @each $color, $value in $theme-colors {
+    .btn-#{$color} {
+      --#{$prefix}btn-hover-bg: #{tint-color($value, $btn-hover-bg-tint-amount)};
+      --#{$prefix}btn-hover-border-color: #{tint-color($value, $btn-hover-border-tint-amount)};
+      --#{$prefix}btn-active-bg: #{tint-color($value, $btn-active-bg-tint-amount)};
+      --#{$prefix}btn-active-border-color: #{tint-color($value, $btn-active-border-tint-amount)};
+    }
   }
 }

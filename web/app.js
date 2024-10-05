@@ -37,7 +37,7 @@ Nav.push(testModal);
 Nav.addEventListener("close.bs.nav", e => {
     e.stack.forEach(modal => modal.remove());
 });
-Nav.show();
+//Nav.show();
 
 //setTimeout(() => Nav.push(childModal), 1000);
 

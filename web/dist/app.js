@@ -1826,6 +1826,8 @@ __webpack_require__.r(__webpack_exports__);
 
 const EVENT_KEY = `.bs.modal`;
 const EVENT_SUBMIT = `submit${EVENT_KEY}`;
+const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
+const EVENT_NAV_CLOSE = "close.bs.nav";
 const CLASS_NAVIGATION = "modal-navigation";
 const CLASS_NAVIGATION_HAS_STACK = "modal-navigation-stacked";
 const CLASS_NAVIGATION_TRANSITION = "modal-animation-transition";
@@ -1856,11 +1858,6 @@ class Modal extends (bootstrap_js_dist_modal__WEBPACK_IMPORTED_MODULE_0___defaul
     this._element.addEventListener(...props);
   }
   registerEventListeners() {
-    // On closing this generatedModal - remove it
-    bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(this._element, 'hidden.bs.modal', () => {
-      this._element.remove();
-    });
-
     // If a form is included
     this._element.querySelectorAll('form').forEach(_form => _form.addEventListener('submit', e => {
       // Trigger submit-event
@@ -1874,9 +1871,13 @@ class Modal extends (bootstrap_js_dist_modal__WEBPACK_IMPORTED_MODULE_0___defaul
       }
     }));
   }
+  remove() {
+    this._element.remove();
+  }
   static generate(options = {}) {
     var _options$class;
     const {
+      id = `modal-${Math.random().toString(36).slice(2, 9)}`,
       title = '',
       content = '',
       footerButtons = [],
@@ -1894,11 +1895,10 @@ class Modal extends (bootstrap_js_dist_modal__WEBPACK_IMPORTED_MODULE_0___defaul
     } = options;
     let className = (_options$class = options['class']) !== null && _options$class !== void 0 ? _options$class : "";
     const Template = new ModalTemplate(options);
-    const randomId = `modal-${Math.random().toString(36).slice(2, 9)}`;
-    const modalHTML = Template.generate(randomId, title, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation);
+    const modalHTML = Template.generate(id, title, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation);
     const modalFragment = document.createRange().createContextualFragment(modalHTML);
     document.body.append(modalFragment);
-    let modalElement = document.querySelector(`#${randomId}`);
+    let modalElement = document.querySelector(`#${id}`);
     return modalElement;
   }
 }
@@ -1921,6 +1921,7 @@ class Navigation {
     }
   };
   stack = [];
+  refs = {};
   constructor(options = {}) {
     this.options = (0,_functions__WEBPACK_IMPORTED_MODULE_2__.merge)(this.options, options);
     this.Template = new ModalTemplate(this.options);
@@ -1928,9 +1929,28 @@ class Navigation {
   setBaseModal(modal) {
     this.Modal = modal;
     this.Modal._element.classList.add(CLASS_NAVIGATION);
-    bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(this.Modal._element, 'hidden.bs.modal', () => {
-      this.closeNavigation();
+    bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(this.Modal._element, EVENT_HIDDEN, () => this.closeNavigation());
+    bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(this.Modal._element, "click", "[rel]", e => {
+      e.preventDefault();
+      const rel = e.target.getAttribute("rel");
+      if (rel == "back") {
+        this.pop();
+      } else {
+        this.findAndOPushModal(rel);
+      }
     });
+  }
+  findAndOPushModal(reference) {
+    // Check if reference starts with . or #
+    if (!reference.startsWith('.') && !reference.startsWith('#')) {
+      reference = `#${reference}`;
+    }
+    const modalElement = document.querySelector(reference);
+    if (!modalElement) {
+      throw new Error(`Invalid modal rel, ${reference} doesnt exist.`);
+    }
+    const modal = Modal.getInstance(modalElement);
+    this.push(modal);
   }
 
   /**
@@ -1943,6 +1963,17 @@ class Navigation {
       this.setBaseModal(childModal);
     }
     this.stack.push([childModal._element.querySelector(".modal-header").cloneNode(true), childModal._element.querySelector(".modal-body").cloneNode(true), (_childModal$_element$ = childModal._element.querySelector(".modal-footer")) === null || _childModal$_element$ === void 0 ? void 0 : _childModal$_element$.cloneNode(true), childModal]);
+
+    // So we can close it when the Navigation closes
+    if (this.refs[childModal._element.id] == undefined) {
+      this.refs[childModal._element.id] = childModal;
+    }
+
+    // If closeButton is disabled via the Nav, remove it from the Modal
+    if (this.options.closeButton.disabled) {
+      var _childModal$_element$2;
+      (_childModal$_element$2 = childModal._element.querySelector("button[rel=close]")) === null || _childModal$_element$2 === void 0 || _childModal$_element$2.remove();
+    }
     if (this.stack.length > 1) {
       return new Promise(resolve => {
         this.replace(this.stack[this.stack.length - 1]).then(resolve);
@@ -1959,24 +1990,21 @@ class Navigation {
     const prevStack = this.stack[this.stack.length - 1]; // Revert back to the prevous stack
 
     this.replace(prevStack, true).then(() => {
-      currentStack[3]._element.remove();
       currentStack = null;
     });
   }
+  addEventListener(...props) {
+    this.Modal._element.addEventListener(...props);
+  }
   closeNavigation() {
-    this.stack.forEach(stack => {
-      stack[3]._element.remove();
+    bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().trigger(this.Modal._element, EVENT_NAV_CLOSE, {
+      stack: Object.values(this.refs)
     });
     this.stack = [];
-    this.Modal._element.remove();
     this.Modal = null;
   }
   show() {
     this.Modal.show();
-  }
-  close() {
-    this.Modal.hide();
-    this.closeNavigation();
   }
 
   /**
@@ -2042,7 +2070,7 @@ class Navigation {
       this.Modal._element.classList.remove(CLASS_NAVIGATION_HAS_STACK);
     } else {
       if (modalHeader && !backButton && shouldHaveBackButton) {
-        modalHeader.prepend(this.Template.backButton(() => this.pop()));
+        modalHeader.prepend(this.Template.backButton());
       }
       setTimeout(() => this.Modal._element.classList.add(CLASS_NAVIGATION_HAS_STACK), 1);
     }
@@ -2072,13 +2100,13 @@ class Navigation {
       backButton = header.querySelector("button[rel=back]");
       closeButton = header.querySelector("button[rel=close]");
       if (!backButton && shouldHaveBackButton) {
-        header.prepend(this.Template.backButton(() => this.pop()));
+        header.prepend(this.Template.backButton());
       }
     } else {
       // Create new header
       header = document.createElement("div");
       title = document.createElement("h4");
-      backButton = this.Template.backButton(() => this.pop());
+      backButton = this.Template.backButton();
       closeButton = this.Template.closeButton();
       header.classList.add("modal-header");
       title.classList.add("modal-title");
@@ -2113,7 +2141,6 @@ class ModalTemplate {
   };
   constructor(options) {
     this.options = (0,_functions__WEBPACK_IMPORTED_MODULE_2__.merge)(this.options, options);
-    console.log("opt", this.options);
   }
   generate = (id, title, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation) => {
     const sizeClass = size === 'sm' ? 'modal-sm' : size === 'lg' ? 'modal-lg' : 'modal-md'; // Default to medium
@@ -2422,7 +2449,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const testModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   title: "Hallå!",
-  content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
+  content: "Hejsan ? Hejsan här är jag från ett child med lite mer <button rel='child' class='btn btn-warning'>Rel child</button> innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
   footerButtons: [{
     text: "Stäng",
     class: "btn-light"
@@ -2433,6 +2460,7 @@ const testModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
    }*/
 });
 const childModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
+  id: "child",
   title: "CHILD!",
   content: "NNNNed är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram o?",
   footerButtons: [{
@@ -2444,14 +2472,21 @@ const grandchildModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??"
 });
 const Nav = new bravo__WEBPACK_IMPORTED_MODULE_0__.ModalNavigation({
-  // animation: "morph"
+  animation: "morph",
   closeButton: {
     disabled: true
   }
+  /*backButton: {
+   disabled: true
+  }*/
 });
 Nav.push(testModal);
-Nav.show();
-setTimeout(() => Nav.push(childModal), 1000);
+Nav.addEventListener("close.bs.nav", e => {
+  e.stack.forEach(modal => modal.remove());
+});
+//Nav.show();
+
+//setTimeout(() => Nav.push(childModal), 1000);
 
 /*setTimeout(() => Nav.push(grandchildModal), 3000);
 
