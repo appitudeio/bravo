@@ -35,14 +35,13 @@
 .modal-header {
     .btn {
         position: absolute;
-        //top: var(--modal-header-padding-y);
 
         &:first-child:not(:only-child) {
-            left: var(--modal-header-padding-x);
+            left: var(--modal-padding);
         }
 
         &:last-child {
-            right: var(--modal-header-padding-x);
+            right: var(--modal-padding);
         }
     }
 }

@@ -4,8 +4,9 @@
 @import "bootstrap/scss/modal";
 @import "modal-navigation";
 
-.modal {
-   
+:root {
+    // Put these outside so they can become modified "before"
+    --#{$prefix}modal-padding: #{$modal-inner-padding};  
 }
 
 .modal-header-buttons {

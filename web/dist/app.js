@@ -1886,7 +1886,7 @@ class Modal extends (bootstrap_js_dist_modal__WEBPACK_IMPORTED_MODULE_0___defaul
       // Array of header button configurations
       isForm = false,
       isStatic = false,
-      size = 'md',
+      size = 'lg',
       animation = 'fade',
       closeButton = {
         text: "&times",
@@ -1970,7 +1970,7 @@ class Navigation {
     }
 
     // If closeButton is disabled via the Nav, remove it from the Modal
-    if (this.options.closeButton.disabled) {
+    if (this.options.closeButton.disabled === true) {
       var _childModal$_element$2;
       (_childModal$_element$2 = childModal._element.querySelector("button[rel=close]")) === null || _childModal$_element$2 === void 0 || _childModal$_element$2.remove();
     }
@@ -2194,7 +2194,7 @@ class ModalTemplate {
       // Generate attributes string excluding the "text" property
       button.type = (_button$type = button.type) !== null && _button$type !== void 0 ? _button$type : "button";
       const buttonAttributes = Object.keys(button).filter(key => key !== 'text' && key !== 'class').map(key => `${key}="${button[key]}"`);
-      const buttonClass = button.class || (button.type === "submit" ? "btn-primary" : "btn-secondary");
+      const buttonClass = button.class || (button.type === "submit" ? "btn-primary" : "btn-default");
 
       // If the button does not have a name, set up to dismiss the modal
       if (!button.name) {
@@ -2213,7 +2213,7 @@ class ModalTemplate {
     closeBtn.innerHTML = this.options.closeButton.text;
     closeBtn.setAttribute("rel", "close");
     closeBtn.setAttribute("type", "button");
-    closeBtn.classList.add("btn", "btn-sm", "btn-light", "btn-icon", "btn-rounded");
+    closeBtn.classList.add("btn", "btn-sm", "btn-default", "btn-icon", "btn-rounded");
     closeBtn.dataset.bsDismiss = "modal";
     return closeBtn;
   };
@@ -2222,7 +2222,7 @@ class ModalTemplate {
     backButton.innerHTML = this.options.backButton.text;
     backButton.setAttribute("rel", "back");
     backButton.setAttribute("type", "button");
-    backButton.classList.add("btn", "btn-sm", "btn-light", "btn-icon", "btn-rounded");
+    backButton.classList.add("btn", "btn-sm", "btn-default", "btn-icon", "btn-rounded");
     backButton.addEventListener("click", e => {
       e.preventDefault();
       backButton.blur();
@@ -2451,8 +2451,7 @@ const testModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   title: "Hallå!",
   content: "Hejsan ? Hejsan här är jag från ett child med lite mer <button rel='child' class='btn btn-warning'>Rel child</button> innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
   footerButtons: [{
-    text: "Stäng",
-    class: "btn-light"
+    text: "Stäng"
   }],
   isForm: true
   /* closeButton: {
@@ -2472,19 +2471,19 @@ const grandchildModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??"
 });
 const Nav = new bravo__WEBPACK_IMPORTED_MODULE_0__.ModalNavigation({
-  animation: "morph",
-  closeButton: {
+  animation: "morph"
+  /* closeButton: {
     disabled: true
-  }
-  /*backButton: {
-   disabled: true
-  }*/
+   },
+   /*backButton: {
+    disabled: true
+   }*/
 });
 Nav.push(testModal);
 Nav.addEventListener("close.bs.nav", e => {
   e.stack.forEach(modal => modal.remove());
 });
-//Nav.show();
+Nav.show();
 
 //setTimeout(() => Nav.push(childModal), 1000);
 
