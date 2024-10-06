@@ -81,3 +81,13 @@ $color-tints: (
 
     @return $colors;
 }
+
+@function generate-key-variable-map($colors) {
+    $variables: ();
+
+    @each $color-name, $color-value in $colors {
+        $variables: map-merge($variables, ("#{$color-name}": var(--#{$prefix}#{$color-name})));
+    }
+
+    @return $variables;
+}

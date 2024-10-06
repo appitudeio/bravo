@@ -28,7 +28,8 @@ $colors: map-merge-multiple($theme-custom-colors, $blues, $indigos, $purples, $p
  */
 @if variable-exists(custom-colors) {
     $custom-bravo-colors: generate-custom-colors($custom-colors);
-    $colors: map-merge($colors, $custom-colors);
+    $custom-bravo-colors-variables-map: generate-key-variable-map($custom-bravo-colors);
+    $colors: map-merge($colors, $custom-bravo-colors);
 
     // Pair the new colors with utilities
     @each $util in ("color", "background-color", "border-color") {
@@ -41,7 +42,7 @@ $colors: map-merge-multiple($theme-custom-colors, $blues, $indigos, $purples, $p
                         values: map-merge(
                             map-get(map-get($utilities, $util), "values"),
                             (
-                                $custom-bravo-colors
+                                $custom-bravo-colors-variables-map
                             )
                         )
                     )
