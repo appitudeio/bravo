@@ -1,11 +1,12 @@
 $prefix: "";
 
-$bravo-colors: (
+$custom-colors: (
     "brown": #964B00,
     "beige": #CDC5B8,
 );
 
-$bravo-base-font-size: 1.125rem;
+$base-font-size: 1.125rem;
+$btn-border-width: 0px !default;
 
 @import "bravo/scss/bravo";
 @import "bravo/scss/bravo-grid";

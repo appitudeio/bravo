@@ -2,17 +2,21 @@
  *  Default styling for Bravo's design system and feeling
  */
 $border-radius: 1rem !default;
-$btn-border-radius: 10rem; // "circle"
-$btn-border-radius-sm: $btn-border-radius;
-$btn-border-radius-lg: $btn-border-radius;
+$btn-border-radius: .375rem !default;
+$btn-border-radius-sm: $btn-border-radius * (2 / 3) !default; // Example: .25rem
+$btn-border-radius-lg: $btn-border-radius * (4 / 3) !default; // Example: .5rem
 $btn-padding-x: 1rem; //1.5rem;
 $btn-padding-x-sm: 0.75rem;
 $btn-padding-x-lg: 1.5rem;
 $btn-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, transform .15s ease-in-out !default;
 $btn-font-weight: 500 !default; // "medium"
+$modal-md: 800px; // Default width
 $modal-content-border-radius: $border-radius * 1.5 !default;
 $modal-header-border-width: 0 !default;
-$modal-inner-padding: 2rem !default;
+$modal-inner-padding: 3.5rem !default;
+$modal-inner-padding-sm: 1rem !default;
+$modal-inner-padding-md: 2rem;
+$modal-inner-padding-lg: 3rem;
 $modal-header-padding-x: 2rem !default;
 $modal-header-padding-y: 1.5rem !default;
 $modal-header-padding: 1.5rem 2rem !default;

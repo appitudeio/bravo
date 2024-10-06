@@ -9,6 +9,18 @@ $enable-deprecation-messages: false !default;
 //$color-mode-type: "media-query" !default;
 
 /**
+ *  Custom Bravo's configuration
+ */
+$container-gutters: (
+    xxl: 5rem,
+    xl: 4rem,
+    lg: 3rem,
+    md: 2rem,
+    sm: 1.5rem,
+    xs: 1rem
+) !default;
+
+/**
  *  Import Bravo's custom color scheme
  */
 @import "bravo/functions";

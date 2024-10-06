@@ -24,9 +24,22 @@
     }    
 }
 
-.modal-header +
-    .modal-body {
-        margin-top: calc(calc(var(--#{$prefix}modal-header-padding-y) + .5rem) * -1);
+// Fix Modal spacings
+.modal {
+    --modal-layouts-spacing-compensation-inner: .5;
+    --modal-layouts-spacing-compensation-outer: .75; 
+    --modal-layout-space-compensation-inner-y: calc(var(--#{$prefix}modal-padding) * calc(var(--modal-layouts-spacing-compensation-inner) * -1));
+    --modal-layout-space-compensation-outer-y: calc(var(--#{$prefix}modal-padding) * var(--modal-layouts-spacing-compensation-outer));
+    
+    .modal-header {
+        padding: var(--modal-layout-space-compensation-outer-y) var(--#{$prefix}modal-padding) 0 var(--#{$prefix}modal-padding);
+        margin-bottom: var(--modal-layout-space-compensation-inner-y);
+    }
+
+    .modal-footer {
+        padding: 0 var(--#{$prefix}modal-padding) var(--modal-layout-space-compensation-outer-y) var(--#{$prefix}modal-padding);
+        margin-top: var(--modal-layout-space-compensation-inner-y);
+    }
 }
 
 .modal-content {
@@ -35,10 +48,6 @@
 }
 
 .modal-footer {
-    --#{$prefix}modal-footer-padding-y: calc(var(--modal-header-padding-x) - calc(var(--#{$prefix}modal-footer-gap) / 2));
-    --#{$prefix}modal-footer-padding: 0 var(--#{$prefix}modal-footer-padding-y) var(--modal-header-padding-y) var(--#{$prefix}modal-footer-padding-y);
-    margin-top: -.5rem;
-    padding: var(--#{$prefix}modal-footer-padding) !important;
     justify-content: center !important;
 
     & > * {
@@ -67,6 +76,47 @@
 }
 
 /**
+ *  Responsive rules
+ */
+@each $breakpoint, $size in $grid-breakpoints {
+    @include media-breakpoint-up($breakpoint) {
+        .modal {
+            padding-left: #{map-get($container-gutters, $breakpoint)};
+            padding-right: #{map-get($container-gutters, $breakpoint)};
+        }
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .modal {
+        --modal-layouts-spacing-compensation-inner: .2;
+        --modal-layouts-spacing-compensation-outer: .5;
+
+        .modal-dialog {
+            --#{$prefix}modal-padding: #{$modal-inner-padding-md} !important;
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
+    .modal-lg {
+        --modal-width: 100% !important;
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .modal {
+        --modal-layouts-spacing-compensation-inner: 0;
+        --modal-layouts-spacing-compensation-outer: .4;
+        padding: 0;
+
+        .modal-dialog {
+            --#{$prefix}modal-padding: #{map-get($container-gutters, sm)} !important; //#{$modal-inner-padding-sm} !important;
+        }
+    }
+}
+
+/**
  *  Dark theme adjustments
  */
 @include color-mode(dark) {
@@ -76,15 +126,5 @@
 
     .modal-content {
         --#{$prefix}modal-box-shadow: none;
-    }
-}
-
-/**
- *  Responsive rules
- *  - breakpoint-sm
- */
-@include media-breakpoint-down(sm) {
-    .modal {
-        --modal-padding: 1rem !important;
     }
 }

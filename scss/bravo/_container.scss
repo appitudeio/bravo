@@ -2,15 +2,6 @@
  *  Bootstrap doesnt take the --sar + --sal in consideration (horizontal mobile)
  *  (SafeAreaRight+Left)
  */
-$container-gutters: (
-    xxl: 5rem,
-    xl: 4rem,
-    lg: 3rem,
-    md: 2rem,
-    sm: 1.5rem,
-    xs: 1rem
-);
-
 @mixin make-container() {
     --#{$prefix}gutter-x: 0;
     --#{$prefix}gutter-y: 0;

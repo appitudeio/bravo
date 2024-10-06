@@ -74,7 +74,7 @@ class Modal extends BootstrapModal {
           headerButtons = [], // Array of header button configurations
           isForm = false,
           isStatic = false,
-          size = 'md',
+          size = 'lg',
           animation = 'fade',
           closeButton = {
               text: "&times",
@@ -182,7 +182,7 @@ class Navigation {
         }
 
         // If closeButton is disabled via the Nav, remove it from the Modal
-        if(this.options.closeButton.disabled) {
+        if(this.options.closeButton.disabled === true) {
             childModal._element.querySelector("button[rel=close]")?.remove();
         }
 
@@ -455,7 +455,7 @@ class ModalTemplate {
                 .filter(key => key !== 'text' && key !== 'class')
                 .map(key => `${key}="${button[key]}"`);
 
-            const buttonClass = button.class || (button.type === "submit" ? "btn-primary" : "btn-secondary");
+            const buttonClass = button.class || (button.type === "submit" ? "btn-primary" : "btn-default");
 
             // If the button does not have a name, set up to dismiss the modal
             if(!button.name) {
@@ -477,7 +477,7 @@ class ModalTemplate {
         closeBtn.innerHTML = this.options.closeButton.text;
         closeBtn.setAttribute("rel", "close");
         closeBtn.setAttribute("type", "button");
-        closeBtn.classList.add("btn", "btn-sm", "btn-light", "btn-icon", "btn-rounded");
+        closeBtn.classList.add("btn", "btn-sm", "btn-default", "btn-icon", "btn-rounded");
         closeBtn.dataset.bsDismiss = "modal";
 
         return closeBtn;
@@ -488,7 +488,7 @@ class ModalTemplate {
         backButton.innerHTML = this.options.backButton.text;
         backButton.setAttribute("rel", "back");
         backButton.setAttribute("type", "button");
-        backButton.classList.add("btn", "btn-sm", "btn-light", "btn-icon", "btn-rounded");
+        backButton.classList.add("btn", "btn-sm", "btn-default", "btn-icon", "btn-rounded");
         backButton.addEventListener("click", e => {
             e.preventDefault();
             backButton.blur();

@@ -4,7 +4,7 @@ const testModal = new Modal({
     title: "Hallå!",
     content: "Hejsan ? Hejsan här är jag från ett child med lite mer <button rel='child' class='btn btn-warning'>Rel child</button> innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
     footerButtons: [
-        { text: "Stäng", class: "btn-light" }
+        { text: "Stäng" }
     ],
     isForm: true,
    /* closeButton: {
@@ -26,7 +26,7 @@ const grandchildModal = new Modal({
 
 const Nav = new ModalNavigation({
    animation: "morph",
-   closeButton: {
+  /* closeButton: {
     disabled: true
    },
    /*backButton: {
@@ -37,7 +37,7 @@ Nav.push(testModal);
 Nav.addEventListener("close.bs.nav", e => {
     e.stack.forEach(modal => modal.remove());
 });
-//Nav.show();
+Nav.show();
 
 //setTimeout(() => Nav.push(childModal), 1000);
 
