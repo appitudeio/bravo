@@ -26,9 +26,9 @@ $colors: map-merge-multiple($theme-custom-colors, $blues, $indigos, $purples, $p
 /**
  *  If any incoming colors, merge them into the general map of colors and finally put them into utilities
  */
-@if variable-exists(bravo-colors) {
-    $custom-bravo-colors: generate-custom-colors($bravo-colors);
-    $colors: map-merge($colors, $bravo-colors);
+@if variable-exists(custom-colors) {
+    $custom-bravo-colors: generate-custom-colors($custom-colors);
+    $colors: map-merge($colors, $custom-colors);
 
     // Pair the new colors with utilities
     @each $util in ("color", "background-color", "border-color") {

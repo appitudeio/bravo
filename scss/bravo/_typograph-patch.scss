@@ -36,7 +36,7 @@ p {
 
 // Adjust sizes responsivly with help of RFS
 :root {
-    font-size: #{$bravo-base-font-size};
+    font-size: #{$base-font-size};
 }
 
 @include media-breakpoint-down(sm) {
@@ -48,9 +48,5 @@ p {
         p + .fs-#{$element} {
             @include rfs(2rem, margin-top) // Add space between paragraphs and headers
         }
-    }
-
-    :root {
-       //font-size: #{$bravo-base-font-size-sm};
     }
 }

@@ -2,9 +2,9 @@
  *  Default styling for Bravo's design system and feeling
  */
 $border-radius: 1rem !default;
-$btn-border-radius: 10rem; // "circle"
-$btn-border-radius-sm: $btn-border-radius;
-$btn-border-radius-lg: $btn-border-radius;
+$btn-border-radius: .375rem !default;
+$btn-border-radius-sm: $btn-border-radius * (2 / 3) !default; // Example: .25rem
+$btn-border-radius-lg: $btn-border-radius * (4 / 3) !default; // Example: .5rem
 $btn-padding-x: 1rem; //1.5rem;
 $btn-padding-x-sm: 0.75rem;
 $btn-padding-x-lg: 1.5rem;
