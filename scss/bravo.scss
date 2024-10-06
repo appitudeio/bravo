@@ -72,3 +72,22 @@ $container-gutters: (
     --sab: max(3px, env(safe-area-inset-bottom));
     --sal: env(safe-area-inset-left);    
 }
+
+html {
+	height: -webkit-fill-available;
+}
+
+body {
+	min-height: 100vh;
+	min-height: -webkit-fill-available;    
+}
+
+/**
+ * iOS: Make horizontal stretch below safe areas
+ */
+@supports(padding:max(0px)) {
+    body {
+        padding-left: min(0vmin, env(safe-area-inset-left));
+        padding-right: min(0vmin, env(safe-area-inset-right));
+    }
+}
