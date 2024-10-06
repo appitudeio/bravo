@@ -8,6 +8,9 @@
 @import "bootstrap/scss/forms/input-group";
 @import "bootstrap/scss/forms/validation";
 
-/*.form-control {
-    border-radius: var(--#{$prefix}btn-border-radius);
-}*/
+.form-control {
+    &:focus {
+        position: relative;
+        z-index: 1;
+    }
+}
