@@ -19,9 +19,15 @@ $utilities: map-remove($utilities,
 
 /**
  *  Grab potantially incoming colors and merge them into Bootstrap's "core"
+ *  + generate missing colors (25-50 + 950-975)
  */
 $theme-custom-colors: generate-custom-colors($theme-colors);
-$colors: map-merge-multiple($theme-custom-colors, $blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
+$colors: $theme-custom-colors;
+$bs-color-maps: ($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
+
+@each $bs-color-map in $bs-color-maps {
+    $colors: map-merge($colors, bs-to-bravo-colors($bs-color-map));
+}
 
 /**
  *  If any incoming colors, merge them into the general map of colors and finally put them into utilities
