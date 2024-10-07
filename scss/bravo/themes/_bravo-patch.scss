@@ -130,6 +130,10 @@
 
     .form-control, .form-select{
         background-color: var(--#{$prefix}tertiary-bg);
-        border-color: var(--border-color-translucent);
+        border-color: var(--#{$prefix}border-color-translucent);
+    }
+
+    .form-select:hover {
+        cursor: pointer;
     }
 }
