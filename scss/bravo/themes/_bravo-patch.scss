@@ -120,6 +120,12 @@
     }
 }
 
+@include media-breakpoint-up(sm) {
+    .dropdown[data-bs-trigger="hover"] .dropdown-menu, .dropdown-toggle[data-bs-trigger="hover"] ~ .dropdown-menu {
+        animation: 300ms dropdownFadeIn;
+    }
+}
+
 /**
  *  Dark theme adjustments
  */
@@ -139,5 +145,18 @@
 
     .form-select:hover {
         cursor: pointer;
+    }
+}
+
+/**
+ *  Keyframes
+ */
+@keyframes dropdownFadeIn {
+    0% {
+        opacity: 0;
+        margin-top: -5px;
+    }
+    100% {
+        opacity: 1;
     }
 }
