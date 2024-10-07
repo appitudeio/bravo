@@ -30,6 +30,7 @@
     --modal-layouts-spacing-compensation-outer: .75; 
     --modal-layout-space-compensation-inner-y: calc(var(--#{$prefix}modal-padding) * calc(var(--modal-layouts-spacing-compensation-inner) * -1));
     --modal-layout-space-compensation-outer-y: calc(var(--#{$prefix}modal-padding) * var(--modal-layouts-spacing-compensation-outer));
+    backdrop-filter: blur(#{$modal-backdrop-blur});
     
     .modal-header {
         padding: var(--modal-layout-space-compensation-outer-y) var(--#{$prefix}modal-padding) 0 var(--#{$prefix}modal-padding);

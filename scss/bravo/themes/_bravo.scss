@@ -32,7 +32,8 @@ $modal-content-border-width: 0 !default;
 $modal-content-box-shadow-xs: 0 5px 25px rgba(0, 0, 0, .15) !default;
 $modal-backdrop-bg: var(--#{$prefix}body-bg) !default;
 $modal-backdrop-opacity: .75 !default;
-$modal-fade-transform: translate(0, 25px) scale(.97) !default;
+$modal-fade-transform: translate(0, 25px) scale(.96) !default;
+$modal-backdrop-blur: 3px !default;
 
 /**
  *  Icons overrides
