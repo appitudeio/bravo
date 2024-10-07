@@ -2,9 +2,10 @@ import { Modal, ModalNavigation } from "bravo";
 
 const testModal = new Modal({
     title: "Hallå!",
-    content: "Hejsan ? Hejsan här är jag från ett child med lite mer <button rel='child' class='btn btn-warning'>Rel child</button> innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
+    content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
     footerButtons: [
-        { text: "Stäng" }
+        { text: "Stäng" },
+        { text: "Next", rel: "child", class: "btn-warning" }
     ],
     isForm: true,
    /* closeButton: {
@@ -35,7 +36,7 @@ const Nav = new ModalNavigation({
 });
 Nav.push(testModal);
 Nav.addEventListener("close.bs.nav", e => {
-    e.stack.forEach(modal => modal.remove());
+  //  e.stack.forEach(modal => modal.remove());
 });
 Nav.show();
 

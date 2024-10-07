@@ -458,7 +458,7 @@ class ModalTemplate {
             const buttonClass = button.class || (button.type === "submit" ? "btn-primary" : "btn-default");
 
             // If the button does not have a name, set up to dismiss the modal
-            if(!button.name) {
+            if(!button.name && !button.rel) {
                 buttonAttributes.push(`data-bs-dismiss="modal"`)
             }
 

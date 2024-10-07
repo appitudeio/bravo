@@ -94,7 +94,7 @@
         --modal-layouts-spacing-compensation-outer: .5;
 
         .modal-dialog {
-            --#{$prefix}modal-padding: #{$modal-inner-padding-md} !important;
+            --#{$prefix}modal-padding: #{$modal-inner-padding-md};
             margin-left: 0;
             margin-right: 0;
         }
@@ -107,12 +107,15 @@
 
 @include media-breakpoint-down(sm) {
     .modal {
-        --modal-layouts-spacing-compensation-inner: 0;
-        --modal-layouts-spacing-compensation-outer: .4;
+        --modal-layouts-spacing-compensation-inner: .1;
         padding: 0;
 
         .modal-dialog {
-            --#{$prefix}modal-padding: #{map-get($container-gutters, sm)} !important; //#{$modal-inner-padding-sm} !important;
+            --#{$prefix}modal-padding: #{$modal-inner-padding-sm};
+        }
+
+        .modal-footer {
+            padding-top: 5px;
         }
     }
 }

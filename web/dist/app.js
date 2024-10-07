@@ -2197,7 +2197,7 @@ class ModalTemplate {
       const buttonClass = button.class || (button.type === "submit" ? "btn-primary" : "btn-default");
 
       // If the button does not have a name, set up to dismiss the modal
-      if (!button.name) {
+      if (!button.name && !button.rel) {
         buttonAttributes.push(`data-bs-dismiss="modal"`);
       }
       return `
@@ -2449,9 +2449,13 @@ __webpack_require__.r(__webpack_exports__);
 
 const testModal = new bravo__WEBPACK_IMPORTED_MODULE_0__.Modal({
   title: "Hallå!",
-  content: "Hejsan ? Hejsan här är jag från ett child med lite mer <button rel='child' class='btn btn-warning'>Rel child</button> innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
+  content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
   footerButtons: [{
     text: "Stäng"
+  }, {
+    text: "Next",
+    rel: "child",
+    class: "btn-warning"
   }],
   isForm: true
   /* closeButton: {
@@ -2481,7 +2485,7 @@ const Nav = new bravo__WEBPACK_IMPORTED_MODULE_0__.ModalNavigation({
 });
 Nav.push(testModal);
 Nav.addEventListener("close.bs.nav", e => {
-  e.stack.forEach(modal => modal.remove());
+  //  e.stack.forEach(modal => modal.remove());
 });
 Nav.show();
 
