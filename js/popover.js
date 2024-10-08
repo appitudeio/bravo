@@ -1,1 +1,1 @@
-export { default } from 'bootstrap/js/popover';
+export { default } from 'bootstrap/js/dist/popover';

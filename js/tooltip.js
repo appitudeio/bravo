@@ -1,1 +1,1 @@
-export { default } from 'bootstrap/js/tooltip';
+export { default } from 'bootstrap/js/dist/tooltip';

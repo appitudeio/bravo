@@ -1,1 +1,1 @@
-export { default } from 'bootstrap/js/scrollspy';
+export { default } from 'bootstrap/js/dist/scrollspy';

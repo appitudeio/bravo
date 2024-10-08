@@ -1,1 +1,1 @@
-export { default } from 'bootstrap/js/toast';
+export { default } from 'bootstrap/js/dist/toast';
