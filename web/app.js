@@ -1,4 +1,4 @@
-import { Modal, ModalNavigation } from "bravo";
+import { Modal, ModalNavigation, Dropdown } from "bravo";
 
 const testModal = new Modal({
     title: "Hallå!",
@@ -38,7 +38,7 @@ Nav.push(testModal);
 Nav.addEventListener("close.bs.nav", e => {
   //  e.stack.forEach(modal => modal.remove());
 });
-Nav.show();
+//Nav.show();
 
 //setTimeout(() => Nav.push(childModal), 1000);
 
