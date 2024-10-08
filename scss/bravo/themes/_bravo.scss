@@ -2,7 +2,9 @@
  *  Default styling for Bravo's design system and feeling
  */
 $border-radius              : 1rem !default;
-$btn-border-radius          : .375rem !default;
+$border-radius-md           : $border-radius * 0.75 !default;
+$border-radius-sm           : $border-radius * 0.375;
+$btn-border-radius          : $border-radius-sm !default;
 $btn-border-radius-sm       : $btn-border-radius * (2 / 3) !default; // Example: .25rem
 $btn-border-radius-lg       : $btn-border-radius * (4 / 3) !default; // Example: .5rem
 $btn-padding-x              : 1rem;
@@ -11,7 +13,7 @@ $btn-padding-x-lg           : 1.5rem;
 $btn-transition             : color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, transform .15s ease-in-out !default;
 $btn-font-weight            : 500 !default; // "medium"
 
-$input-border-radius        : .375rem !default;
+$input-border-radius        : $border-radius-sm !default;
 $input-border-radius-sm     : $btn-border-radius * (2 / 3) !default; // Example: .25rem
 $input-border-radius-lg     : $btn-border-radius * (4 / 3) !default; // Example: .5rem
 $focus-ring-blur            : 0 !default;
@@ -34,6 +36,8 @@ $modal-backdrop-bg: var(--#{$prefix}body-bg) !default;
 $modal-backdrop-opacity: .75 !default;
 $modal-fade-transform: translate(0, 25px) scale(.96) !default;
 $modal-backdrop-blur: 3px !default;
+
+$dropdown-border-radius: $border-radius-md !default;
 
 /**
  *  Icons overrides
