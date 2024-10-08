@@ -1,1 +1,1 @@
-export { default } from 'bootstrap/js/button';
+export { default } from 'bootstrap/js/dist/button';

@@ -1,1 +1,1 @@
-export { default } from 'bootstrap/js/offcanvas';
+export { default } from 'bootstrap/js/dist/offcanvas';

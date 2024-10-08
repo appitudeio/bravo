@@ -1,1 +1,1 @@
-export { default } from 'bootstrap/js/tab';
+export { default } from 'bootstrap/js/dist/tab';

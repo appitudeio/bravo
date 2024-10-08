@@ -1,1 +1,1 @@
-export { default } from 'bootstrap/js/carousel';
+export { default } from 'bootstrap/js/dist/carousel';

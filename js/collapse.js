@@ -1,1 +1,1 @@
-export { default } from 'bootstrap/js/collapse';
+export { default } from 'bootstrap/js/dist/collapse';
