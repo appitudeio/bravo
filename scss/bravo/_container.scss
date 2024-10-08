@@ -6,6 +6,7 @@
     --#{$prefix}gutter-x: 0;
     --#{$prefix}gutter-y: 0;
 
+    width: 100%;
     max-width: #{map-get($grid-breakpoints, xxl)};
     padding-right: calc(var(--#{$prefix}gutter-x) + var(--sar));
     padding-left: calc(var(--#{$prefix}gutter-x) + var(--sal));
