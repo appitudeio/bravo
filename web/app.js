@@ -1,5 +1,6 @@
 import Modal, { ModalNavigation } from "bravo/js/modal";
 import Dropdown from "bravo/js/dropdown";
+import Button from "bravo/js/button";
 
 const testModal = new Modal({
     title: "Hallå!",
@@ -39,7 +40,7 @@ Nav.push(testModal);
 Nav.addEventListener("close.bs.nav", e => {
   //  e.stack.forEach(modal => modal.remove());
 });
-Nav.show();
+//Nav.show();
 
 //setTimeout(() => Nav.push(childModal), 1000);
 
@@ -52,3 +53,10 @@ testModal.addEventListener("submit.bs.modal", e => {
 
     alert("SUBMIT");
 });*/
+
+setTimeout(() => {
+
+    document.querySelectorAll("[data-bs-toggle='button']").forEach(btn => btn.showLoader());
+
+    setTimeout(() => document.querySelectorAll("[data-bs-toggle='button']").forEach(btn => btn.hideLoader()), 1500);
+}, 1500);

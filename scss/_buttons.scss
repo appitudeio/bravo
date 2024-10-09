@@ -21,6 +21,15 @@
   &:focus-visible {
     box-shadow: none;
   }
+
+  // Hides an empty character when the button is loading so it maintain it's original height
+  &.loading {
+    text-indent: -9999px;
+
+    & > * {
+      text-indent: 0;
+    }
+  }
 }
 
 .btn-default {
