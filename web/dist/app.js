@@ -3104,6 +3104,94 @@ function withinMaxClamp(min, value, max) {
 
 /***/ }),
 
+/***/ "./node_modules/bootstrap/js/dist/button.js":
+/*!**************************************************!*\
+  !*** ./node_modules/bootstrap/js/dist/button.js ***!
+  \**************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+/*!
+  * Bootstrap button.js v5.3.3 (https://getbootstrap.com/)
+  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+(function (global, factory) {
+   true ? module.exports = factory(__webpack_require__(/*! ./base-component.js */ "./node_modules/bootstrap/js/dist/base-component.js"), __webpack_require__(/*! ./dom/event-handler.js */ "./node_modules/bootstrap/js/dist/dom/event-handler.js"), __webpack_require__(/*! ./util/index.js */ "./node_modules/bootstrap/js/dist/util/index.js")) :
+  0;
+})(this, (function (BaseComponent, EventHandler, index_js) { 'use strict';
+
+  /**
+   * --------------------------------------------------------------------------
+   * Bootstrap button.js
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+   * --------------------------------------------------------------------------
+   */
+
+
+  /**
+   * Constants
+   */
+
+  const NAME = 'button';
+  const DATA_KEY = 'bs.button';
+  const EVENT_KEY = `.${DATA_KEY}`;
+  const DATA_API_KEY = '.data-api';
+  const CLASS_NAME_ACTIVE = 'active';
+  const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="button"]';
+  const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`;
+
+  /**
+   * Class definition
+   */
+
+  class Button extends BaseComponent {
+    // Getters
+    static get NAME() {
+      return NAME;
+    }
+
+    // Public
+    toggle() {
+      // Toggle class and sync the `aria-pressed` attribute with the return value of the `.toggle()` method
+      this._element.setAttribute('aria-pressed', this._element.classList.toggle(CLASS_NAME_ACTIVE));
+    }
+
+    // Static
+    static jQueryInterface(config) {
+      return this.each(function () {
+        const data = Button.getOrCreateInstance(this);
+        if (config === 'toggle') {
+          data[config]();
+        }
+      });
+    }
+  }
+
+  /**
+   * Data API implementation
+   */
+
+  EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, event => {
+    event.preventDefault();
+    const button = event.target.closest(SELECTOR_DATA_TOGGLE);
+    const data = Button.getOrCreateInstance(button);
+    data.toggle();
+  });
+
+  /**
+   * jQuery
+   */
+
+  index_js.defineJQueryPlugin(Button);
+
+  return Button;
+
+}));
+//# sourceMappingURL=button.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/bootstrap/js/dist/dom/data.js":
 /*!****************************************************!*\
   !*** ./node_modules/bootstrap/js/dist/dom/data.js ***!
@@ -5166,6 +5254,104 @@ function withinMaxClamp(min, value, max) {
 
 /***/ }),
 
+/***/ "../js/button.js":
+/*!***********************!*\
+  !*** ../js/button.js ***!
+  \***********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap/js/dist/button */ "./node_modules/bootstrap/js/dist/button.js");
+/* harmony import */ var bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap/js/dist/dom/selector-engine */ "./node_modules/bootstrap/js/dist/dom/selector-engine.js");
+/* harmony import */ var bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_1__);
+/**
+ *  Let's add a loader functionality to the Bootstrap's button component
+ */
+
+
+const CLASS_LOADING = "loading";
+class Button extends (bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0___default()) {
+  originalContent;
+  loadingText;
+  spinner;
+  constructor(element, config) {
+    super(element, config);
+    this._initializeLoader();
+
+    /** 
+     *  This makes it possible to select the button in the DOM and call these functions directly w/o getOrCreateInstance
+     */
+    this._element.showLoader = this.showLoader.bind(this);
+    this._element.hideLoader = this.hideLoader.bind(this);
+  }
+  _initializeLoader() {
+    this.originalContent = this._element.innerHTML;
+    this.loadingText = this._element.getAttribute('data-bs-loader-text') || "";
+  }
+  showLoader() {
+    if (!this.spinner) {
+      this.spinner = this.createSpinner();
+    }
+    this._element.innerHTML = "";
+    this._element.appendChild(this.spinner);
+
+    // Insert loading text if specified
+    let _loadingText = this.loadingText.trim() !== "" ? this.loadingText : "Loading...";
+    const loadingTextNode = this.createLoaderText(_loadingText);
+    if (this.loadingText.trim() === "") {
+      loadingTextNode.classList.add("visually-hidden");
+    }
+    this._element.appendChild(loadingTextNode);
+    this._element.appendChild(document.createTextNode("\u00A0")); // Inject an empty character so the btn holds it's height
+    this._element.setAttribute('aria-label', _loadingText);
+
+    // Optionally, add a class to indicate loading state for additional styling
+    this._element.classList.add(CLASS_LOADING);
+    this._element.setAttribute('aria-busy', 'true'); // Update ARIA attributes for accessibility
+
+    // Disable the button to prevent multiple clicks
+    this._element.disabled = true;
+  }
+  hideLoader() {
+    if (!this._element.classList.contains(CLASS_LOADING)) {
+      return;
+    }
+    this.spinner.remove();
+    this.spinner = null;
+
+    // Restore to original content
+    this._element.innerHTML = this.originalContent;
+    this._element.classList.remove(CLASS_LOADING);
+    this._element.disabled = false;
+
+    // Remove ARIA attributes
+    this._element.removeAttribute('aria-busy');
+    this._element.removeAttribute('aria-label');
+  }
+  createSpinner() {
+    const spinner = document.createElement('span');
+    spinner.classList.add('spinner-border', 'spinner-border-sm');
+    spinner.setAttribute('aria-hidden', 'true');
+    return spinner;
+  }
+  createLoaderText(text) {
+    const loaderText = document.createElement('span');
+    loaderText.setAttribute('role', 'status');
+    loaderText.classList.add('ms-2'); // margin-start
+    loaderText.textContent = text;
+    return loaderText;
+  }
+}
+
+// Automatically initialize dropdowns with data attributes on page load
+bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_1___default().find('[data-bs-toggle="button"]').forEach(buttonElement => {
+  Button.getOrCreateInstance(buttonElement);
+});
+
+/***/ }),
+
 /***/ "../js/dropdown.js":
 /*!*************************!*\
   !*** ../js/dropdown.js ***!
@@ -5916,6 +6102,8 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bravo_js_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bravo/js/modal */ "../js/modal.js");
 /* harmony import */ var bravo_js_dropdown__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bravo/js/dropdown */ "../js/dropdown.js");
+/* harmony import */ var bravo_js_button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bravo/js/button */ "../js/button.js");
+
 
 
 const testModal = new bravo_js_modal__WEBPACK_IMPORTED_MODULE_0__["default"]({
@@ -5958,7 +6146,7 @@ Nav.push(testModal);
 Nav.addEventListener("close.bs.nav", e => {
   //  e.stack.forEach(modal => modal.remove());
 });
-Nav.show();
+//Nav.show();
 
 //setTimeout(() => Nav.push(childModal), 1000);
 
@@ -5971,6 +6159,11 @@ testModal.addEventListener("submit.bs.modal", e => {
 
     alert("SUBMIT");
 });*/
+
+setTimeout(() => {
+  document.querySelectorAll("[data-bs-toggle='button']").forEach(btn => btn.showLoader());
+  setTimeout(() => document.querySelectorAll("[data-bs-toggle='button']").forEach(btn => btn.hideLoader()), 1500);
+}, 1500);
 })();
 
 /******/ })()
