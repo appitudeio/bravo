@@ -56,7 +56,7 @@ testModal.addEventListener("submit.bs.modal", e => {
 
 setTimeout(() => {
 
-    document.querySelectorAll("[data-bs-toggle='button']").forEach(btn => btn.showLoader());
+    document.querySelectorAll("[data-bs-loader]").forEach(btn => btn.showLoader());
 
-    setTimeout(() => document.querySelectorAll("[data-bs-toggle='button']").forEach(btn => btn.hideLoader()), 1500);
+    setTimeout(() => document.querySelectorAll("[data-bs-loader]").forEach(btn => btn.hideLoader()), 1500);
 }, 1500);
