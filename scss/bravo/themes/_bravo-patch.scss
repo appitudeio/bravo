@@ -76,6 +76,10 @@
     }
 }
 
+.nav-link:focus-visible {
+    box-shadow: none;
+}
+
 /**
  *  Dropdown
  */

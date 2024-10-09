@@ -4,6 +4,7 @@
 $border-radius              : 1rem !default;
 $border-radius-md           : $border-radius * 0.75 !default;
 $border-radius-sm           : $border-radius * 0.375;
+
 $btn-border-radius          : $border-radius-sm !default;
 $btn-border-radius-sm       : $btn-border-radius * (2 / 3) !default; // Example: .25rem
 $btn-border-radius-lg       : $btn-border-radius * (4 / 3) !default; // Example: .5rem
@@ -16,6 +17,7 @@ $btn-font-weight            : 500 !default; // "medium"
 $input-border-radius        : $border-radius-sm !default;
 $input-border-radius-sm     : $btn-border-radius * (2 / 3) !default; // Example: .25rem
 $input-border-radius-lg     : $btn-border-radius * (4 / 3) !default; // Example: .5rem
+
 $focus-ring-blur            : 0 !default;
 $focus-ring-width           : 1px !default;
 $focus-ring-color           : var(--primary) !default;
