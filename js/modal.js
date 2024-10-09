@@ -137,6 +137,9 @@ class Navigation {
             if(rel == "back") {
                 this.pop();
             }
+            else if (rel == "close") {
+                this.Modal.hide();
+            }
             else {
               this.findAndOPushModal(rel);
             }
