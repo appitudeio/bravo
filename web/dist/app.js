@@ -6126,7 +6126,7 @@ class Button extends (bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0___defa
   }
   _initializeLoader() {
     this.originalContent = this._element.innerHTML;
-    this.loadingText = this._element.getAttribute('data-bs-loader-text') || "";
+    this.loadingText = this._element.getAttribute('data-bs-loader').trim().toLowerCase() != "true" ? this._element.getAttribute('data-bs-loader') : "";
   }
   showLoader() {
     if (!this.spinner) {
@@ -6136,9 +6136,9 @@ class Button extends (bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0___defa
     this._element.appendChild(this.spinner);
 
     // Insert loading text if specified
-    let _loadingText = this.loadingText.trim() !== "" ? this.loadingText : "Loading...";
+    let _loadingText = this.loadingText !== "" ? this.loadingText : "Loading...";
     const loadingTextNode = this.createLoaderText(_loadingText);
-    if (this.loadingText.trim() === "") {
+    if (this.loadingText === "") {
       loadingTextNode.classList.add("visually-hidden");
     }
     this._element.appendChild(loadingTextNode);
@@ -6184,7 +6184,7 @@ class Button extends (bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0___defa
 }
 
 // Automatically initialize dropdowns with data attributes on page load
-bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_1___default().find('[data-bs-toggle="button"]').forEach(buttonElement => {
+bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_1___default().find('[data-bs-loader]').forEach(buttonElement => {
   Button.getOrCreateInstance(buttonElement);
 });
 
@@ -7061,8 +7061,8 @@ testModal.addEventListener("submit.bs.modal", e => {
 });*/
 
 setTimeout(() => {
-  document.querySelectorAll("[data-bs-toggle='button']").forEach(btn => btn.showLoader());
-  setTimeout(() => document.querySelectorAll("[data-bs-toggle='button']").forEach(btn => btn.hideLoader()), 1500);
+  document.querySelectorAll("[data-bs-loader]").forEach(btn => btn.showLoader());
+  setTimeout(() => document.querySelectorAll("[data-bs-loader]").forEach(btn => btn.hideLoader()), 1500);
 }, 1500);
 })();
 
