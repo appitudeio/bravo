@@ -1,6 +1,7 @@
 import Modal, { ModalNavigation } from "bravo/js/modal";
 import Dropdown from "bravo/js/dropdown";
 import Button from "bravo/js/button";
+import Tooltip from "bravo/js/tooltip";
 
 const testModal = new Modal({
     title: "Hallå!",
@@ -11,7 +12,7 @@ const testModal = new Modal({
     ],
     isForm: true,
    /* closeButton: {
-        disabled: true
+        disabled: true 
     }*/
 });
 const childModal = new Modal({

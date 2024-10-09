@@ -93,6 +93,59 @@
 }
 
 /**
+ *  Tooltip
+ */
+.tooltip-container {
+    @extend %tooltip-container_default;
+}
+
+.tooltip.show .tooltip-container {
+    @extend %tooltip-container_show;
+}
+
+// Close after hover
+.tooltip-interactive:after{
+    content: "";
+    top: 100%;
+    height: 28px;
+    width: 100%;
+    position: absolute;
+    background: transparent;
+}
+
+.bs-tooltip-auto {
+  &[data-popper-placement^="top"] .tooltip-container { @extend %tooltip-container_top; }
+  &[data-popper-placement^="right"] .tooltip-container { @extend %tooltip-container_end; }
+  &[data-popper-placement^="bottom"] .tooltip-container { @extend %tooltip-container_bottom; }
+  &[data-popper-placement^="left"] .tooltip-container { @extend %tooltip-container_start; }
+}
+
+%tooltip-container_top {
+    transform-origin: bottom center;
+}
+
+%tooltip-container_end {
+    transform-origin: right center;
+}
+
+%tooltip-container_bottom {
+    transform-origin: top center;
+}
+
+%tooltip-container_start {
+    transform-origin: left center;
+}
+
+%tooltip-container_default {
+    transition: transform 0.3s ease;
+    transform: translateY(5px) scale(.98);
+}
+
+%tooltip-container_show {
+    transform: translateY(0) scale(1);
+}
+
+/**
  *  Responsive rules
  */
 @each $breakpoint, $size in $grid-breakpoints {
@@ -179,5 +232,25 @@
     }
     100% {
         opacity: 1;
+    }
+}
+
+@keyframes tooltipSlideIn {
+    from {
+        opacity: 0;
+        margin-top: -50px;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes tooltipSlideOut {
+    from {
+        opacity: 1;
+        margin-top: 5px;
+    }
+    to {
+        opacity: 0;
     }
 }

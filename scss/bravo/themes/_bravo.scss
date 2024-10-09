@@ -22,6 +22,8 @@ $focus-ring-blur            : 0 !default;
 $focus-ring-width           : 1px !default;
 $focus-ring-color           : var(--primary) !default;
 
+$tooltip-border-radius     : $border-radius-sm !default;
+
 $modal-md: 800px; // Default width
 $modal-content-border-radius: $border-radius * 1.5 !default;
 $modal-header-border-width: 0 !default;
