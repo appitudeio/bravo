@@ -24,7 +24,7 @@ class Button extends BootstrapButton {
 
     _initializeLoader() {
         this.originalContent = this._element.innerHTML;
-        this.loadingText = this._element.getAttribute('data-bs-loader-text') || "";
+        this.loadingText = (this._element.getAttribute('data-bs-loader').trim().toLowerCase() != "true") ? this._element.getAttribute('data-bs-loader') : "";
     }
 
     showLoader() {
@@ -36,10 +36,10 @@ class Button extends BootstrapButton {
         this._element.appendChild(this.spinner);
 
         // Insert loading text if specified
-        let _loadingText = (this.loadingText.trim() !== "") ? this.loadingText : "Loading...";
+        let _loadingText = (this.loadingText !== "") ? this.loadingText : "Loading...";
         const loadingTextNode = this.createLoaderText(_loadingText);
 
-        if (this.loadingText.trim() === "") {
+        if (this.loadingText === "") {
             loadingTextNode.classList.add("visually-hidden");
         }
 
@@ -92,6 +92,6 @@ class Button extends BootstrapButton {
 }
 
 // Automatically initialize dropdowns with data attributes on page load
-SelectorEngine.find('[data-bs-toggle="button"]').forEach((buttonElement) => {
+SelectorEngine.find('[data-bs-loader]').forEach((buttonElement) => {
     Button.getOrCreateInstance(buttonElement);
 });
