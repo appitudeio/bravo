@@ -97,7 +97,7 @@
  *  - We use an inner container in order to create the animation effect
  */
 .tooltip {
-    --scale: .98;
+    --scale: .95;
     --transform-distance: 5px;
 
     &[data-popper-placement^="top"] .tooltip-container { @extend %tooltip-container_top-reset; }
@@ -220,7 +220,7 @@
 @keyframes dropdownFadeIn {
     0% {
         opacity: 0;
-        margin-top: -5px;
+        margin-top: -7px;
     }
     100% {
         opacity: 1;

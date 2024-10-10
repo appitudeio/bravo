@@ -6113,7 +6113,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const CLASS_LOADING = "loading";
 class Button extends (bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0___default()) {
-  static selector = "[data-bs-loader]";
+  static selector = '[data-bs-loader]';
   originalContent;
   loadingText;
   spinner;
@@ -6202,18 +6202,18 @@ class Button extends (bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0___defa
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ Dropdown)
 /* harmony export */ });
 /* harmony import */ var bootstrap_js_dist_dropdown__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap/js/dist/dropdown */ "./node_modules/bootstrap/js/dist/dropdown.js");
 /* harmony import */ var bootstrap_js_dist_dropdown__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_dropdown__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap/js/dist/dom/event-handler */ "./node_modules/bootstrap/js/dist/dom/event-handler.js");
 /* harmony import */ var bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap/js/dist/dom/selector-engine */ "./node_modules/bootstrap/js/dist/dom/selector-engine.js");
-/* harmony import */ var bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _dynamicobserver__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dynamicobserver */ "../js/dynamicobserver.js");
 
 
 
 class Dropdown extends (bootstrap_js_dist_dropdown__WEBPACK_IMPORTED_MODULE_0___default()) {
+  static selector = '[data-bs-toggle="dropdown"]';
   constructor(element, config) {
     super(element, config);
     if (this._element.getAttribute('data-bs-trigger') === 'hover') {
@@ -6246,13 +6246,12 @@ class Dropdown extends (bootstrap_js_dist_dropdown__WEBPACK_IMPORTED_MODULE_0___
       }
     }, 50);
   }
-}
 
-// Automatically initialize dropdowns with data attributes on page load
-bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_2___default().find('[data-bs-toggle="dropdown"]').forEach(dropdownElement => {
-  Dropdown.getOrCreateInstance(dropdownElement);
-});
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Dropdown);
+  // Automatically register the component upon class definition
+  static {
+    _dynamicobserver__WEBPACK_IMPORTED_MODULE_2__["default"].add(this);
+  }
+}
 
 /***/ }),
 
@@ -7093,9 +7092,8 @@ __webpack_require__.r(__webpack_exports__);
 const CLASS_TOOLTIP_CONTAINER = "tooltip-container";
 const CLASS_TOOLTIP_INTERACTIVE = "tooltip-interactive";
 const EVENT_INSERTED = "inserted";
-const isInteractive = element => element.getAttribute('data-bs-interactive') !== null;
 class Tooltip extends (bootstrap_js_dist_tooltip__WEBPACK_IMPORTED_MODULE_0___default()) {
-  static selector = "[data-bs-toggle='tooltip']";
+  static selector = '[data-bs-toggle="tooltip"]';
 
   // Used for interactive tooltips
   _isTriggerHovered = false;
@@ -7103,7 +7101,7 @@ class Tooltip extends (bootstrap_js_dist_tooltip__WEBPACK_IMPORTED_MODULE_0___de
   _hideTimeout = null;
   constructor(element, config = {}) {
     var _config$template;
-    if (isInteractive(element)) {
+    if (Tooltip._isInteractive(element)) {
       config = {
         ...config,
         ...{
@@ -7115,7 +7113,7 @@ class Tooltip extends (bootstrap_js_dist_tooltip__WEBPACK_IMPORTED_MODULE_0___de
     }
     config.template = (_config$template = config.template) !== null && _config$template !== void 0 ? _config$template : `<div class="tooltip" role="tooltip"><div class="${CLASS_TOOLTIP_CONTAINER}"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div></div>`;
     super(element, config);
-    if (isInteractive(element)) {
+    if (Tooltip._isInteractive(element)) {
       this._enableInteractivity();
     }
   }
@@ -7170,6 +7168,7 @@ class Tooltip extends (bootstrap_js_dist_tooltip__WEBPACK_IMPORTED_MODULE_0___de
       this._hideTimeout = null;
     }
   }
+  static _isInteractive = element => element.getAttribute('data-bs-interactive') !== null;
 
   // Automatically register the component upon class definition
   static {

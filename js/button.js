@@ -1,13 +1,13 @@
 /**
  *  Let's add a loader functionality to the Bootstrap's button component
  */
-import BootstrapButton from "bootstrap/js/dist/button";
+import BootstrapButton from 'bootstrap/js/dist/button';
 import DynamicObserver from './dynamicobserver';
 
 const CLASS_LOADING = "loading";
 
 export default class Button extends BootstrapButton {
-    static selector = "[data-bs-loader]";
+    static selector = '[data-bs-loader]';
     originalContent;
     loadingText;
     spinner;

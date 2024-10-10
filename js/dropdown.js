@@ -1,8 +1,10 @@
 import BootstrapDropdown from 'bootstrap/js/dist/dropdown';
 import EventHandler from 'bootstrap/js/dist/dom/event-handler';
-import SelectorEngine from 'bootstrap/js/dist/dom/selector-engine';
+import DynamicObserver from "./dynamicobserver";
 
-class Dropdown extends BootstrapDropdown {
+export default class Dropdown extends BootstrapDropdown {
+    static selector = '[data-bs-toggle="dropdown"]';
+
     constructor(element, config) {
         super(element, config);
 
@@ -38,11 +40,9 @@ class Dropdown extends BootstrapDropdown {
             }
         }, 50);
     }
+
+    // Automatically register the component upon class definition
+    static {
+        DynamicObserver.add(this);
+    }
 }
-
-// Automatically initialize dropdowns with data attributes on page load
-SelectorEngine.find('[data-bs-toggle="dropdown"]').forEach((dropdownElement) => {
-    Dropdown.getOrCreateInstance(dropdownElement);
-});
-
-export default Dropdown;

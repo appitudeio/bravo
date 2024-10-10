@@ -11,10 +11,8 @@ const CLASS_TOOLTIP_CONTAINER = "tooltip-container";
 const CLASS_TOOLTIP_INTERACTIVE = "tooltip-interactive";
 const EVENT_INSERTED = "inserted";
 
-const isInteractive = (element) => element.getAttribute('data-bs-interactive') !== null;
-
 export default class Tooltip extends BootstrapTooltip {
-    static selector = "[data-bs-toggle='tooltip']";
+    static selector = '[data-bs-toggle="tooltip"]';
 
     // Used for interactive tooltips
     _isTriggerHovered = false;
@@ -22,7 +20,7 @@ export default class Tooltip extends BootstrapTooltip {
     _hideTimeout = null;
 
     constructor(element, config = {}) {
-        if (isInteractive(element)) {
+        if (Tooltip._isInteractive(element)) {
             config = { ...config, ...{
                 trigger: "manual",
                 customClass: CLASS_TOOLTIP_INTERACTIVE,
@@ -34,7 +32,7 @@ export default class Tooltip extends BootstrapTooltip {
 
         super(element, config);
 
-        if(isInteractive(element)) {
+        if(Tooltip._isInteractive(element)) {
             this._enableInteractivity();
         }
     }
@@ -76,7 +74,6 @@ export default class Tooltip extends BootstrapTooltip {
         });
     }
 
-
     _scheduleHide() {
         if (this._hideTimeout) {
             this._clearHideTimeout();
@@ -96,6 +93,8 @@ export default class Tooltip extends BootstrapTooltip {
             this._hideTimeout = null;
         }
     }
+
+    static _isInteractive = (element) => element.getAttribute('data-bs-interactive') !== null;
 
     // Automatically register the component upon class definition
     static {
