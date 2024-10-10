@@ -3,15 +3,24 @@
  *  - Let's extend this with a smooth scale animation, but to do so we need to alter the template so it has a container that can be animated.
  *  + Add functionality to have an interactive content (Content that can be "touched")
  */
-import BootstrapTooltip from 'bootstrap/js/dist/tooltip';
-import EventHandler from 'bootstrap/js/dist/dom/event-handler';
-import SelectorEngine from 'bootstrap/js/dist/dom/selector-engine';
+import BootstrapTooltip from "bootstrap/js/dist/tooltip";
+import EventHandler from "bootstrap/js/dist/dom/event-handler";
+import DynamicObserver from "./dynamicobserver";
 
 const CLASS_TOOLTIP_CONTAINER = "tooltip-container";
 const CLASS_TOOLTIP_INTERACTIVE = "tooltip-interactive";
 const EVENT_INSERTED = "inserted";
 
-class Tooltip extends BootstrapTooltip {
+const isInteractive = (element) => element.getAttribute('data-bs-interactive') !== null;
+
+export default class Tooltip extends BootstrapTooltip {
+    static selector = "[data-bs-toggle='tooltip']";
+
+    // Used for interactive tooltips
+    _isTriggerHovered = false;
+    _isTooltipHovered = false;
+    _hideTimeout = null;
+
     constructor(element, config = {}) {
         if (isInteractive(element)) {
             config = { ...config, ...{
@@ -21,6 +30,8 @@ class Tooltip extends BootstrapTooltip {
             }};
         }
 
+        config.template = config.template ?? `<div class="tooltip" role="tooltip"><div class="${CLASS_TOOLTIP_CONTAINER}"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div></div>`;
+
         super(element, config);
 
         if(isInteractive(element)) {
@@ -29,19 +40,65 @@ class Tooltip extends BootstrapTooltip {
     }
 
     _enableInteractivity() {
-        EventHandler.on(this._element, 'mouseover', () => this.show());
+       // Show tooltip on mouseenter over the trigger
+        EventHandler.on(this._element, 'mouseenter', () => {
+            this._isTriggerHovered = true;
+            this._clearHideTimeout();
 
+            if(this._isShown()) {
+                return;
+            }
+
+            this.show();
+        });
+
+        // Start hide timeout on mouseleave from the trigger
+        EventHandler.on(this._element, 'mouseleave', () => {
+            this._isTriggerHovered = false;
+            this._scheduleHide();
+        });
+
+        // Listen for when the tooltip is shown to attach listeners to it
         EventHandler.on(this._element, this.constructor.eventName(EVENT_INSERTED), () => {
-            EventHandler.on(this._getTipElement(), 'mouseleave', () => this.hide());
+            const tipElement = this._getTipElement();
+
+            // Handle mouseenter on tooltip
+            EventHandler.on(tipElement, 'mouseenter', () => {
+                this._isTooltipHovered = true;
+                this._clearHideTimeout();
+            });
+
+            // Handle mouseleave on tooltip
+            EventHandler.on(tipElement, 'mouseleave', () => {
+                this._isTooltipHovered = false;
+                this._scheduleHide();
+            });
         });
     }
+
+
+    _scheduleHide() {
+        if (this._hideTimeout) {
+            this._clearHideTimeout();
+        }
+
+        this._hideTimeout = setTimeout(() => {
+            if (!this._isTriggerHovered && !this._isTooltipHovered) {
+            //    this.hide();
+                this._hideTimeout = null;
+            }
+        }, 100); // 100ms delay
+    }
+
+    _clearHideTimeout() {
+        if (this._hideTimeout) {
+            clearTimeout(this._hideTimeout);
+            this._hideTimeout = null;
+        }
+    }
+
+    // Automatically register the component upon class definition
+    static {
+        DynamicObserver.add(this);
+    }
 }
-
-const isInteractive = (element) => element.getAttribute('data-bs-interactive') !== null;
-
-// Automatically initialize tooltips, which differs from Bootstrap since they require manual initialization
-SelectorEngine.find('[data-bs-toggle="tooltip"]').forEach((tooltipElement) => {
-    Tooltip.getOrCreateInstance(tooltipElement, {
-        template: `<div class="tooltip" role="tooltip"><div class="${CLASS_TOOLTIP_CONTAINER}"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div></div>`
-    });
-});

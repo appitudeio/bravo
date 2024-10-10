@@ -2,17 +2,18 @@
  *  Let's add a loader functionality to the Bootstrap's button component
  */
 import BootstrapButton from "bootstrap/js/dist/button";
-import SelectorEngine from 'bootstrap/js/dist/dom/selector-engine';
+import DynamicObserver from './dynamicobserver';
 
 const CLASS_LOADING = "loading";
 
-class Button extends BootstrapButton {
+export default class Button extends BootstrapButton {
+    static selector = "[data-bs-loader]";
     originalContent;
     loadingText;
     spinner;
 
-    constructor(element, config) {
-        super(element, config);
+    constructor(...args) {
+        super(...args);
         this._initializeLoader();
 
         /** 
@@ -89,9 +90,9 @@ class Button extends BootstrapButton {
 
         return loaderText;
     }
-}
 
-// Automatically initialize dropdowns with data attributes on page load
-SelectorEngine.find('[data-bs-loader]').forEach((buttonElement) => {
-    Button.getOrCreateInstance(buttonElement);
-});
+    // Automatically register the component upon class definition
+    static {
+        DynamicObserver.add(this);
+    }
+}

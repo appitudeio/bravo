@@ -6100,10 +6100,12 @@ function withinMaxClamp(min, value, max) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Button)
+/* harmony export */ });
 /* harmony import */ var bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap/js/dist/button */ "./node_modules/bootstrap/js/dist/button.js");
 /* harmony import */ var bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap/js/dist/dom/selector-engine */ "./node_modules/bootstrap/js/dist/dom/selector-engine.js");
-/* harmony import */ var bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _dynamicobserver__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dynamicobserver */ "../js/dynamicobserver.js");
 /**
  *  Let's add a loader functionality to the Bootstrap's button component
  */
@@ -6111,11 +6113,12 @@ __webpack_require__.r(__webpack_exports__);
 
 const CLASS_LOADING = "loading";
 class Button extends (bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0___default()) {
+  static selector = "[data-bs-loader]";
   originalContent;
   loadingText;
   spinner;
-  constructor(element, config) {
-    super(element, config);
+  constructor(...args) {
+    super(...args);
     this._initializeLoader();
 
     /** 
@@ -6181,12 +6184,12 @@ class Button extends (bootstrap_js_dist_button__WEBPACK_IMPORTED_MODULE_0___defa
     loaderText.textContent = text;
     return loaderText;
   }
-}
 
-// Automatically initialize dropdowns with data attributes on page load
-bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_1___default().find('[data-bs-loader]').forEach(buttonElement => {
-  Button.getOrCreateInstance(buttonElement);
-});
+  // Automatically register the component upon class definition
+  static {
+    _dynamicobserver__WEBPACK_IMPORTED_MODULE_1__["default"].add(this);
+  }
+}
 
 /***/ }),
 
@@ -6250,6 +6253,207 @@ bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_2___default().fin
   Dropdown.getOrCreateInstance(dropdownElement);
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Dropdown);
+
+/***/ }),
+
+/***/ "../js/dynamicobserver.js":
+/*!********************************!*\
+  !*** ../js/dynamicobserver.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap/js/dist/dom/selector-engine */ "./node_modules/bootstrap/js/dist/dom/selector-engine.js");
+/* harmony import */ var bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_0__);
+/**
+ *  DynamicObserver
+ *  - Makes the extending class able to have Live injections events tied to it
+ *  E.g: If we have Tooltip with bs-toggle="tooltip", and something gets added dynamically, we want to be able to initialize the tooltip on that element automatically
+ *  ( Observes the DOM for newly added elements and initializes registered Bootstrap components. )
+ */
+
+class DynamicObserver {
+  observer = null;
+  componentClasses = []; // Stores registered components
+  debounceTimer = null;
+  debounceDelay = 100; // milliseconds
+
+  constructor() {
+    if (DynamicObserver.instance) {
+      return DynamicObserver.instance;
+    }
+    DynamicObserver.instance = this;
+
+    // Automatically start observing upon instantiation
+    this.startObserving();
+  }
+
+  /**
+   * Registers a component based on its selector.
+   */
+  add(componentClass) {
+    const selector = componentClass.selector;
+    if (!selector) {
+      console.error(`Component ${componentClass.name} must provide a 'selector' via static getter.`);
+      return;
+    }
+    if (this.componentClasses.includes(componentClass)) {
+      return;
+    }
+    this.componentClasses.push(componentClass);
+
+    // Initialize existing elements matching the selector
+    bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_0___default().find(selector).forEach(element => {
+      componentClass.getOrCreateInstance(element);
+    });
+  }
+
+  /**
+   * Initializes existing components on the page.
+   */
+  initializeExisting() {
+    this.componentClasses.forEach(componentClass => {
+      bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_0___default().find(componentClass.selector).forEach(element => {
+        if (!componentClass.getInstance(element)) {
+          // Check if instance exists
+          componentClass.getOrCreateInstance(element);
+        }
+      });
+    });
+  }
+
+  /**
+   * Starts observing the DOM for changes.
+   * This method is automatically called in the constructor.
+   */
+  startObserving() {
+    // Initialize existing components first
+    this.initializeExisting();
+
+    // Set up the MutationObserver for additions
+    this.observer = new MutationObserver(mutationsList => {
+      if (this.debounceTimer) clearTimeout(this.debounceTimer);
+      this.debounceTimer = setTimeout(() => {
+        mutationsList.forEach(mutation => {
+          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            mutation.addedNodes.forEach(node => {
+              if (node.nodeType === Node.ELEMENT_NODE) {
+                this.initializeNode(node);
+              }
+            });
+          }
+        });
+      }, this.debounceDelay);
+    });
+
+    // Configuration of the observer:
+    const config = {
+      childList: true,
+      subtree: true
+    };
+    this.observer.observe(document.body, config);
+
+    // Set up disposal handling
+    this.setupDisposalHandling();
+  }
+
+  /**
+   * Sets up MutationObserver for handling component disposals.
+   */
+  setupDisposalHandling() {
+    const disposalObserver = new MutationObserver(mutationsList => {
+      mutationsList.forEach(mutation => {
+        if (mutation.type === 'childList' && mutation.removedNodes.length > 0) {
+          mutation.removedNodes.forEach(node => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              this.disposeNode(node);
+            }
+          });
+        }
+      });
+    });
+    const config = {
+      childList: true,
+      subtree: true
+    };
+    disposalObserver.observe(document.body, config);
+  }
+
+  /**
+   * Disposes of component instances within a removed node.
+   */
+  disposeNode(node) {
+    this.componentClasses.forEach(componentClass => {
+      const selector = componentClass.selector;
+
+      // Check if the node itself matches the component selector
+      if (node.matches(selector)) {
+        const instance = componentClass.getInstance(node);
+        if (instance) {
+          instance.dispose();
+        }
+      }
+
+      // Check descendants of the node for matches
+      bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_0___default().find(selector, node).forEach(child => {
+        const instance = componentClass.getInstance(child);
+        if (instance) {
+          instance.dispose();
+        }
+      });
+    });
+  }
+
+  /**
+   * Stops observing the DOM.
+   */
+  stopObserving() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  /**
+   * Initializes a single node and its descendants.
+   */
+  initializeNode(node) {
+    this.componentClasses.forEach(componentClass => {
+      const selector = componentClass.selector;
+
+      // Check if the node itself matches the component selector
+      if (node.matches(selector)) {
+        if (!componentClass.getInstance(node)) {
+          // Check if instance exists
+          componentClass.getOrCreateInstance(node);
+        }
+      }
+
+      // Check descendants of the node for matches
+      bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_0___default().find(selector, node).forEach(child => {
+        if (!componentClass.getInstance(child)) {
+          // Check if instance exists
+          componentClass.getOrCreateInstance(child);
+        }
+      });
+    });
+  }
+
+  /**
+   * Retrieves the singleton instance.
+   */
+  static getInstance() {
+    if (!DynamicObserver.instance) {
+      DynamicObserver.instance = new DynamicObserver();
+    }
+    return DynamicObserver.instance;
+  }
+}
+const dynamicObserver = DynamicObserver.getInstance();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (dynamicObserver);
 
 /***/ }),
 
@@ -6870,12 +7074,14 @@ const animationsMap = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Tooltip)
+/* harmony export */ });
 /* harmony import */ var bootstrap_js_dist_tooltip__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap/js/dist/tooltip */ "./node_modules/bootstrap/js/dist/tooltip.js");
 /* harmony import */ var bootstrap_js_dist_tooltip__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_tooltip__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap/js/dist/dom/event-handler */ "./node_modules/bootstrap/js/dist/dom/event-handler.js");
 /* harmony import */ var bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap/js/dist/dom/selector-engine */ "./node_modules/bootstrap/js/dist/dom/selector-engine.js");
-/* harmony import */ var bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _dynamicobserver__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dynamicobserver */ "../js/dynamicobserver.js");
 /**
  *  There's nothing wrong with Bootstrap's Tooltip, excep that the animation is boring with just an opacity transition.
  *  - Let's extend this with a smooth scale animation, but to do so we need to alter the template so it has a container that can be animated.
@@ -6887,8 +7093,16 @@ __webpack_require__.r(__webpack_exports__);
 const CLASS_TOOLTIP_CONTAINER = "tooltip-container";
 const CLASS_TOOLTIP_INTERACTIVE = "tooltip-interactive";
 const EVENT_INSERTED = "inserted";
+const isInteractive = element => element.getAttribute('data-bs-interactive') !== null;
 class Tooltip extends (bootstrap_js_dist_tooltip__WEBPACK_IMPORTED_MODULE_0___default()) {
+  static selector = "[data-bs-toggle='tooltip']";
+
+  // Used for interactive tooltips
+  _isTriggerHovered = false;
+  _isTooltipHovered = false;
+  _hideTimeout = null;
   constructor(element, config = {}) {
+    var _config$template;
     if (isInteractive(element)) {
       config = {
         ...config,
@@ -6899,26 +7113,69 @@ class Tooltip extends (bootstrap_js_dist_tooltip__WEBPACK_IMPORTED_MODULE_0___de
         }
       };
     }
+    config.template = (_config$template = config.template) !== null && _config$template !== void 0 ? _config$template : `<div class="tooltip" role="tooltip"><div class="${CLASS_TOOLTIP_CONTAINER}"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div></div>`;
     super(element, config);
     if (isInteractive(element)) {
       this._enableInteractivity();
     }
   }
   _enableInteractivity() {
-    bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(this._element, 'mouseover', () => this.show());
+    // Show tooltip on mouseenter over the trigger
+    bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(this._element, 'mouseenter', () => {
+      this._isTriggerHovered = true;
+      this._clearHideTimeout();
+      if (this._isShown()) {
+        return;
+      }
+      this.show();
+    });
+
+    // Start hide timeout on mouseleave from the trigger
+    bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(this._element, 'mouseleave', () => {
+      this._isTriggerHovered = false;
+      this._scheduleHide();
+    });
+
+    // Listen for when the tooltip is shown to attach listeners to it
     bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(this._element, this.constructor.eventName(EVENT_INSERTED), () => {
-      bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(this._getTipElement(), 'mouseleave', () => this.hide());
+      const tipElement = this._getTipElement();
+
+      // Handle mouseenter on tooltip
+      bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(tipElement, 'mouseenter', () => {
+        this._isTooltipHovered = true;
+        this._clearHideTimeout();
+      });
+
+      // Handle mouseleave on tooltip
+      bootstrap_js_dist_dom_event_handler__WEBPACK_IMPORTED_MODULE_1___default().on(tipElement, 'mouseleave', () => {
+        this._isTooltipHovered = false;
+        this._scheduleHide();
+      });
     });
   }
-}
-const isInteractive = element => element.getAttribute('data-bs-interactive') !== null;
+  _scheduleHide() {
+    if (this._hideTimeout) {
+      this._clearHideTimeout();
+    }
+    this._hideTimeout = setTimeout(() => {
+      if (!this._isTriggerHovered && !this._isTooltipHovered) {
+        //    this.hide();
+        this._hideTimeout = null;
+      }
+    }, 100); // 100ms delay
+  }
+  _clearHideTimeout() {
+    if (this._hideTimeout) {
+      clearTimeout(this._hideTimeout);
+      this._hideTimeout = null;
+    }
+  }
 
-// Automatically initialize tooltips, which differs from Bootstrap since they require manual initialization
-bootstrap_js_dist_dom_selector_engine__WEBPACK_IMPORTED_MODULE_2___default().find('[data-bs-toggle="tooltip"]').forEach(tooltipElement => {
-  Tooltip.getOrCreateInstance(tooltipElement, {
-    template: `<div class="tooltip" role="tooltip"><div class="${CLASS_TOOLTIP_CONTAINER}"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div></div>`
-  });
-});
+  // Automatically register the component upon class definition
+  static {
+    _dynamicobserver__WEBPACK_IMPORTED_MODULE_2__["default"].add(this);
+  }
+}
 
 /***/ })
 
@@ -7063,6 +7320,12 @@ testModal.addEventListener("submit.bs.modal", e => {
 setTimeout(() => {
   document.querySelectorAll("[data-bs-loader]").forEach(btn => btn.showLoader());
   setTimeout(() => document.querySelectorAll("[data-bs-loader]").forEach(btn => btn.hideLoader()), 1500);
+  const btn = document.createElement("button");
+  btn.innerHTML = "Open Modal";
+  btn.classList.add("btn", "btn-primary");
+  btn.dataset.bsToggle = "tooltip";
+  btn.title = "Hej hej dynamiskt";
+  document.body.appendChild(btn);
 }, 1500);
 })();
 
