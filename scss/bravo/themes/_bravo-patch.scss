@@ -94,30 +94,38 @@
 
 /**
  *  Tooltip
+ *  - We use an inner container in order to create the animation effect
  */
 .tooltip {
     --scale: .98;
-    --transform-distance: 15px;
+    --transform-distance: 5px;
 
-    &[data-popper-placement^="top"] .tooltip-container { @extend %tooltip-container_top; }
-    &[data-popper-placement^="right"] .tooltip-container { @extend %tooltip-container_end; }
-    &[data-popper-placement^="bottom"] .tooltip-container { @extend %tooltip-container_bottom; }
-    &[data-popper-placement^="left"] .tooltip-container { @extend %tooltip-container_start; }
+    &[data-popper-placement^="top"] .tooltip-container { @extend %tooltip-container_top-reset; }
+    &[data-popper-placement^="right"] .tooltip-container { @extend %tooltip-container_end-reset; }
+    &[data-popper-placement^="bottom"] .tooltip-container { @extend %tooltip-container_bottom-reset; }
+    &[data-popper-placement^="left"] .tooltip-container { @extend %tooltip-container_start-reset; }
+
+    &.show {
+        &[data-popper-placement^="top"] .tooltip-container { @extend %tooltip-container_top; }
+        &[data-popper-placement^="right"] .tooltip-container { @extend %tooltip-container_end; }
+        &[data-popper-placement^="bottom"] .tooltip-container { @extend %tooltip-container_bottom; }
+        &[data-popper-placement^="left"] .tooltip-container { @extend %tooltip-container_start; }
+    }
 }
 
 .tooltip-container {
-   // animation-duration: 0.3s;
-   // animation-timing-function: ease;
-    
-    transition: transform 0.3s ease, opacity .3s ease;
-    transform: translate(var(--translate-x), var(--translate-y)) scale(var(--scale));
-    opacity: 0;
+    animation-duration: 0.3s;
+    animation-timing-function: ease;
 }
 
-.tooltip.show .tooltip-container {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-}
+%tooltip-container_top { animation-name: tooltipAppearTop; }
+%tooltip-container_top-reset { animation-name: tooltipDisappearTop; transform-origin: bottom center; }
+%tooltip-container_end { animation-name: tooltipAppearEnd }
+%tooltip-container_end-reset { animation-name: tooltipDisappearEnd; transform-origin: left center; }
+%tooltip-container_bottom { animation-name: tooltipAppearBottom; }
+%tooltip-container_bottom-reset { animation-name: tooltipDisappearBottom; transform-origin: top center; }
+%tooltip-container_start { animation-name: tooltipAppearStart; }
+%tooltip-container_start-reset { animation-name: tooltipDisappearStart; transform-origin: right center; }
 
 // Close after hover
 .tooltip-interactive:after{
@@ -127,38 +135,6 @@
     width: 100%;
     position: absolute;
     background: transparent;
-}
-
-%tooltip-container_top {
-    --translate-x: 0;
-    --translate-y: var( --transform-distance);
-
-   // animation-name: tooltipAppearTop;
-    transform-origin: bottom center;
-}
-
-%tooltip-container_end {
-    --translate-x: calc(var( --transform-distance) * -1);
-    --translate-y: 0;
-
-  //  animation-name: tooltipAppearEnd;
-    transform-origin: left center;
-}
-
-%tooltip-container_bottom {
-    --translate-x: 0;
-    --translate-y: calc(var( --transform-distance) * -1);
-    
-   // animation-name: tooltipAppearBottom;
-    transform-origin: top center;
-}
-
-%tooltip-container_start {
-    --translate-x: var(--transform-distance);
-    --translate-y: 0;
-
-   // animation-name: tooltipAppearStart;
-    transform-origin: right center;
 }
 
 /**
@@ -252,21 +228,41 @@
 }
 
 @keyframes tooltipAppearTop {
-    from { transform: translateY(var(--transform-distance)) scale(var(--scale)); opacity: 0; }
+    from { transform: translateY(var(--transform-distance)) scale(var(--scale)); }
     to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes tooltipDisappearTop {
+    from { transform: translateY(0) scale(1); opacity: 1; }
+    to { transform: translateY(var(--transform-distance)) scale(var(--scale)); }
 }
 
 @keyframes tooltipAppearEnd {
-    from { transform: translateX(calc(var(--transform-distance) * -1)) scale(var(--scale)); opacity: 0; }
+    from { transform: translateX(calc(var(--transform-distance) * -1)) scale(var(--scale)); }
     to { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+@keyframes tooltipDisappearEnd {
+    from { transform: translateX(0) scale(1); opacity: 1; }
+    to { transform: translateX(calc(var(--transform-distance) * -1)) scale(var(--scale)); }
 }
 
 @keyframes tooltipAppearBottom {
-    from { transform: translateY(var(--transform-distance)) scale(var(--scale)); opacity: 0; }
+    from { transform: translateY(calc(var(--transform-distance) * -1)) scale(var(--scale)); }
     to { transform: translateY(0) scale(1); opacity: 1; }
 }
 
+@keyframes tooltipDisappearBottom {
+    from { transform: translateY(0) scale(1); opacity: 1; }
+    to { transform: translateY(calc(var(--transform-distance) * -1)) scale(var(--scale)); }
+}
+
 @keyframes tooltipAppearStart {
-    from { transform: translateX(var(--transform-distance)) scale(var(--scale)); opacity: 0; }
+    from { transform: translateX(var(--transform-distance)) scale(var(--scale)); }
     to { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+@keyframes tooltipDisappearStart {
+    from { transform: translateX(0) scale(1); opacity: 1; }
+    to { transform: translateX(var(--transform-distance)) scale(var(--scale)); }
 }

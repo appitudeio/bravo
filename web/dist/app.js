@@ -7159,7 +7159,7 @@ class Tooltip extends (bootstrap_js_dist_tooltip__WEBPACK_IMPORTED_MODULE_0___de
     }
     this._hideTimeout = setTimeout(() => {
       if (!this._isTriggerHovered && !this._isTooltipHovered) {
-        //    this.hide();
+        this.hide();
         this._hideTimeout = null;
       }
     }, 100); // 100ms delay

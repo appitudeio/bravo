@@ -84,7 +84,7 @@ export default class Tooltip extends BootstrapTooltip {
 
         this._hideTimeout = setTimeout(() => {
             if (!this._isTriggerHovered && !this._isTooltipHovered) {
-            //    this.hide();
+                this.hide();
                 this._hideTimeout = null;
             }
         }, 100); // 100ms delay
