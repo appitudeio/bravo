@@ -60,4 +60,13 @@ setTimeout(() => {
     document.querySelectorAll("[data-bs-loader]").forEach(btn => btn.showLoader());
 
     setTimeout(() => document.querySelectorAll("[data-bs-loader]").forEach(btn => btn.hideLoader()), 1500);
+
+
+    const btn = document.createElement("button");
+    btn.innerHTML = "Open Modal";
+    btn.classList.add("btn", "btn-primary");
+    btn.dataset.bsToggle = "tooltip";
+    btn.title = "Hej hej dynamiskt";
+
+    document.body.appendChild(btn);
 }, 1500);
