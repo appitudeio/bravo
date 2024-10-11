@@ -1,0 +1,30 @@
+/**
+ *  Bootstrap doesnt take the --sar + --sal in consideration (horizontal mobile)
+ *  (SafeAreaRight+Left)
+ */
+@mixin make-container() {
+    --#{$prefix}gutter-x: 0;
+    --#{$prefix}gutter-y: 0;
+
+    width: 100%;
+    max-width: #{map-get($grid-breakpoints, xxl)};
+    padding-right: calc(var(--#{$prefix}gutter-x) + var(--sar));
+    padding-left: calc(var(--#{$prefix}gutter-x) + var(--sal));
+    margin-right: auto;
+    margin-left: auto;
+}
+
+// Single container class with breakpoint max-widths
+.container,
+  // 100% wide container at all breakpoints
+  .container-fluid {
+    @include make-container();
+}
+
+@each $breakpoint, $size in $grid-breakpoints {
+    @include media-breakpoint-up($breakpoint) {
+        .container, .container-fluid {
+            --#{$prefix}gutter-x: #{map-get($container-gutters, $breakpoint)};
+        }
+    }
+}

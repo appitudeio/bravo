@@ -7,3 +7,10 @@
 @import "bootstrap/scss/forms/floating-labels";
 @import "bootstrap/scss/forms/input-group";
 @import "bootstrap/scss/forms/validation";
+
+.form-control {
+    &:focus {
+        position: relative;
+        z-index: 1;
+    }
+}

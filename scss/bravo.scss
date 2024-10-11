@@ -9,11 +9,28 @@ $enable-deprecation-messages: false !default;
 //$color-mode-type: "media-query" !default;
 
 /**
+ *  Custom Bravo's configuration
+ */
+$container-gutters: (
+    xxl: 5rem,
+    xl: 4rem,
+    lg: 3rem,
+    md: 2rem,
+    sm: 1.5rem,
+    xs: 1rem
+) !default;
+
+/**
  *  Import Bravo's custom color scheme
  */
 @import "bravo/functions";
 @import "bravo/color";
 @import "bravo/typograph";
+
+/**
+ *  Defaultly import Bravo's design system modifiers
+ */
+@import "bravo/themes/bravo";
 
 /**
  *  Import default Bootstrap SCSS
@@ -26,36 +43,51 @@ $enable-deprecation-messages: false !default;
 @import "bootstrap/scss/utilities";
 @import "bootstrap/scss/reboot";
 @import "bootstrap/scss/helpers";
-@import "bootstrap/scss/utilities/api";
+@import "bootstrap/scss/transitions";
 
 /**
  *  Overwrite Bootstrap's $colors, since it only contains the base-colors and not the adjustments
  */
-$theme-custom-colors: generate-custom-colors($theme-colors);
-$colors: map-merge-multiple($theme-custom-colors, $blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
-
-@if variable-exists(bravo-colors) {
-   $colors: map-merge($colors, generate-custom-colors($bravo-colors));
-}
-
-// Map all theme colors with potential adjustments
-@each $color-name, $color-value in $theme-colors {
-    $theme-colors: map-merge($theme-colors, ("#{$color-name}": map-get($colors, #{$color-name}-500)));
-    $theme-colors-text: map-merge($theme-colors-text, ("#{$color-name}": map-get($colors, #{$color-name}-500)));
-    $theme-colors-bg-subtle: map-merge($theme-colors-bg-subtle, ("#{$color-name}": map-get($colors, #{$color-name}-100)));
-    $theme-colors-border-subtle: map-merge($theme-colors-border-subtle, ("#{$color-name}": map-get($colors, #{$color-name}-200)));
-    $theme-colors-text-dark: map-merge($theme-colors-text-dark, ("#{$color-name}": map-get($colors, #{$color-name}-200)));
-    $theme-colors-bg-subtle-dark: map-merge($theme-colors-bg-subtle-dark, ("#{$color-name}": map-get($colors, #{$color-name}-900)));
-    $theme-colors-border-subtle-dark: map-merge($theme-colors-border-subtle-dark, ("#{$color-name}": map-get($colors, #{$color-name}-700)));
-}
+@import "bravo/utilities";
 
 /**
  *  Output all colors as css-variables
  */
 @import "bootstrap/scss/root";
+@import "bootstrap/scss/utilities/api";
 
 /**
  *  Map bootstrap scss-variables into css-variables for even more flexibility
  */
 @import "bravo/color-patch";
 @import "bravo/typograph-patch";
+@import "bravo/themes/bravo-patch";
+
+/**
+ *  Bravo's custom Root
+ */
+:root {
+    --sat: env(safe-area-inset-top);
+    --sar: env(safe-area-inset-right);
+    --sab: max(3px, env(safe-area-inset-bottom));
+    --sal: env(safe-area-inset-left);    
+}
+
+html {
+	height: -webkit-fill-available;
+}
+
+body {
+	min-height: 100vh;
+	min-height: -webkit-fill-available;    
+}
+
+/**
+ * iOS: Make horizontal stretch below safe areas
+ */
+@supports(padding:max(0px)) {
+    body {
+        padding-left: min(0vmin, env(safe-area-inset-left));
+        padding-right: min(0vmin, env(safe-area-inset-right));
+    }
+}

@@ -1,1 +1,1 @@
-export { default } from 'bootstrap/js/alert';
+export { default } from 'bootstrap/js/dist/alert';

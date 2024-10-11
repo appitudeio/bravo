@@ -1,5 +1,7 @@
 // Function to generate color variations (100-900)
 $color-tints: (
+    25: -90%,
+    50: -85%,
     100: -80%,
     200: -60%,
     300: -40%,
@@ -8,7 +10,9 @@ $color-tints: (
     600: 20%,
     700: 40%,
     800: 60%,
-    900: 80%
+    900: 80%,
+    950: 85%,
+    975: 90%
 );
 
 /**
@@ -29,14 +33,14 @@ $color-tints: (
         $variations: map-merge($variations, ("#{$color-name}-#{$shade}": $adjusted-color));
     }
 
-    @if($overrides != null) {
+    @if $overrides != null {
         // Merge any overrides (e.g., preserve specified shades)
         @each $shade, $color in $overrides {
             $variations: map-merge($variations, ("#{$color-name}-#{$shade}": $color));
         }
     }
 
-  @return $variations;
+    @return $variations;
 }
 
 /**
@@ -63,7 +67,7 @@ $color-tints: (
                 $colors: map-merge($colors, ("#{$color-key}": $base-color));
             }
             @else {
-                // Just merge the colors as-is
+                // If some tint levels are missing, add them based on the base color
                 @each $shade, $color in $color-value {
                     $colors: map-merge($colors, ("#{$color-key}-#{$shade}": $color));
                 }
@@ -76,6 +80,38 @@ $color-tints: (
             // Merge into the all colors map
             $colors: map-merge($colors, map-merge-multiple($color-variations));
             $colors: map-merge($colors, ("#{$color-key}": $color-value));
+        }
+    }
+
+    @return $colors;
+}
+
+@function generate-key-variable-map($colors) {
+    $variables: ();
+
+    @each $color-name, $color-value in $colors {
+        $variables: map-merge($variables, ("#{$color-name}": var(--#{$prefix}#{$color-name})));
+    }
+
+    @return $variables;
+}
+
+// E.g blues: ("blue-100": #E6F0FF, "blue-500": #C2D9FF)
+@function bs-to-bravo-colors($bs-colors) {
+    $colors: (); 
+    $first-item: map-get($bs-colors, nth(map-keys($bs-colors), 1));
+    $base-color-name: str-slice(nth(map-keys($bs-colors), 1), 1, str-index(nth(map-keys($bs-colors), 1), '-') - 1);
+    $base-color: map-get($bs-colors, "#{$base-color-name}-500");
+
+    @each $shade, $percentage in $color-tints {
+        $shade-key: "#{$base-color-name}-#{$shade}";
+
+        @if map-has-key($bs-colors, $shade-key) {
+            $colors: map-merge($colors, ($shade-key: map-get($bs-colors, $shade-key)));
+        } 
+        @else {
+            $adjusted-color: shift-color($base-color, $percentage);
+            $colors: map-merge($colors, ($shade-key: $adjusted-color));
         }
     }
 
