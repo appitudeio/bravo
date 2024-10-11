@@ -1,6 +1,9 @@
 /**
  *  Extend with Bravo's custom SCSS
  */
+$enable-grid-classes: true;
+$enable-container-classes: true;
+
 @import "bravo/grid";
+@import "bravo/container";
 @import "bootstrap/scss/grid";
-@import "bravo/grid-patch";
