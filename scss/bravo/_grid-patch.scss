@@ -1,6 +1,0 @@
-/**
- *  Bootstrap's grid system has some nesting flaws and weird names of the columns, let's fix that
- */
-.grid {
-   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-}
