@@ -1,24 +1,43 @@
 /**
- *  Overwrite Bootstrap's column classes so we can have e.g .column-3-sm which means 3/12 size in mobile
- *  ** We have to put it Here, so the Bootstrap-grid gets overwritten
+ *  Overwrite Bootstrap's grid system has some weird names, let's fix them
  */
-@mixin make-cssgrid($columns: $grid-columns, $breakpoints: $grid-breakpoints) {
+@mixin make-grid-columns($columns: $grid-columns, $gutter: $grid-gutter-width, $breakpoints: $grid-breakpoints) {
     @each $breakpoint in map-keys($breakpoints) {
         $infix: breakpoint-infix($breakpoint, $breakpoints);
 
-        // Use media-breakpoint-down to apply styles below the breakpoint
         @include media-breakpoint-down($breakpoint, $breakpoints) {
             @for $i from 1 through $columns {
                 .column#{$infix}-#{$i} {
-                    grid-column: auto / span $i;
+                    @include make-col($i, $columns);
                 }
             }
 
-            // Start with `1` because `0` is an invalid value.
-            // Ends with `$columns - 1` because offsetting by the width of an entire row isn't possible.
-            @for $i from 1 through ($columns - 1) {
-                .column-offset#{$infix}-#{$i} {
-                    grid-column-start: ($i + 1);
+            // `$columns - 1` because offsetting by the width of an entire row isn't possible
+            @for $i from 0 through ($columns - 1) {
+                @if not ($infix == "" and $i == 0) { // Avoid emitting useless .offset-0
+                    .column-offset#{$infix}-#{$i} {
+                        @include make-col-offset($i, $columns);
+                    }
+                }
+            }
+
+            // Base 'auto'-column
+            .column#{$infix} {
+                @include make-col-auto();
+                flex: 1 0 0;
+            }
+
+            // Gutters
+            // Make use of `.g-*`, `.gx-*` or `.gy-*` utilities to change spacing between the columns.
+            @each $key, $value in $gutters {
+                .g#{$infix}-#{$key},
+                .gx#{$infix}-#{$key} {
+                    --#{$prefix}gutter-x: #{$value};
+                }
+
+                .g#{$infix}-#{$key},
+                .gy#{$infix}-#{$key} {
+                    --#{$prefix}gutter-y: #{$value};
                 }
             }
         }
