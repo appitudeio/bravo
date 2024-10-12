@@ -80,6 +80,10 @@
     box-shadow: none !important;
 }
 
+.input-group .btn {
+    --#{$prefix}btn-border-radius: #{$input-border-radius};
+}
+
 /**
  *  Dropdown
  */
