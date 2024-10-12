@@ -17,6 +17,7 @@ $btn-font-weight            : 500 !default; // "medium"
 $input-border-radius        : $border-radius-sm !default;
 $input-border-radius-sm     : $btn-border-radius * (2 / 3) !default; // Example: .25rem
 $input-border-radius-lg     : $btn-border-radius * (4 / 3) !default; // Example: .5rem
+$input-focus-border-color   : var(--primary) !default;
 
 $focus-ring-blur            : 0 !default;
 $focus-ring-width           : 1px !default;
