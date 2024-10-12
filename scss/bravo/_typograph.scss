@@ -3,29 +3,19 @@
  */
 $base-font-size: 1rem !default; // Base size (16px)
 $base-font-size-sm: 1rem !default; // Base size (16px)
-$font-family-headers: $font-family-base !default;
+$font-family-headers: var(--#{$prefix}body-font-family) !default;
 $headings-font-weight: 500 !default; // Use Bootstrap's default font-weight for headings
 
 /**
  *  Override Bootstrap's default font size variables
  */
-$font-size-h1: 2.5rem !default;
-$font-size-h2: 2rem !default;
-$font-size-h3: 1.75rem !default;
-$font-size-h4: 1.5rem !default;
-$font-size-h5: 1.25rem !default;
-$font-size-h6: 1rem !default; // Base size
-$font-size-jumbo: 3.5rem !default;
-
-$font-size-map: (
-    h1: $font-size-h1,
-    h2: $font-size-h2,
-    h3: $font-size-h3,
-    h4: $font-size-h4,
-    h5: $font-size-h5,
-    h6: $font-size-h6,
-    jumbo: $font-size-jumbo
-) !default;
+$h1-font-size: 2.5rem !default;
+$h2-font-size: 2rem !default;
+$h3-font-size: 1.75rem !default;
+$h4-font-size: 1.5rem !default;
+$h5-font-size: 1.25rem !default;
+$h6-font-size: 1rem !default; // Base size
+$jumbo-font-size: 3.5rem !default;
 
 /** 
  * Maps for line heights and margins
@@ -56,55 +46,41 @@ $paragraph-margin-bottom: 1rem !default;
 // Define Typography Styles Based on Scale and Variables
 $typography-map: (
   h1: (
-    font-size: map-get($font-size-map, h1),
     line-height: map-get($line-height-map, h1),
     margin-bottom: map-get($margin-bottom-map, h1),  // Scales proportionally
     letter-spacing: -0.02em,
-    font-weight: $headings-font-weight,
     font-family: $font-family-headers
   ),
   h2: (
-    font-size: map-get($font-size-map, h2),
     line-height: map-get($line-height-map, h2),
     margin-bottom: map-get($margin-bottom-map, h2),
     letter-spacing: -0.015em,
-    font-weight: $headings-font-weight,
     font-family: $font-family-headers
   ),
   h3: (
-    font-size: map-get($font-size-map, h3),
     line-height: map-get($line-height-map, h3),
     margin-bottom: map-get($margin-bottom-map, h3),
     letter-spacing: -0.01em,
-    font-weight: $headings-font-weight,
     font-family: $font-family-headers
   ),
   h4: (
-    font-size: map-get($font-size-map, h4),
     line-height: map-get($line-height-map, h4),
     margin-bottom: map-get($margin-bottom-map, h4),
     letter-spacing: -0.005em,
-    font-weight: $headings-font-weight,
     font-family: $font-family-headers
   ),
   h5: (
-    font-size: map-get($font-size-map, h5),
     line-height: map-get($line-height-map, h5),
     margin-bottom: map-get($margin-bottom-map, h5),
-    letter-spacing: 0,
-    font-weight: $headings-font-weight,
     font-family: $font-family-headers
   ),
   h6: (
-    font-size: map-get($font-size-map, h6),
     line-height: map-get($line-height-map, h6),
     margin-bottom: map-get($margin-bottom-map, h6),
-    letter-spacing: 0,
-    font-weight: $headings-font-weight,
     font-family: $font-family-headers
   ),
   jumbo: (
-    font-size: map-get($font-size-map, jumbo),
+    font-size: $jumbo-font-size,
     line-height: map-get($line-height-map, jumbo),
     margin-bottom: map-get($margin-bottom-map, jumbo),
     letter-spacing: -0.025em,
