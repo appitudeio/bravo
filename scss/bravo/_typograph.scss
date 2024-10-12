@@ -3,6 +3,7 @@
  */
 $base-font-size: 1rem !default; // Base size (16px)
 $base-font-size-sm: 1rem !default; // Base size (16px)
+$font-family-headers: $font-family-base !default;
 $headings-font-weight: 500 !default; // Use Bootstrap's default font-weight for headings
 
 /**
@@ -59,48 +60,55 @@ $typography-map: (
     line-height: map-get($line-height-map, h1),
     margin-bottom: map-get($margin-bottom-map, h1),  // Scales proportionally
     letter-spacing: -0.02em,
-    font-weight: $headings-font-weight
+    font-weight: $headings-font-weight,
+    font-family: $font-family-headers
   ),
   h2: (
     font-size: map-get($font-size-map, h2),
     line-height: map-get($line-height-map, h2),
     margin-bottom: map-get($margin-bottom-map, h2),
     letter-spacing: -0.015em,
-    font-weight: $headings-font-weight
+    font-weight: $headings-font-weight,
+    font-family: $font-family-headers
   ),
   h3: (
     font-size: map-get($font-size-map, h3),
     line-height: map-get($line-height-map, h3),
     margin-bottom: map-get($margin-bottom-map, h3),
     letter-spacing: -0.01em,
-    font-weight: $headings-font-weight
+    font-weight: $headings-font-weight,
+    font-family: $font-family-headers
   ),
   h4: (
     font-size: map-get($font-size-map, h4),
     line-height: map-get($line-height-map, h4),
     margin-bottom: map-get($margin-bottom-map, h4),
     letter-spacing: -0.005em,
-    font-weight: $headings-font-weight
+    font-weight: $headings-font-weight,
+    font-family: $font-family-headers
   ),
   h5: (
     font-size: map-get($font-size-map, h5),
     line-height: map-get($line-height-map, h5),
     margin-bottom: map-get($margin-bottom-map, h5),
     letter-spacing: 0,
-    font-weight: $headings-font-weight
+    font-weight: $headings-font-weight,
+    font-family: $font-family-headers
   ),
   h6: (
     font-size: map-get($font-size-map, h6),
     line-height: map-get($line-height-map, h6),
     margin-bottom: map-get($margin-bottom-map, h6),
     letter-spacing: 0,
-    font-weight: $headings-font-weight
+    font-weight: $headings-font-weight,
+    font-family: $font-family-headers
   ),
   jumbo: (
     font-size: map-get($font-size-map, jumbo),
     line-height: map-get($line-height-map, jumbo),
     margin-bottom: map-get($margin-bottom-map, jumbo),
     letter-spacing: -0.025em,
-    font-weight: $headings-font-weight
+    font-weight: $headings-font-weight,
+    font-family: $font-family-headers
   )
 );
