@@ -26,26 +26,6 @@
     }
 }
 
-.modal {
-    .btn[rel=back] {
-        @extend %modal-header-back-btn_default;
-    }
-}
-
-.modal-header {
-    .btn {
-        position: absolute;
-
-        &:first-child:not(:only-child) {
-            left: var(--modal-padding);
-        }
-
-        &:last-child {
-            right: var(--modal-padding);
-        }
-    }
-}
-
 /**
  *  Transitions
  */
