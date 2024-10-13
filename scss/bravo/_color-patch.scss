@@ -63,8 +63,25 @@ $body-emphasis-color-dark:          var(--#{$prefix}white) !default;
 $border-color-dark:                 var(--#{$prefix}gray-700) !default;
 $border-color-translucent-dark:     rgba($white, .15) !default;
 $headings-color-dark:               inherit !default;
-$link-color-dark:                   var(--#{$prefix}primary-300); //tint-color($primary, 40%) !default;
-$link-hover-color-dark:             var(--#{$prefix}primary-500); //shift-color($link-color-dark, -$link-shade-percentage) !default;
-$code-color-dark:                   var(--#{$prefix}pink-300); //tint-color($code-color, 40%) !default;
+$link-color-dark:                   var(--#{$prefix}primary-300) !default;
+$link-hover-color-dark:             var(--#{$prefix}primary-500) !default;
+$code-color-dark:                   var(--#{$prefix}pink-300) !default;
 $mark-color-dark:                   var(--#{$prefix}body-color-dark) !default;
 $mark-bg-dark:                      var(--#{$prefix}yellow-800) !default;
+
+/**
+ *  Some additions that are not included in Bootstrap
+ */
+:root {
+    --black: #{$black};
+    --white: #{$white};
+    --lightest: #{$lightest};
+    --darkest: #{$darkest};  
+}
+
+@include color-mode(dark, true) {
+    --black: #{$white};
+    --white: #{$black};
+    --lightest: #{$lightest-dark};
+    --darkest: #{$darkest-dark};
+}

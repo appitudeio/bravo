@@ -71,7 +71,7 @@ $container-gutters: (
     --sat: env(safe-area-inset-top);
     --sar: env(safe-area-inset-right);
     --sab: max(3px, env(safe-area-inset-bottom));
-    --sal: env(safe-area-inset-left);    
+    --sal: env(safe-area-inset-left);
 }
 
 html {
