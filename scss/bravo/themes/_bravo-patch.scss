@@ -89,7 +89,9 @@
  */
 .dropdown-menu {
     .dropdown-item {
-        width: auto;
+        display: flex;
+        align-items: center;
+        width: calc(100% - (var(--#{$prefix}dropdown-padding-x) * 2));
         margin-left: var(--#{$prefix}dropdown-padding-y);
         margin-right: var(--#{$prefix}dropdown-padding-y);
         border-radius: calc(var(--#{$prefix}dropdown-border-radius) - (var(--#{$prefix}dropdown-padding-y) * .75));
