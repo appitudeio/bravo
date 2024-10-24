@@ -1,9 +1,9 @@
 .env
 node_modules/
-#web/
+web/
 
 # Ignore docs files
-_site/
+_docs/
 
 # Hugo files
 /resources/
