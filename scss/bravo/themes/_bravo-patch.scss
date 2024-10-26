@@ -66,6 +66,8 @@
  *  Buttons
  */
 .btn {
+    gap: map-get($spacers, 1);
+    
     &:focus:not(:focus-visible), &:focus-visible {
         outline-offset: 0 !important;
         outline-width: 0 !important;
