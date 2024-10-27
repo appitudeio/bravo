@@ -97,8 +97,10 @@ class Navigation {
         // Use the first modal as the 'base'
         if(this.stack.length == 0) {
             this.setBaseModal(childModal);
+            console.log("Base");
         }
         else {
+            console.log("New");
             // Update current stack with the current modal (if it's been updated)
             this.stack[this.stack.length - 1][0] = this.Modal._element.querySelector(".modal-header")?.cloneNode(true);
             this.stack[this.stack.length - 1][1] = this.Modal._element.querySelector(".modal-body").cloneNode(true);
