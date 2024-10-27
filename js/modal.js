@@ -43,8 +43,7 @@ class Modal extends BootstrapModal {
         this.registerEventListeners();
     }
 
-    addEventListener(...props)
-    {
+    addEventListener(...props) {
         this._element.addEventListener(...props)
     }
 
@@ -115,8 +114,7 @@ class Navigation {
     stack = [];
     refs = {};
 
-    constructor(options = {})
-    {
+    constructor(options = {}) {
         this.options = merge(
             this.options,
             options
