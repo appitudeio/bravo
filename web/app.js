@@ -46,7 +46,13 @@ Nav.addEventListener("close.bs.nav", e => {
 Nav.push(testModal);
 Nav.show();
 
-setTimeout(() => Nav.push(childModal), 1000);
+setTimeout(() => {
+    let div = document.createElement("div");
+    div.innerHTML = "HEJSAN!!!!";
+    testModal._element.querySelector(".modal-body").append(div);
+}, 1000);
+
+setTimeout(() => Nav.push(childModal), 3000);
 
 /*setTimeout(() => Nav.push(grandchildModal), 3000);
 
