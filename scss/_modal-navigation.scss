@@ -14,15 +14,17 @@
 .modal-navigation {
     .modal-header > * {
         z-index: 1;
+        transition: all var(--modal-stack-animation-duration) ease;
     }
 
     .modal-title {
-   /*     position: absolute;
-        left: 0;
-        right: 0;*/
         width: 100%;
         text-align: center;
         z-index: 0;
+    }
+
+    .modal-body {
+        transition: opacity var(--modal-stack-animation-duration) ease, margin var(--modal-stack-animation-duration) ease, height var(--modal-stack-animation-duration) ease;
     }
 }
 
@@ -37,8 +39,6 @@
 
 // BackBtn
 %modal-header-back-btn_default {
-    transition: margin var(--modal-stack-animation-duration) ease, opacity var(--modal-stack-animation-duration) ease;
-
     opacity: 0;
     margin: 0 0 0 calc(var(--btn-width) * -1);
 }
@@ -64,42 +64,75 @@
 }
 
 // Slide 
-.modal-animation-transition-slide {
+.modal-animation-slide {
     --modal-stack-animation-duration: var(--modal-stack-animation-slide-duration);
-    --modal-stack-animation-out: modal-body-slide-out;
-    --modal-stack-animation-in: modal-body-slide-in;
+    --modal-stack-animation-out-forward: modal-body-slide-out-forward;
+    --modal-stack-animation-in-forward: modal-body-slide-in-forward;
+    --modal-stack-animation-out-back: modal-body-slide-out-back;
+    --modal-stack-animation-in-back: modal-body-slide-in-back;
+}
 
-    @extend %modal-navigation-transition_slide-out;
+.modal-animation-transition-slide {
+    &.modal-animation-direction-back {
+        @extend %modal-navigation-transition_slide-out-back;
+    }
+
+    &.modal-animation-direction-forward {
+        @extend %modal-navigation-transition_slide-out-forward;
+    }
 
     &.modal-animation-transition-in {
-        @extend %modal-navigation-transition_slide-in;
+        &.modal-animation-direction-back {
+            @extend %modal-navigation-transition_slide-in-back;
+        }
+
+        &.modal-animation-direction-forward {
+            @extend %modal-navigation-transition_slide-in-forward;
+        }
     }
 }
 
-%modal-navigation-transition_slide-out {
+%modal-navigation-transition_slide-out-forward {
     --modal-stack-travel: var(--modal-stack-animation-slide-out);
 
-    .modal-body, .modal-title {
-        transition: height var(--modal-stack-animation-duration) ease, opacity var(--modal-stack-animation-duration) ease;
-        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-out) ease forwards;
+    .modal-body, .modal-header > *:not(.btn) {
+        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-out-forward) ease forwards;
     }
 }
 
-%modal-navigation-transition_slide-in {
+%modal-navigation-transition_slide-in-forward {
     --modal-stack-travel: var(--modal-stack-animation-slide-in);
 
-    .modal-body, .modal-title {
-        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-in) ease forwards;
+    .modal-body, .modal-header > *:not(.btn) {
+        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-in-forward) ease forwards;
+    }
+}
+
+%modal-navigation-transition_slide-out-back {
+    --modal-stack-travel: var(--modal-stack-animation-slide-out);
+
+    .modal-body, .modal-header > *:not(.btn) {
+        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-out-back) ease forwards;
+    }
+}
+
+%modal-navigation-transition_slide-in-back {
+    --modal-stack-travel: var(--modal-stack-animation-slide-in);
+
+    .modal-body, .modal-header > *:not(.btn) {
+        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-in-back) ease forwards;
     }
 }
 
 // Morph
-.modal-animation-transition-morph {
+.modal-animation-morph {
     --modal-stack-animation-duration: var(--modal-stack-animation-morph-duration);
     --modal-stack-animation-out: modal-body-morph-out;
     --modal-stack-animation-in: modal-body-morph-in;
     --modal-stack-travel: var(--modal-stack-animation-morph-scale);
+}
 
+.modal-animation-transition-morph {
     @extend %modal-navigation-transition_morph-out;
 
     &.modal-animation-transition-in {
@@ -109,12 +142,10 @@
 
 %modal-navigation-transition_morph-out {
     .modal-body {
-        transition: height var(--modal-stack-animation-duration) ease;
         animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-out) ease forwards;
     }
 
-    .modal-title {
-        transition: opacity var(--modal-stack-animation-duration) ease;
+    .modal-header > *:not(.btn) {
         opacity: 0;
     }
 }
@@ -124,12 +155,12 @@
         animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-in) ease forwards;
     }
 
-    .modal-title {
+    .modal-header > *:not(.btn) {
         opacity: 1;
     }
 }
 
-@keyframes modal-body-slide-out {
+@keyframes modal-body-slide-out-forward {
     from {
         opacity: 1;
     }
@@ -139,10 +170,31 @@
     }
 }
 
-@keyframes modal-body-slide-in {
+@keyframes modal-body-slide-in-forward {
     from {
         opacity: 0;
         transform: translateX(var(--modal-stack-travel));
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes modal-body-slide-out-back {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translateX(calc(var(--modal-stack-travel) * -1));
+    }
+}
+
+@keyframes modal-body-slide-in-back {
+    from {
+        opacity: 0;
+        transform: translateX(calc(var(--modal-stack-travel) * -1));
     }
     to {
         opacity: 1;

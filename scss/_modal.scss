@@ -9,12 +9,9 @@
     --#{$prefix}modal-padding: #{$modal-inner-padding};  
 }
 
-.modal-header-buttons {
-    margin-left: auto;
-}
-
 .modal {
     .btn[rel=back] {
+        z-index: 2;
         @extend %modal-header-back-btn_default;
     }
 }
