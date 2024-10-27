@@ -106,7 +106,7 @@ class Navigation {
             this.stack[this.stack.length - 1][1] = this.Modal._element.querySelector(".modal-body").cloneNode(true);
             this.stack[this.stack.length - 1][2] = this.Modal._element.querySelector(".modal-footer")?.cloneNode(true);
 
-            console.log(this.stack[this.stack.length - 1][0]);
+            console.log(this.stack[this.stack.length - 1][1]);
         }
 
         this.stack.push([
