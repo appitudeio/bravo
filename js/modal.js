@@ -334,7 +334,7 @@ class Navigation {
 
         // Use existing Header
         if(header) {
-            title = header.querySelector(".modal-title");
+            title = header.querySelector(".modal-title") ?? header.querySelector("h4") ?? header.querySelector("h5") ?? false;
             backButton = header.querySelector("button[rel=back]");
             closeButton = header.querySelector("button[rel=close]");
 
@@ -363,7 +363,7 @@ class Navigation {
             }       
         }
 
-        title.innerHTML = newHeader.querySelector(".modal-title").innerHTML ?? "";
+        title.innerHTML = newHeader.querySelector(".modal-title")?.innerHTML ?? newHeader.querySelector("h4")?.innerHTML ?? newHeader.querySelector("h5")?.innerHTML ?? "";
 
         return header;
     }
