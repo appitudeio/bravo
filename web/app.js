@@ -4,7 +4,8 @@ import Button from "bravo/js/button";
 import Tooltip from "bravo/js/tooltip";
 
 const testModal = new Modal({
-    title: "Hallå!",
+   // title: "Hallå!",
+    header: "<div style='width: 100px; height: 50px; background: red; margin: auto;'>HEJ</div>",
     content: "Hejsan ? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks?? Hejsan här är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram och tillbaka helt nekelt.<br /><br />Vad tycks??",
     footerButtons: [
         { text: "Stäng" },
@@ -17,7 +18,8 @@ const testModal = new Modal({
 });
 const childModal = new Modal({
     id: "child",
-    title: "CHILD!",
+    title: "NAJS",
+    //header: ,
     content: "NNNNed är jag från ett child med lite mer innehåll än min parent, vi får se hur det blir när vi transformeras fram o?",
     footerButtons: [
         { text: "Lnapp" }
@@ -29,7 +31,7 @@ const grandchildModal = new Modal({
 });
 
 const Nav = new ModalNavigation({
-   animation: "morph",
+   //animation: "morph",
   /* closeButton: {
     disabled: true
    },
@@ -37,13 +39,14 @@ const Nav = new ModalNavigation({
     disabled: true
    }*/
 });
-Nav.push(testModal);
 Nav.addEventListener("close.bs.nav", e => {
+    console.log("close");
   //  e.stack.forEach(modal => modal.remove());
 });
-//Nav.show();
+Nav.push(testModal);
+Nav.show();
 
-//setTimeout(() => Nav.push(childModal), 1000);
+setTimeout(() => Nav.push(childModal), 1000);
 
 /*setTimeout(() => Nav.push(grandchildModal), 3000);
 

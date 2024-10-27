@@ -14,6 +14,7 @@ const EVENT_KEY = `.bs.modal`;
 const EVENT_SUBMIT = `submit${EVENT_KEY}`;
 const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
 const EVENT_NAV_CLOSE = "close.bs.nav";
+const EVENT_NAV_OPEN = "open.bs.nav";
 const CLASS_NAVIGATION = "modal-navigation";
 const CLASS_NAVIGATION_HAS_STACK = "modal-navigation-stacked";
 const CLASS_NAVIGATION_TRANSITION = "modal-animation-transition";
@@ -68,6 +69,7 @@ class Modal extends BootstrapModal {
         const {
           id = `modal-${Math.random().toString(36).slice(2, 9)}`,
           title = '',
+          header = '',
           content = '',
           footerButtons = [], // Array of footer button configurations
           headerButtons = [], // Array of header button configurations
@@ -84,7 +86,7 @@ class Modal extends BootstrapModal {
 
         const Template = new ModalTemplate(options);
 
-        const modalHTML = Template.generate(id, title, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation);
+        const modalHTML = Template.generate(id, { title, header }, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation);
         const modalFragment = document.createRange().createContextualFragment(modalHTML);
 
         document.body.append(modalFragment);
@@ -103,16 +105,17 @@ class Navigation {
     options = {
         animation: "slide",
         backButton: {
-            text: "&larr;",
+            text: "", // &larr;
             disabled: false
         },
         closeButton: {
-            text: "&times;",
+            text: "", // &times;
             disabled: false
         }
     };
     stack = [];
     refs = {};
+    events = {};
 
     constructor(options = {}) {
         this.options = merge(
@@ -126,7 +129,7 @@ class Navigation {
         this.Modal = modal;
         this.Modal._element.classList.add(CLASS_NAVIGATION);
         
-        EventHandler.on(this.Modal._element, EVENT_HIDDEN, () => this.closeNavigation());
+        EventHandler.on(this.Modal._element, EVENT_HIDDEN, () => this.close());
     
         EventHandler.on(this.Modal._element, "click", "[rel]", e => {
             e.preventDefault();
@@ -171,9 +174,9 @@ class Navigation {
         }
 
         this.stack.push([
-            childModal._element.querySelector(".modal-header").cloneNode(true),
+            childModal._element.querySelector(".modal-header")?.cloneNode(true) ?? null,
             childModal._element.querySelector(".modal-body").cloneNode(true),
-            childModal._element.querySelector(".modal-footer")?.cloneNode(true),
+            childModal._element.querySelector(".modal-footer")?.cloneNode(true) ?? null,
             childModal
         ]);
 
@@ -187,13 +190,14 @@ class Navigation {
             childModal._element.querySelector("button[rel=close]")?.remove();
         }
 
-        if(this.stack.length > 1) {
-            return new Promise(resolve => {
+        return new Promise(resolve => {
+            if(this.stack.length > 1) {
                 this.replace(this.stack[this.stack.length - 1]).then(resolve);
-            });
-        }
-
-        return new Promise(resolve => resolve());
+            }
+            else {
+                resolve();
+            }
+        });
     }
 
     /**
@@ -208,27 +212,27 @@ class Navigation {
 		});
     }
 
-    addEventListener(...props)
-    {
-        this.Modal._element.addEventListener(...props);
+    addEventListener(...props) {
+        document.addEventListener(...props);
     }
 
-    closeNavigation() {
-        EventHandler.trigger(this.Modal._element, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
+    close() {
+        EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
 
         this.stack = [];
         this.Modal = null;
     }
 
     show() {
+        EventHandler.trigger(document, EVENT_NAV_OPEN, { stack: Object.values(this.refs) });
+
         this.Modal.show();
     }
 
     /**
      *  Actually inject the content (header, body, footer)
      */
-	replace(to, _back = false)
-	{
+	replace(to, _back = false) {
         const [ newHeader, newBody, newFooter ] = to;
         const animationObj = animationsMap[this.options.animation] ?? animationsMap.slide;
         const Animation = new animationObj(this.Modal, to);
@@ -306,7 +310,7 @@ class Navigation {
                 modalHeader.prepend(this.Template.backButton());
             }
 
-            setTimeout(() => this.Modal._element.classList.add(CLASS_NAVIGATION_HAS_STACK), 1);
+            setTimeout(() => this.Modal._element.classList.add(CLASS_NAVIGATION_HAS_STACK), 10);
         }
     }
 
@@ -328,16 +332,23 @@ class Navigation {
         const shouldHaveCloseButton = (this.options.closeButton.disabled == undefined || this.options.closeButton.disabled === false) ? true : false;
 
         let header = this.Modal._element.querySelector(".modal-header"); // If current header
-        let title;
-        let backButton;
-        let closeButton;
+        let newTitle = newHeader.querySelector("h1, h2, h3, h4, h5, h6, .modal-title");
 
+        const createNewTitle = (title) => {
+            let el = document.createElement("h4");
+            el.classList.add("modal-title");
+            el.innerHTML = title;
+            return el;
+        };
+ 
         // Use existing Header
         if(header) {
-            title = header.querySelector(".modal-title") ?? header.querySelector("h4") ?? header.querySelector("h5") ?? false;
-            backButton = header.querySelector("button[rel=back]");
-            closeButton = header.querySelector("button[rel=close]");
+            if(newHeader) {
+                header.innerHTML = newHeader.innerHTML;
+            }
 
+            let backButton = header.querySelector("button[rel=back]");
+ 
             if(!backButton && shouldHaveBackButton) {
                 header.prepend(this.Template.backButton());
             }
@@ -345,25 +356,20 @@ class Navigation {
         else {
             // Create new header
             header = document.createElement("div");
-            title = document.createElement("h4");
-            backButton = this.Template.backButton();
-            closeButton = this.Template.closeButton();
-    
             header.classList.add("modal-header");
-            title.classList.add("modal-title");    
-        
-            if(shouldHaveBackButton) {
-                header.append(backButton);
+            
+            if(newTitle) {
+                header.append(createNewTitle(newTitle.innerHTML));
             }
 
-            header.append(title);
+            if(shouldHaveBackButton) {
+                header.prepend(this.Template.backButton());
+            }
 
             if(shouldHaveCloseButton) {
-                header.append(closeButton);
+                header.append(this.Template.closeButton());
             }       
         }
-
-        title.innerHTML = newHeader.querySelector(".modal-title")?.innerHTML ?? newHeader.querySelector("h4")?.innerHTML ?? newHeader.querySelector("h5")?.innerHTML ?? "";
 
         return header;
     }
@@ -381,11 +387,11 @@ class ModalTemplate {
     options = {
         closeButton: {
             disabled: false,
-            text: "&times"
+            text: "" // &times;
         },
         backButton: {
             disabled: false,
-            text: "&larr;"
+            text: "" // &larr;
         }
     }
 
@@ -393,7 +399,7 @@ class ModalTemplate {
         this.options = merge(this.options, options);
     }
 
-    generate = (id, title, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation) => {
+    generate = (id, headerObj, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation) => {
         const sizeClass = size === 'sm' ? 'modal-sm' : size === 'lg' ? 'modal-lg' : 'modal-md'; // Default to medium
         const animationClass = animation ? ` ${animation}` : '';
 
@@ -403,7 +409,7 @@ class ModalTemplate {
                     <div class="modal-content">
                         ${isForm ? `<form method="post">` : ""}
 
-                        ${this.header(title, headerButtons)}
+                        ${this.header(headerObj, headerButtons)}
 
                         <div class="modal-body">${content}</div>
 
@@ -416,7 +422,19 @@ class ModalTemplate {
         `;
     }
 
-    header = (title, buttons = []) => {
+    header = (headerObj, buttons = []) => {
+        const { title, header } = headerObj;
+
+        let headerHTML = '';
+
+        if (header) {
+            headerHTML += header;
+        } else if (title) {
+            headerHTML += `
+                <h4 class="modal-title">${title}</h4>
+            `;
+        }
+
         const buttonElements = buttons.map(button => {
             const buttonAttributes = Object.keys(button)
                 .filter(key => key !== 'text' && key !== 'class')
@@ -430,22 +448,22 @@ class ModalTemplate {
             `;
         }).join('');
 
-        return title ? `
+        if (buttonElements || !this.options.closeButton.disabled) {
+            // headerHTML += `<div class="modal-header-buttons">`;
+            headerHTML += buttonElements;
+
+            if (!this.options.closeButton.disabled) {
+                headerHTML += this.closeButton().outerHTML;
+            }
+
+            //headerHTML += `</div>`;
+        }
+
+        return `
             <div class="modal-header">
-                <h4 class="modal-title">${title}</h4>
-
-                ${buttonElements}
-
-                ${!this.options.closeButton.disabled ? this.closeButton().outerHTML.toString() : ""}
+                ${headerHTML}
             </div>
-        ` : "";
-
-        /*
-                        <div class="modal-header-buttons">
-                    ${buttonElements}
-
-                    ${!this.options.closeButton.disabled ? this.closeButton().outerHTML.toString() : ""}
-                </div>*/
+        `;
     }
 
     footer = (buttons = []) => {
@@ -579,10 +597,8 @@ class ModalNavigationTransitionSlide extends Animation {
 
     in = (directionBack) => new Promise(resolve => {
         const animationDirection = (directionBack) ? CLASS_NAVIGATION_BACK : CLASS_NAVIGATION_FORWARD;
-		const animationOpositeDirection = (directionBack) ? CLASS_NAVIGATION_FORWARD : CLASS_NAVIGATION_BACK;  
 
         // 1) Animate in the new content
-        this.Modal._element.classList.add(animationOpositeDirection);
         this.Modal._element.classList.add(CLASS_NAVIGATION_TRANSITION_IN);
         this.Modal.handleUpdate(); // Adjust modal size
 
@@ -591,7 +607,7 @@ class ModalNavigationTransitionSlide extends Animation {
         // Everything's done
         setTimeout(() => {
             // Clear all classes that trigger transitions
-            [ Animation.className, CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN, animationDirection, animationOpositeDirection ].forEach(c => this.Modal._element.classList.remove(c));
+            this.Modal._element.classList.remove(Animation.className, CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN, animationDirection);
 
             // Remove height on the body
             this.Modal._element.querySelector(".modal-body").removeAttribute("style");
@@ -640,7 +656,7 @@ class ModalNavigationTransitionMorph extends Animation {
         // Everything's done
         setTimeout(() => {
             // Clear all classes that trigger transitions
-            [ Animation.className, CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN ].forEach(c => this.Modal._element.classList.remove(c));
+            this.Modal._element.classList.remove(Animation.className, CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN);
 
             // Remove height on the body
             this.Modal._element.querySelector(".modal-body").removeAttribute("style");
