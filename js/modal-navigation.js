@@ -14,6 +14,8 @@ const EVENT_KEY = `.bs.modal`;
 const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
 const EVENT_NAV_CLOSE = "close.bs.nav";
 const EVENT_NAV_OPEN = "open.bs.nav";
+const EVENT_NAV_BACK = "back.bs.nav";
+const EVENT_NAV_FORWARD = "forward.bs.nav";
 const CLASS_NAVIGATION = "modal-navigation";
 const CLASS_NAVIGATION_HAS_STACK = "modal-navigation-stacked";
 const CLASS_NAVIGATION_TRANSITION = "modal-animation-transition";
@@ -97,16 +99,12 @@ class Navigation {
         // Use the first modal as the 'base'
         if(this.stack.length == 0) {
             this.setBaseModal(childModal);
-            console.log("Base");
         }
         else {
-            console.log("New");
             // Update current stack with the current modal (if it's been updated)
             this.stack[this.stack.length - 1][0] = this.Modal._element.querySelector(".modal-header")?.cloneNode(true);
             this.stack[this.stack.length - 1][1] = this.Modal._element.querySelector(".modal-body").cloneNode(true);
             this.stack[this.stack.length - 1][2] = this.Modal._element.querySelector(".modal-footer")?.cloneNode(true);
-
-            console.log(this.stack[this.stack.length - 1][1]);
         }
 
         this.stack.push([
@@ -129,6 +127,8 @@ class Navigation {
         return new Promise(resolve => {
             if(this.stack.length > 1) {
                 this.replace(this.stack[this.stack.length - 1]).then(resolve);
+
+                EventHandler.trigger(document, EVENT_NAV_FORWARD);
             }
             else {
                 resolve();
@@ -146,6 +146,8 @@ class Navigation {
 		this.replace(prevStack, true).then(() => {
 			currentStack = null;
 		});
+        
+        EventHandler.trigger(document, EVENT_NAV_BACK);
     }
 
     addEventListener(...props) {
