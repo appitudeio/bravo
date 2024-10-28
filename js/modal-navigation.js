@@ -172,7 +172,8 @@ class Navigation {
     close() {
         this.state = STATE_CLOSED;
 
-        const pops = this.stack.map(stack => this.pop());
+        const stackCopy = [...this.stack];
+        const pops = stackCopy.map(stack => this.pop());
 
         console.log("pops", pops);
 
