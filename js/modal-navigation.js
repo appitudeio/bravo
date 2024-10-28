@@ -168,10 +168,12 @@ class Navigation {
     close() {
         this.state = STATE_CLOSED;
 
+        this.stack.forEach(stack => this.pop());
+
         EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
 
         this.Modal = null;
-        this.stack = [];
+        //this.stack = [];
     }
 
     show() {
