@@ -190,10 +190,12 @@ class Navigation {
     close() {
         this.state = STATE_CLOSED;
 
-        const stackCopy = [...this.stack];
-        const pops = stackCopy.map(stack => this.pop());
+        const pops = [];
 
-        console.log("pops", pops);
+        // Use a while loop to ensure all modals are popped sequentially
+        while (this.stack.length > 0) {
+            pops.push(this.pop());
+        }
 
         Promise.all(pops).then(() => {
             console.log("CLOSED");
