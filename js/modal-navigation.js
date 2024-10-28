@@ -149,7 +149,7 @@ class Navigation {
      */
     pop() {
 		let currentStack = this.stack.pop(); // Remove last added modal
-        const prevModalContent = currentStack[3]._element.querySelector(".modal-body").parentNode;
+        const prevModalContent = currentStack[3]._element.querySelector(".modal-content");
         const prevStack = this.stack[this.stack.length - 1]; // Revert back to the prevous stack
 
         return new Promise(resolve => {
