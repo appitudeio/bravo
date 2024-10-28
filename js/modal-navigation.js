@@ -12,8 +12,10 @@ import { merge } from "./functions";
 
 const EVENT_KEY = `.bs.modal`;
 const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
+const EVENT_SHOWN = `shown${EVENT_KEY}`
 const EVENT_NAV_CLOSE = "close.bs.nav";
 const EVENT_NAV_OPEN = "open.bs.nav";
+const EVENT_NAV_OPENED = "opened.bs.nav";
 const EVENT_NAV_BACK = "back.bs.nav";
 const EVENT_NAV_FORWARD = "forward.bs.nav";
 const CLASS_NAVIGATION = "modal-navigation";
@@ -63,6 +65,9 @@ class Navigation {
         this.Modal._element.classList.add(this.Animation.className);
         
         EventHandler.on(this.Modal._element, EVENT_HIDDEN, () => this.close());
+        EventHandler.on(this.Modal._element, EVENT_SHOWN, () => {
+            EventHandler.trigger(document, EVENT_NAV_OPENED);
+        });
         EventHandler.on(this.Modal._element, "click", "[rel]", e => this.relClickEventListener(e));
     }
 
