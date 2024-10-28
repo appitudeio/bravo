@@ -185,7 +185,7 @@ class Navigation {
             this.stack.forEach(stack => {
                 console.log("Show Modal", stack[3]._element);
 
-                EventHandler.trigger(stack[3]._element, EVENT_SHOW);
+              //  EventHandler.trigger(stack[3]._element, EVENT_SHOW);
             });
         }
 
