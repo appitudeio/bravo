@@ -169,7 +169,7 @@ class Navigation {
         this.state = STATE_CLOSED;
 
         // We need to revert the Modal to its original Modal
-        const firstStack = this.stack[0];
+        let firstStack = this.stack[0];
         this.stack = [];
         this.replace(firstStack);
         firstStack = null;
