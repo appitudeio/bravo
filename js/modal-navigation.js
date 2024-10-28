@@ -148,19 +148,37 @@ class Navigation {
      *  
      */
     pop() {
-		let currentStack = this.stack.pop(); // Remove last added modal
+        let currentStack = this.stack.pop(); // Remove last added modal
+
+        // If there was no modal to pop, resolve immediately
+        if (!currentStack) {
+            return Promise.resolve();
+        }
+
         let prevModalContent = currentStack[3]._element.querySelector(".modal-content");
-        let prevStack = this.stack[this.stack.length - 1]; // Revert back to the prevous stack
+        let prevStack = this.stack[this.stack.length - 1]; // Revert back to the previous stack
+
+        if (!prevStack) {
+            // No previous stack exists, hide the modal
+            return new Promise(resolve => {
+                EventHandler.trigger(document, EVENT_NAV_BACK);
+                this.Modal.hide(); // Assuming you want to hide the modal when stack is empty
+                resolve();
+            });
+        }
 
         return new Promise(resolve => {
             EventHandler.trigger(document, EVENT_NAV_BACK);
 
             this.replace(prevStack, true).then(() => {
-                prevModalContent.append(currentStack[0], currentStack[1], currentStack[2]); // Put everhing back
+                prevModalContent.append(currentStack[0], currentStack[1], currentStack[2]); // Put everything back
                 currentStack = null;
                 prevStack = null;
 
                 resolve();
+            }).catch(error => {
+                console.error("Error during replace in pop:", error);
+                resolve(); // Ensure the promise resolves even if replace fails
             });
         });
     }
