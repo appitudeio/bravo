@@ -30,6 +30,8 @@ const STATE_CLOSED = "closed";
 /**
  *  
  */
+const modalNavigationMap = new WeakMap();
+
 class Navigation {
     Modal;
     Template;
@@ -59,6 +61,12 @@ class Navigation {
     }
 
     setBaseModal(Modal) {
+        // Prevent multiple Navigation instances on the same modal
+        if (modalNavigationMap.has(Modal._element)) {
+            console.warn("A Navigation instance is already attached to this modal.");
+            return;
+        }
+
         this.Modal = Modal;
     
         const animationObj = animationsMap[this.options.animation] ?? animationsMap.slide;
@@ -78,6 +86,9 @@ class Navigation {
         EventHandler.on(this.Modal._element, EVENT_HIDDEN, this.events.hidden);
         EventHandler.on(this.Modal._element, EVENT_SHOWN, this.events.shown);
         EventHandler.on(this.Modal._element, "click", "[rel]", this.events.click);
+
+        // Track the Navigation instance
+        modalNavigationMap.set(this.Modal._element, this);
     }
 
     relClickEventListener(e) {
@@ -211,6 +222,11 @@ class Navigation {
                 EventHandler.off(this.Modal._element, EVENT_HIDDEN, this.events.hidden);
                 EventHandler.off(this.Modal._element, EVENT_SHOWN, this.events.shown);
                 EventHandler.off(this.Modal._element, "click", "[rel]", this.events.click);
+            }
+
+            // Remove from WeakMap
+            if (this.Modal) {
+                modalNavigationMap.delete(this.Modal._element);
             }
 
             this.Modal = null;
