@@ -12,7 +12,6 @@ import { merge } from "./functions";
 
 const EVENT_KEY = `.bs.modal`;
 const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
-const EVENT_SHOW = `show${EVENT_KEY}`;
 const EVENT_SHOWN = `shown${EVENT_KEY}`
 const EVENT_NAV_CLOSE = "close.bs.nav";
 const EVENT_NAV_OPEN = "open.bs.nav";
@@ -169,6 +168,8 @@ class Navigation {
     close() {
         this.state = STATE_CLOSED;
 
+        console.log("CLOSE----");
+
         EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
 
         this.stack = [];
@@ -179,15 +180,6 @@ class Navigation {
         this.state = STATE_OPENED;
 
         EventHandler.trigger(document, EVENT_NAV_OPEN, { stack: Object.values(this.refs) });
-
-        // Trigger show on all modals in the stack (Not the last one, since it will be triggered by Modal.show())
-        if(this.stack.length > 1) {
-            this.stack.forEach(stack => {
-                console.log("Show Modal", stack[3]._element);
-
-              //  EventHandler.trigger(stack[3]._element, EVENT_SHOW);
-            });
-        }
 
         this.Modal.show();
     }
