@@ -152,13 +152,17 @@ class Navigation {
         const prevModalContent = currentStack[3]._element.querySelector(".modal-content");
         const prevStack = this.stack[this.stack.length - 1]; // Revert back to the prevous stack
 
-		this.replace(prevStack, true).then(() => {
-            // Put everhing back
-            prevModalContent.append(currentStack[0], currentStack[1], currentStack[2]);
-			currentStack = null;
-		});
+        return new Promise(resolve => {
+            this.replace(prevStack, true).then(() => {
+                // Put everhing back
+                prevModalContent.append(currentStack[0], currentStack[1], currentStack[2]);
+                currentStack = null;
 
-        EventHandler.trigger(document, EVENT_NAV_BACK);
+                resolve();
+            });
+
+            EventHandler.trigger(document, EVENT_NAV_BACK);
+        });
     }
 
     addEventListener(...props) {
@@ -168,12 +172,15 @@ class Navigation {
     close() {
         this.state = STATE_CLOSED;
 
-        this.stack.forEach(stack => this.pop());
+        const pops = this.stack.map(stack => this.pop());
 
-        EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
+        console.log(pops);
 
+        Promise.all(pops).then(() => {
+            console.log("CLOSED");
+                EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
         this.Modal = null;
-        //this.stack = [];
+        });
     }
 
     show() {
