@@ -60,7 +60,7 @@ class Navigation {
 
     setBaseModal(Modal) {
         console.log("setBaseModal");
-        
+
         this.Modal = Modal;
     
         const animationObj = animationsMap[this.options.animation] ?? animationsMap.slide;
@@ -69,11 +69,17 @@ class Navigation {
         this.Modal._element.classList.add(CLASS_NAVIGATION);
         this.Modal._element.classList.add(this.Animation.className);
         
-        EventHandler.on(this.Modal._element, EVENT_HIDDEN, () => this.close());
-        EventHandler.on(this.Modal._element, EVENT_SHOWN, () => {
+        // Define and store event handlers
+        this.events.hidden = () => this.close();
+        this.events.shown = () => {
             EventHandler.trigger(document, EVENT_NAV_OPENED);
-        });
-        EventHandler.on(this.Modal._element, "click", "[rel]", e => this.relClickEventListener(e));
+        };
+        this.events.click = (e) => this.relClickEventListener(e);
+    
+        // Attach event listeners using stored handlers
+        EventHandler.on(this.Modal._element, EVENT_HIDDEN, this.events.hidden);
+        EventHandler.on(this.Modal._element, EVENT_SHOWN, this.events.shown);
+        EventHandler.on(this.Modal._element, "click", "[rel]", this.events.click);
     }
 
     relClickEventListener(e) {
@@ -204,6 +210,14 @@ class Navigation {
         Promise.all(pops).then(() => {
             console.log("CLOSED");
                 EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
+
+            // Remove event listeners before cleaning up
+            if (this.Modal && this.events) {
+                EventHandler.off(this.Modal._element, EVENT_HIDDEN, this.events.hidden);
+                EventHandler.off(this.Modal._element, EVENT_SHOWN, this.events.shown);
+                EventHandler.off(this.Modal._element, "click", "[rel]", this.events.click);
+            }
+
         this.Modal = null;
         });
     }
