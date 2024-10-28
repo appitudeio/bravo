@@ -12,6 +12,7 @@ import { merge } from "./functions";
 
 const EVENT_KEY = `.bs.modal`;
 const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
+const EVENT_SHOW = `show${EVENT_KEY}`;
 const EVENT_SHOWN = `shown${EVENT_KEY}`
 const EVENT_NAV_CLOSE = "close.bs.nav";
 const EVENT_NAV_OPEN = "open.bs.nav";
@@ -178,6 +179,12 @@ class Navigation {
         this.state = STATE_OPENED;
 
         EventHandler.trigger(document, EVENT_NAV_OPEN, { stack: Object.values(this.refs) });
+
+        if(this.stack.slice(1).length > 1) {
+            this.stack.forEach(stack => {
+                EventHandler.trigger(stack[3]._element, EVENT_SHOW);
+            });
+        }
 
         this.Modal.show();
     }
