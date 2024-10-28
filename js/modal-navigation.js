@@ -177,33 +177,45 @@ class Navigation {
         const [ newHeader, newBody, newFooter ] = to;
 
         return new Promise(resolve => {
+            if(_back) {
+                if (this.stack.length === 1) {
+                    this.Modal._element.classList.remove(CLASS_NAVIGATION_HAS_STACK);
+                } 
+                else if(!this.Modal._element.classList.contains(CLASS_NAVIGATION_HAS_STACK)) {
+                    this.Modal._element.classList.add(CLASS_NAVIGATION_HAS_STACK);
+                }
+            }
+
             this.Animation.from(to).out(_back).then(() => {
                 this.handleHeader(newHeader);
                 this.handleBody(newBody);
                 this.handleFooter(newFooter);
 
-                return this.Animation.in(_back);
-            }).then(() => {
-                this.handleBackButton();
-                resolve()
-            });
+                if (this.stack.length === 1) {
+                    this.Modal._element.classList.remove(CLASS_NAVIGATION_HAS_STACK);
+                } 
+                else if(!this.Modal._element.classList.contains(CLASS_NAVIGATION_HAS_STACK)) {
+                    this.Modal._element.classList.add(CLASS_NAVIGATION_HAS_STACK);
+                }
 
-            // Handle the backbutton no matter what type of animation we are running
-            this.updateBackButton();
+                return this.Animation.in(_back);
+            }).then(resolve);
         });
 	}
 
     handleHeader(newHeader) {
         const currentContainer = this.Modal._element.querySelector(".modal-body").parentNode; // It CAN be a form
         const currentHeader = this.Modal._element.querySelector(".modal-header");
+        const shouldHaveBackButton = (this.stack.length > 1 && (this.options.backButton.disabled == undefined || this.options.backButton.disabled === false) && this.stack.length > 1) ? true : false;
+        const backButton = newHeader?.querySelector("button[rel=back]");
 
         if (newHeader) {
             // If this isnt the RootModal
-            if(this.stack.length > 1) {
+            if(this.stack.length > 1 && shouldHaveBackButton && !backButton) {
                 newHeader.prepend(this.Template.backButton());
             }
-            else {
-                newHeader.querySelector("button[rel=back]")?.remove();
+            else if(!shouldHaveBackButton && backButton) {
+                backButton.remove();
             }
 
             if(currentHeader) {
@@ -254,6 +266,8 @@ class Navigation {
         } 
         else {
             if(modalHeader && !backButton && shouldHaveBackButton) {
+
+                console.log(modalHeader, modalHeader.querySelector("button[rel=back]"));
                 modalHeader.prepend(this.Template.backButton());
             }
 
