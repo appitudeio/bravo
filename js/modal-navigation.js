@@ -59,6 +59,8 @@ class Navigation {
     }
 
     setBaseModal(Modal) {
+        console.log("setBaseModal");
+        
         this.Modal = Modal;
     
         const animationObj = animationsMap[this.options.animation] ?? animationsMap.slide;
