@@ -180,11 +180,9 @@ class Navigation {
 
         EventHandler.trigger(document, EVENT_NAV_OPEN, { stack: Object.values(this.refs) });
 
+        // Trigger show on all modals in the stack (Not the last one, since it will be triggered by Modal.show())
         if(this.stack.length > 1) {
-            this.stack.slice(1).forEach(stack => {
-                console.log("SHOW", stack);
-                EventHandler.trigger(stack[3]._element, EVENT_SHOW);
-            });
+            this.stack.slice(0, -1).forEach(stack => EventHandler.trigger(stack[3]._element, EVENT_SHOW));
         }
 
         this.Modal.show();
