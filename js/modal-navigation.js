@@ -59,8 +59,6 @@ class Navigation {
     }
 
     setBaseModal(Modal) {
-        console.log("setBaseModal");
-
         this.Modal = Modal;
     
         const animationObj = animationsMap[this.options.animation] ?? animationsMap.slide;
@@ -205,11 +203,8 @@ class Navigation {
             pops.push(this.pop());
         }
 
-        console.log("pops", pops);
-
         Promise.all(pops).then(() => {
-            console.log("CLOSED");
-                EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
+            EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
 
             // Remove event listeners before cleaning up
             if (this.Modal && this.events) {
@@ -218,7 +213,7 @@ class Navigation {
                 EventHandler.off(this.Modal._element, "click", "[rel]", this.events.click);
             }
 
-        this.Modal = null;
+            this.Modal = null;
         });
     }
 
@@ -334,8 +329,6 @@ class Navigation {
         } 
         else {
             if(modalHeader && !backButton && shouldHaveBackButton) {
-
-                console.log(modalHeader, modalHeader.querySelector("button[rel=back]"));
                 modalHeader.prepend(this.Template.backButton());
             }
 
