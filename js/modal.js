@@ -20,12 +20,14 @@ class Modal extends BootstrapModal {
         
         if (typeof elementOrOptions === 'object') {
             modalElement = Modal.generate(elementOrOptions);
-        } else if (typeof elementOrOptions === 'string') {
+        } 
+        else if (typeof elementOrOptions === 'string') {
             modalElement = document.getElementById(elementOrOptions);
             if (!modalElement) {
                 throw new Error("Element not found.");
             }
-        } else {
+        } 
+        else {
             throw new Error("Invalid parameter: Must provide an element ID or options object.");
         }
 

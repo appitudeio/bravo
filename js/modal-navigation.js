@@ -182,7 +182,7 @@ class Navigation {
 
         // Trigger show on all modals in the stack (Not the last one, since it will be triggered by Modal.show())
         if(this.stack.length > 1) {
-            this.stack.slice(0, -1).forEach(stack => {
+            this.stack.forEach(stack => {
                 console.log("Show Modal", stack[3]._element);
 
                 EventHandler.trigger(stack[3]._element, EVENT_SHOW);
