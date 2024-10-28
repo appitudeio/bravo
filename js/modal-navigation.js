@@ -182,6 +182,7 @@ class Navigation {
 
         if(this.stack.length > 1) {
             this.stack.slice(1).forEach(stack => {
+                console.log("SHOW", stack);
                 EventHandler.trigger(stack[3]._element, EVENT_SHOW);
             });
         }
