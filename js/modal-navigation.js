@@ -168,14 +168,10 @@ class Navigation {
     close() {
         this.state = STATE_CLOSED;
 
-        // We need to revert the Modal to its original Modal
-        let firstStack = this.stack[0];
-        this.stack = [];
-        this.replace(firstStack);
-        firstStack = null;
-        this.Modal = null;
-
         EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
+
+        this.Modal = null;
+        this.stack = [];
     }
 
     show() {
