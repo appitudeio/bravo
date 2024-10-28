@@ -27,7 +27,7 @@
         transition: opacity var(--modal-stack-animation-duration) ease, margin var(--modal-stack-animation-duration) ease, height var(--modal-stack-animation-duration) ease;
     }
 
-    .modal-content > * {
+    .modal-content, .modal-content > * {
         transition: height var(--modal-stack-animation-duration) ease, opacity var(--modal-stack-animation-duration) ease;
     }
 }
