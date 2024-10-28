@@ -149,19 +149,19 @@ class Navigation {
      */
     pop() {
 		let currentStack = this.stack.pop(); // Remove last added modal
-        const prevModalContent = currentStack[3]._element.querySelector(".modal-content");
+        const prevModalContent = currentStack[3]._element.querySelector(".modal-body").parentNode;
         const prevStack = this.stack[this.stack.length - 1]; // Revert back to the prevous stack
 
         return new Promise(resolve => {
+            EventHandler.trigger(document, EVENT_NAV_BACK);
+
             this.replace(prevStack, true).then(() => {
-                // Put everhing back
-                prevModalContent.append(currentStack[0], currentStack[1], currentStack[2]);
+                prevModalContent.append(currentStack[0], currentStack[1], currentStack[2]); // Put everhing back
                 currentStack = null;
+                prevStack = null;
 
                 resolve();
             });
-
-            EventHandler.trigger(document, EVENT_NAV_BACK);
         });
     }
 
@@ -174,7 +174,7 @@ class Navigation {
 
         const pops = this.stack.map(stack => this.pop());
 
-        console.log(pops);
+        console.log("pops", pops);
 
         Promise.all(pops).then(() => {
             console.log("CLOSED");
