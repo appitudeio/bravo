@@ -24,6 +24,8 @@ const CLASS_NAVIGATION_TRANSITION = "modal-animation-transition";
 const CLASS_NAVIGATION_TRANSITION_IN = "modal-animation-transition-in"
 const CLASS_NAVIGATION_BACK = "modal-animation-direction-back";
 const CLASS_NAVIGATION_FORWARD = "modal-animation-direction-forward";
+const STATE_OPENED = "open";
+const STATE_CLOSED = "closed";
 
 /**
  *  
@@ -46,6 +48,7 @@ class Navigation {
     stack = [];
     refs = {};
     events = {};
+    state = STATE_CLOSED;
 
     constructor(options = {}) {
         this.options = merge(
@@ -163,6 +166,8 @@ class Navigation {
     }
 
     close() {
+        this.state = STATE_CLOSED;
+
         EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
 
         this.stack = [];
@@ -170,6 +175,8 @@ class Navigation {
     }
 
     show() {
+        this.state = STATE_OPENED;
+
         EventHandler.trigger(document, EVENT_NAV_OPEN, { stack: Object.values(this.refs) });
 
         this.Modal.show();
@@ -183,30 +190,38 @@ class Navigation {
 
         return new Promise(resolve => {
             if(_back) {
-                if (this.stack.length === 1) {
-                    this.Modal._element.classList.remove(CLASS_NAVIGATION_HAS_STACK);
-                } 
-                else if(!this.Modal._element.classList.contains(CLASS_NAVIGATION_HAS_STACK)) {
-                    this.Modal._element.classList.add(CLASS_NAVIGATION_HAS_STACK);
-                }
+                this.setStackClass();
             }
 
-            this.Animation.from(to).out(_back).then(() => {
-                this.handleHeader(newHeader);
-                this.handleBody(newBody);
-                this.handleFooter(newFooter);
-
-                if (this.stack.length === 1) {
-                    this.Modal._element.classList.remove(CLASS_NAVIGATION_HAS_STACK);
-                } 
-                else if(!this.Modal._element.classList.contains(CLASS_NAVIGATION_HAS_STACK)) {
-                    this.Modal._element.classList.add(CLASS_NAVIGATION_HAS_STACK);
-                }
-
-                return this.Animation.in(_back);
-            }).then(resolve);
+            if(this.state == STATE_CLOSED) {
+                this.handleContent(newHeader, newBody, newFooter).then(resolve);
+            }
+            else {
+                this.Animation.from(to).out(_back).then(() => {
+                    this.handleContent(newHeader, newBody, newFooter);
+                    return this.Animation.in(_back);
+                }).then(resolve);
+            }
         });
 	}
+
+    setStackClass() {
+        if (this.stack.length === 1) {
+            this.Modal._element.classList.remove(CLASS_NAVIGATION_HAS_STACK);
+        } 
+        else if(!this.Modal._element.classList.contains(CLASS_NAVIGATION_HAS_STACK)) {
+            this.Modal._element.classList.add(CLASS_NAVIGATION_HAS_STACK);
+        }
+    }
+
+    handleContent(newHeader, newBody, newFooter) {
+        this.handleHeader(newHeader);
+        this.handleBody(newBody);
+        this.handleFooter(newFooter);
+        this.setStackClass();
+
+        return new Promise(resolve => resolve());
+    }
 
     handleHeader(newHeader) {
         const currentContainer = this.Modal._element.querySelector(".modal-body").parentNode; // It CAN be a form
