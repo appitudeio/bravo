@@ -197,6 +197,8 @@ class Navigation {
             pops.push(this.pop());
         }
 
+        console.log("pops", pops);
+
         Promise.all(pops).then(() => {
             console.log("CLOSED");
                 EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
