@@ -180,8 +180,8 @@ class Navigation {
 
         EventHandler.trigger(document, EVENT_NAV_OPEN, { stack: Object.values(this.refs) });
 
-        if(this.stack.slice(1).length > 1) {
-            this.stack.forEach(stack => {
+        if(this.stack.length > 1) {
+            this.stack.slice(1).forEach(stack => {
                 EventHandler.trigger(stack[3]._element, EVENT_SHOW);
             });
         }
