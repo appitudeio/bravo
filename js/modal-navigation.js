@@ -191,8 +191,6 @@ class Navigation {
 
         return new Promise(resolve => {
             EventHandler.trigger(document, EVENT_NAV_BACK, { stack: this.stack });
-            console.log("prevStack", prevStack);
-            console.log("currentStack", currentStack);
             EventHandler.trigger(currentStack[3]._element, EVENT_HIDE);
 
             this.replace(prevStack, true).then(() => {
