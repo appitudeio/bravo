@@ -32,7 +32,7 @@ class Modal extends BootstrapModal {
         }
 
         // Call the parent constructor with the modal element
-        super(modalElement);
+        super(modalElement, (typeof elementOrOptions === 'object') ? elementOrOptions : {});
 
         // Register callbacks
         this.registerEventListeners();
@@ -72,8 +72,12 @@ class Modal extends BootstrapModal {
           size = 'lg',
           animation = 'fade',
           closeButton = {
-              text: "&times",
-              disabled: false
+            disabled: false,
+            text: "" // &times;
+          },
+          backButton = {
+            disabled: false,
+            text: "" // &larr;
           }
         } = options;
         let className = options['class'] ?? "";

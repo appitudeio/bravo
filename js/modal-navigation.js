@@ -258,14 +258,14 @@ class Navigation {
             }
 
             if(this.state == STATE_CLOSED) {
-                this.handleContent(newHeader, newBody, newFooter).then(() => {
+                this.handleContent(newHeader, newBody, newFooter, Modal).then(() => {
                     resolve();
                     EventHandler.trigger(Modal._element, EVENT_SHOWN);
                 });
             }
             else {
                 this.Animation.from(to).out(_back).then(() => {
-                    this.handleContent(newHeader, newBody, newFooter);
+                    this.handleContent(newHeader, newBody, newFooter, Modal);
                     return this.Animation.in(_back);
                 }).then(() => {
                     resolve();
@@ -284,8 +284,8 @@ class Navigation {
         }
     }
 
-    handleContent(newHeader, newBody, newFooter) {
-        this.handleHeader(newHeader);
+    handleContent(newHeader, newBody, newFooter, newModal) {
+        this.handleHeader(newHeader, newModal);
         this.handleBody(newBody);
         this.handleFooter(newFooter);
         this.setStackClass();
@@ -293,11 +293,15 @@ class Navigation {
         return new Promise(resolve => resolve());
     }
 
-    handleHeader(newHeader) {
+    handleHeader(newHeader, newModal) {
         const currentContainer = this.Modal._element.querySelector(".modal-body").parentNode; // It CAN be a form
         const currentHeader = this.Modal._element.querySelector(".modal-header");
-        const shouldHaveBackButton = (this.stack.length > 1 && (this.options.backButton.disabled == undefined || this.options.backButton.disabled === false) && this.stack.length > 1) ? true : false;
         const backButton = newHeader?.querySelector("button[rel=back]");
+        const shouldHaveBackButton = (
+            this.stack.length > 1 
+                && ((newModal._config.backButton.disabled == undefined || newModal._config.backButton.disabled === false)
+                    && (this.options.backButton.disabled == undefined || this.options.backButton.disabled === false))
+        ) ? true : false;
 
         if (newHeader) {
             // If this isnt the RootModal
@@ -342,33 +346,6 @@ class Navigation {
         else if(currentFooter) {
             // If there's no new footer, remove the existing one
             currentFooter.remove();
-        }
-    }
-
-    updateBackButton() {
-        const modalHeader = this.Modal._element.querySelector(".modal-header");
-        const backButton = modalHeader?.querySelector("button[rel=back]") ?? null;
-        const shouldHaveBackButton = (this.stack.length > 1 && (this.options.backButton.disabled == undefined || this.options.backButton.disabled === false) && this.stack.length > 1) ? true : false;
-        
-        // If rootModal
-        if (this.stack.length === 1) {
-            this.Modal._element.classList.remove(CLASS_NAVIGATION_HAS_STACK);
-        } 
-        else {
-            if(modalHeader && !backButton && shouldHaveBackButton) {
-                modalHeader.prepend(this.Template.backButton());
-            }
-
-            setTimeout(() => this.Modal._element.classList.add(CLASS_NAVIGATION_HAS_STACK), 10);
-        }
-    }
-
-    handleBackButton() {
-        const modalHeader = this.Modal._element.querySelector(".modal-header");
-        const backButton = modalHeader?.querySelector("button[rel=back]");
-
-        if(backButton && this.stack.length === 1) {
-            backButton.remove()
         }
     }
 }
