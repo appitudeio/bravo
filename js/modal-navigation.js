@@ -299,8 +299,8 @@ class Navigation {
         const backButton = newHeader?.querySelector("button[rel=back]");
         const shouldHaveBackButton = (
             this.stack.length > 1 
-                && ((newModal._config.backButton.disabled == undefined || newModal._config.backButton.disabled === false)
-                    && (this.options.backButton.disabled == undefined || this.options.backButton.disabled === false))
+                && (newModal._config?.backButton?.disabled === false
+                    && this.options.backButton?.disabled === false)
         ) ? true : false;
 
         if (newHeader) {
