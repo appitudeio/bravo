@@ -259,8 +259,8 @@ class Navigation {
 
             if(this.state == STATE_CLOSED) {
                 this.handleContent(newHeader, newBody, newFooter).then(() => {
-                    EventHandler.trigger(Modal._element, EVENT_SHOWN);
                     resolve();
+                    EventHandler.trigger(Modal._element, EVENT_SHOWN);
                 });
             }
             else {
@@ -268,8 +268,8 @@ class Navigation {
                     this.handleContent(newHeader, newBody, newFooter);
                     return this.Animation.in(_back);
                 }).then(() => {
-                    EventHandler.trigger(Modal._element, EVENT_SHOWN);
                     resolve();
+                    EventHandler.trigger(Modal._element, EVENT_SHOWN);
                 });
             }
         });
