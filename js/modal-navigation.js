@@ -11,6 +11,7 @@ import ModalObj, { ModalTemplate } from "./modal";
 import { merge } from "./functions";
 
 const EVENT_KEY = `.bs.modal`;
+const EVENT_HIDE = `hide${EVENT_KEY}`;
 const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
 const EVENT_SHOWN = `shown${EVENT_KEY}`
 const EVENT_NAV_CLOSE = "close.bs.nav";
@@ -190,6 +191,7 @@ class Navigation {
 
         return new Promise(resolve => {
             EventHandler.trigger(document, EVENT_NAV_BACK, { stack: this.stack });
+            EventHandler.trigger(this.Modal._element, EVENT_HIDE);
 
             this.replace(prevStack, true).then(() => {
                 prevModalContent.append(currentStack[0], currentStack[1], currentStack[2]); // Put everything back
@@ -197,9 +199,6 @@ class Navigation {
                 prevStack = null;
 
                 resolve();
-            }).catch(error => {
-                console.error("Error during replace in pop:", error);
-                resolve(); // Ensure the promise resolves even if replace fails
             });
         });
     }
