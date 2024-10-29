@@ -298,10 +298,10 @@ class Navigation {
         const currentHeader = this.Modal._element.querySelector(".modal-header");
         const backButton = newHeader?.querySelector("button[rel=back]");
         const shouldHaveBackButton = (
-            this.stack.length > 1 
-                && (newModal._config?.backButton?.disabled === false
-                    && this.options.backButton?.disabled === false)
-        ) ? true : false;
+            this.stack.length > 1 &&
+            (!newModal._config?.backButton?.disabled) &&
+            (!this.options.backButton?.disabled)
+        );
 
         if (newHeader) {
             // If this isnt the RootModal
