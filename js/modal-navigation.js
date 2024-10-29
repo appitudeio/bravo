@@ -78,7 +78,7 @@ class Navigation {
         // Define and store event handlers
         this.events.hidden = () => this.close();
         this.events.shown = () => {
-            EventHandler.trigger(document, EVENT_NAV_OPENED);
+            EventHandler.trigger(document, EVENT_NAV_OPENED, { stack: Object.values(this.refs) });
         };
         this.events.click = (e) => this.relClickEventListener(e);
     
@@ -153,7 +153,7 @@ class Navigation {
             if(this.stack.length > 1) {
                 this.replace(this.stack[this.stack.length - 1]).then(resolve);
 
-                EventHandler.trigger(document, EVENT_NAV_FORWARD);
+                EventHandler.trigger(document, EVENT_NAV_FORWARD, { stack: Object.values(this.refs) });
             }
             else {
                 resolve();
@@ -178,14 +178,14 @@ class Navigation {
         if (!prevStack) {
             // No previous stack exists, hide the modal
             return new Promise(resolve => {
-                EventHandler.trigger(document, EVENT_NAV_BACK);
+                EventHandler.trigger(document, EVENT_NAV_BACK, { stack: Object.values(this.refs) });
                 this.Modal.hide(); // Assuming you want to hide the modal when stack is empty
                 resolve();
             });
         }
 
         return new Promise(resolve => {
-            EventHandler.trigger(document, EVENT_NAV_BACK);
+            EventHandler.trigger(document, EVENT_NAV_BACK, { stack: Object.values(this.refs) });
 
             this.replace(prevStack, true).then(() => {
                 prevModalContent.append(currentStack[0], currentStack[1], currentStack[2]); // Put everything back
