@@ -13,6 +13,7 @@ import { merge } from "./functions";
 const EVENT_KEY = `.bs.modal`;
 const EVENT_HIDE = `hide${EVENT_KEY}`;
 const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
+const EVENT_SHOW = `show${EVENT_KEY}`;
 const EVENT_SHOWN = `shown${EVENT_KEY}`
 const EVENT_NAV_CLOSE = "close.bs.nav";
 const EVENT_NAV_OPEN = "open.bs.nav";
@@ -78,9 +79,7 @@ class Navigation {
         
         // Define and store event handlers
         this.events.hidden = () => this.close();
-        this.events.shown = () => {
-            EventHandler.trigger(document, EVENT_NAV_OPENED, { stack: this.refs });
-        };
+        this.events.shown = () => EventHandler.trigger(document, EVENT_NAV_OPENED, { stack: this.refs });
         this.events.click = (e) => this.relClickEventListener(e);
     
         // Attach event listeners using stored handlers
@@ -249,7 +248,9 @@ class Navigation {
      *  Actually inject the content (header, body, footer)
      */
 	replace(to, _back = false) {
-        const [ newHeader, newBody, newFooter ] = to;
+        const [ newHeader, newBody, newFooter, Modal ] = to;
+
+        EventHandler.trigger(Modal._element, EVENT_SHOW);
 
         return new Promise(resolve => {
             if(_back) {
@@ -257,13 +258,19 @@ class Navigation {
             }
 
             if(this.state == STATE_CLOSED) {
-                this.handleContent(newHeader, newBody, newFooter).then(resolve);
+                this.handleContent(newHeader, newBody, newFooter).then(() => {
+                    EventHandler.trigger(Modal._element, EVENT_SHOWN);
+                    resolve();
+                });
             }
             else {
                 this.Animation.from(to).out(_back).then(() => {
                     this.handleContent(newHeader, newBody, newFooter);
                     return this.Animation.in(_back);
-                }).then(resolve);
+                }).then(() => {
+                    EventHandler.trigger(Modal._element, EVENT_SHOWN);
+                    resolve();
+                });
             }
         });
 	}
