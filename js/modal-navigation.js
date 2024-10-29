@@ -195,6 +195,7 @@ class Navigation {
 
             this.replace(prevStack, true).then(() => {
                 prevModalContent.append(currentStack[0], currentStack[1], currentStack[2]); // Put everything back
+                EventHandler.trigger(currentStack[3]._element, EVENT_HIDDEN);
                 currentStack = null;
                 prevStack = null;
 
