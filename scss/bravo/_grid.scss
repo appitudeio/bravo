@@ -32,12 +32,12 @@
             @each $key, $value in $gutters {
                 .g#{$infix}-#{$key},
                 .gx#{$infix}-#{$key} {
-                    --#{$prefix}gutter-x: #{$value};
+                    --#{$prefix}gutter-x: #{$value} !important;
                 }
 
                 .g#{$infix}-#{$key},
                 .gy#{$infix}-#{$key} {
-                    --#{$prefix}gutter-y: #{$value};
+                    --#{$prefix}gutter-y: #{$value} !important;
                 }
             }
         }
@@ -45,6 +45,8 @@
 }
 
 @mixin make-row($gutter: $grid-gutter-width) {
+    --#{$prefix}gutter-x: #{$gutter};
+    --#{$prefix}gutter-y: #{$gutter};
     display: flex;
     flex-wrap: wrap;
     margin-top: calc(-1 * var(--#{$prefix}gutter-y));
