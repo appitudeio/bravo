@@ -32,12 +32,16 @@
             @each $key, $value in $gutters {
                 .g#{$infix}-#{$key},
                 .gx#{$infix}-#{$key} {
-                    --#{$prefix}gutter-x: #{$value} !important;
+                    &, .row {
+                        --#{$prefix}gutter-x: #{$value};
+                    }
                 }
 
                 .g#{$infix}-#{$key},
                 .gy#{$infix}-#{$key} {
-                    --#{$prefix}gutter-y: #{$value} !important;
+                    &, .row {
+                        --#{$prefix}gutter-y: #{$value};
+                    }
                 }
             }
         }
