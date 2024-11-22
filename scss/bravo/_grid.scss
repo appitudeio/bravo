@@ -45,8 +45,6 @@
 }
 
 @mixin make-row($gutter: $grid-gutter-width) {
-    --#{$prefix}gutter-x: #{$gutter};
-    --#{$prefix}gutter-y: #{$gutter};
     display: flex;
     flex-wrap: wrap;
     margin-top: calc(-1 * var(--#{$prefix}gutter-y));

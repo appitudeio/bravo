@@ -3,8 +3,8 @@
  *  (SafeAreaRight+Left)
  */
 @mixin make-container() {
-    --#{$prefix}gutter-x: 0;
-    --#{$prefix}gutter-y: 0;
+  //  --#{$prefix}gutter-x: 0;
+  //  --#{$prefix}gutter-y: 0;
 
     width: 100%;
     max-width: #{map-get($grid-breakpoints, xxl)};

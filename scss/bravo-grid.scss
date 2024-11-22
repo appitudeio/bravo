@@ -4,6 +4,11 @@
 $enable-grid-classes: true;
 $enable-container-classes: true;
 
+:root {
+    --#{$prefix}gutter-x: #{$grid-gutter-width};
+    --#{$prefix}gutter-y: #{$grid-gutter-width};                
+}    
+
 @import "bravo/grid";
 @import "bravo/container";
 @import "bootstrap/scss/grid";
