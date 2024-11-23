@@ -20,8 +20,8 @@ $utilities: map-remove($utilities,
  *  Grab potantially incoming colors and merge them into Bootstrap's "core"
  *  + generate missing colors (25-50 + 950-975)
  */
-$theme-custom-colors: generate-custom-colors($theme-colors);
-$colors: map-merge($theme-custom-colors, $grays);
+$theme-custom-colors: generate-custom-colors(map-merge($theme-colors, ("gray": $grays)));
+$colors: $theme-custom-colors;
 $bs-color-maps: ($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
 
 @each $bs-color-map in $bs-color-maps {
@@ -33,28 +33,27 @@ $bs-color-maps: ($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, 
  */
 @if variable-exists(custom-colors) {
     $custom-bravo-colors: generate-custom-colors($custom-colors);
-    $custom-bravo-colors-variables-map: generate-key-variable-map($custom-bravo-colors);
     $colors: map-merge($colors, $custom-bravo-colors);
+}
 
-    // Pair the new colors with utilities
-    @each $util in ("color", "background-color", "border-color") {
-        $utilities: map-merge(
-            $utilities,
-            (
-                $util: map-merge(
-                    map-get($utilities, $util),
-                    (
-                        values: map-merge(
-                            map-get(map-get($utilities, $util), "values"),
-                            (
-                                $custom-bravo-colors-variables-map
-                            )
+// Pair colors with utilities
+@each $util in ("color", "background-color", "border-color") {
+    $utilities: map-merge(
+        $utilities,
+        (
+            $util: map-merge(
+                map-get($utilities, $util),
+                (
+                    values: map-merge(
+                        map-get(map-get($utilities, $util), "values"),
+                        (
+                            $colors
                         )
                     )
                 )
             )
-        );
-    }
+        )
+    );
 }
 
 // Map all theme colors with potential adjustments
