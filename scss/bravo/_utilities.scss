@@ -21,8 +21,8 @@ $utilities: map-remove($utilities,
  *  + generate missing colors (25-50 + 950-975)
  */
 $theme-custom-colors: generate-custom-colors($theme-colors);
-$colors: $theme-custom-colors;
-$bs-color-maps: ($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans, $grays);
+$colors: map-merge($theme-custom-colors, $grays);
+$bs-color-maps: ($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
 
 @each $bs-color-map in $bs-color-maps {
     $colors: map-merge($colors, bs-to-bravo-colors($bs-color-map));
