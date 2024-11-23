@@ -22,7 +22,7 @@ $utilities: map-remove($utilities,
  */
 $theme-custom-colors: generate-custom-colors($theme-colors);
 $colors: $theme-custom-colors;
-$bs-color-maps: ($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
+$bs-color-maps: ($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans, $grays);
 
 @each $bs-color-map in $bs-color-maps {
     $colors: map-merge($colors, bs-to-bravo-colors($bs-color-map));
