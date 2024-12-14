@@ -32,7 +32,7 @@
 
 @each $breakpoint, $size in $grid-breakpoints {
   @include media-breakpoint-up($breakpoint) {
-    .container, .container-fluid {
+    :root {
        --#{$prefix}container-gutter-x: #{map-get($container-gutters, $breakpoint)};
     }
   }
