@@ -2,6 +2,10 @@
  *  Bootstrap doesnt take the --sar + --sal in consideration (horizontal mobile)
  *  (SafeAreaRight+Left)
  */
+:root {
+  --container-width: #{map-get($grid-breakpoints, xxl)};
+}
+
 @mixin make-container() {
     --#{$prefix}gutter-end: calc(var(--#{$prefix}gutter-x) + var(--sar));
     --#{$prefix}gutter-start: calc(var(--#{$prefix}gutter-x) + var(--sal));
@@ -19,10 +23,6 @@
   // 100% wide container at all breakpoints
   .container-fluid {
     @include make-container();
-}
-
-.container {
-  --container-width: #{map-get($grid-breakpoints, xxl)};
 }
 
 .container-fluid {
