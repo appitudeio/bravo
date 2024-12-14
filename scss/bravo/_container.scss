@@ -5,12 +5,11 @@
 :root {
   --#{$prefix}container-width: #{map-get($grid-breakpoints, xxl)};
   --#{$prefix}container-fluid-width: 100%;
+  --#{$prefix}container-gutter-end: calc(var(--#{$prefix}container-gutter-x) + var(--sar));
+  --#{$prefix}container-gutter-start: calc(var(--#{$prefix}container-gutter-x) + var(--sal));
 }
 
 @mixin make-container() {
-  --#{$prefix}container-gutter-end: calc(var(--#{$prefix}container-gutter-x) + var(--sar));
-  --#{$prefix}container-gutter-start: calc(var(--#{$prefix}container-gutter-x) + var(--sal));
-
   width: 100%;
   max-width: var(--#{$prefix}container-width);
   padding-right: var(--#{$prefix}container-gutter-end);
