@@ -4,12 +4,11 @@
  */
 :root {
   --container-width: #{map-get($grid-breakpoints, xxl)};
+  --#{$prefix}gutter-end: calc(var(--#{$prefix}gutter-x) + var(--sar));
+  --#{$prefix}gutter-start: calc(var(--#{$prefix}gutter-x) + var(--sal));
 }
 
 @mixin make-container() {
-    --#{$prefix}gutter-end: calc(var(--#{$prefix}gutter-x) + var(--sar));
-    --#{$prefix}gutter-start: calc(var(--#{$prefix}gutter-x) + var(--sal));
-
     width: 100%;
     max-width: var(--container-width);
     padding-right: var(--#{$prefix}gutter-end);
