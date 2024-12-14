@@ -30,8 +30,8 @@
     @include media-breakpoint-up($breakpoint) {
         .container, .container-fluid {
             --#{$prefix}gutter-x: #{map-get($container-gutters, $breakpoint)};
-            --#{$prefix}gutter-end: calc(map-get($container-gutters, $breakpoint) + var(--sar));
-            --#{$prefix}gutter-start: calc(map-get($container-gutters, $breakpoint) + var(--sal));
+            --#{$prefix}gutter-end: calc(var(--#{$prefix}gutter-x) + var(--sar));
+            --#{$prefix}gutter-start: calc(var(--#{$prefix}gutter-x) + var(--sal));
         }
     }
 }
