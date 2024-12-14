@@ -3,6 +3,9 @@
  *  (SafeAreaRight+Left)
  */
 @mixin make-container() {
+    --#{$prefix}gutter-end: calc(var(--#{$prefix}gutter-x) + var(--sar));
+    --#{$prefix}gutter-start: calc(var(--#{$prefix}gutter-x) + var(--sal));
+
     width: 100%;
     max-width: var(--container-width);
     padding-right: var(--#{$prefix}gutter-end);
@@ -30,8 +33,6 @@
     @include media-breakpoint-up($breakpoint) {
         .container, .container-fluid {
             --#{$prefix}gutter-x: #{map-get($container-gutters, $breakpoint)};
-            --#{$prefix}gutter-end: calc(var(--#{$prefix}gutter-x) + var(--sar));
-            --#{$prefix}gutter-start: calc(var(--#{$prefix}gutter-x) + var(--sal));
         }
     }
 }
