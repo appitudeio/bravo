@@ -5,8 +5,8 @@
 @mixin make-container() {
     width: 100%;
     max-width: var(--container-width);
-    padding-right: calc(var(--#{$prefix}gutter-x) + var(--sar));
-    padding-left: calc(var(--#{$prefix}gutter-x) + var(--sal));
+    padding-right: var(--#{$prefix}gutter-end);
+    padding-left: var(--#{$prefix}gutter-start);
     margin-right: auto;
     margin-left: auto;
 }
@@ -30,6 +30,8 @@
     @include media-breakpoint-up($breakpoint) {
         .container, .container-fluid {
             --#{$prefix}gutter-x: #{map-get($container-gutters, $breakpoint)};
+            --#{$prefix}gutter-end: calc(map-get($container-gutters, $breakpoint) + var(--sar));
+            --#{$prefix}gutter-start: calc(map-get($container-gutters, $breakpoint) + var(--sal));
         }
     }
 }
