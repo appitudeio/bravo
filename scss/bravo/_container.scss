@@ -9,12 +9,12 @@
 }
 
 @mixin make-container() {
-    width: 100%;
-    max-width: var(--container-width);
-    padding-right: var(--#{$prefix}gutter-end);
-    padding-left: var(--#{$prefix}gutter-start);
-    margin-right: auto;
-    margin-left: auto;
+  width: 100%;
+  max-width: var(--container-width);
+  padding-right: var(--#{$prefix}gutter-end);
+  padding-left: var(--#{$prefix}gutter-start);
+  margin-right: auto;
+  margin-left: auto;
 }
 
 // Single container class with breakpoint max-widths
@@ -29,9 +29,9 @@
 }
 
 @each $breakpoint, $size in $grid-breakpoints {
-    @include media-breakpoint-up($breakpoint) {
-        .container, .container-fluid {
-            --#{$prefix}gutter-x: #{map-get($container-gutters, $breakpoint)};
-        }
+  @include media-breakpoint-up($breakpoint) {
+    .container, .container-fluid {
+        --#{$prefix}gutter-x: #{map-get($container-gutters, $breakpoint)};
     }
+  }
 }
