@@ -3,11 +3,8 @@
  *  (SafeAreaRight+Left)
  */
 @mixin make-container() {
-  //  --#{$prefix}gutter-x: 0;
-  //  --#{$prefix}gutter-y: 0;
-
     width: 100%;
-    max-width: #{map-get($grid-breakpoints, xxl)};
+    max-width: var(--container-width);
     padding-right: calc(var(--#{$prefix}gutter-x) + var(--sar));
     padding-left: calc(var(--#{$prefix}gutter-x) + var(--sal));
     margin-right: auto;
@@ -19,6 +16,14 @@
   // 100% wide container at all breakpoints
   .container-fluid {
     @include make-container();
+}
+
+.container {
+  --container-width: #{map-get($grid-breakpoints, xxl)};
+}
+
+.container-fluid {
+  --container-width: 100%;
 }
 
 @each $breakpoint, $size in $grid-breakpoints {
