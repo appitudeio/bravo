@@ -15,7 +15,7 @@ $icon-size-lg: 24px;
     background-color: currentColor;
     mask: var(--icon);
 	mask-repeat: no-repeat;
-    mask-size: cover;
+    mask-size: contain;
     margin: 0;
     padding: 0;
 }
