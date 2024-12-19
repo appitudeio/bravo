@@ -13,9 +13,9 @@ $icon-size-lg: 24px;
 	width: var(--icon-size);
 	height: var(--icon-size);
     background-color: currentColor;
+    mask: var(--icon);
 	mask-repeat: no-repeat;
     mask-size: cover;
-	mask: var(--icon);
     margin: 0;
     padding: 0;
 }
