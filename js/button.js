@@ -33,9 +33,6 @@ export default class Button extends BootstrapButton {
             this.spinner = this.createSpinner();
         }
 
-        this._element.innerHTML = "";
-        this._element.appendChild(this.spinner);
-
         // Insert loading text if specified
         let _loadingText = (this.loadingText !== "") ? this.loadingText : "Loading...";
         const loadingTextNode = this.createLoaderText(_loadingText);
@@ -44,8 +41,11 @@ export default class Button extends BootstrapButton {
             loadingTextNode.classList.add("visually-hidden");
         }
 
+        this._element.innerHTML = "";
+        this._element.appendChild(document.createTextNode("\u00A0")); // Inject an empty character so the btn holds it's height (&nbsp;)
+        this._element.appendChild(this.spinner);
         this._element.appendChild(loadingTextNode);
-        this._element.appendChild(document.createTextNode("\u00A0")); // Inject an empty character so the btn holds it's height
+        this._element.appendChild(document.createTextNode("\u00A0"));
         this._element.setAttribute('aria-label', _loadingText);
 
         // Optionally, add a class to indicate loading state for additional styling
