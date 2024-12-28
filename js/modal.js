@@ -46,7 +46,7 @@ class Modal extends BootstrapModal {
         // If a form is included
         this._element.querySelectorAll('form').forEach(_form => _form.addEventListener('submit', (e) => {
             // Trigger submit-event
-            const submitEvent = EventHandler.trigger(this._element, EVENT_SUBMIT, { target: e.target });
+            const submitEvent = EventHandler.trigger(this._element, EVENT_SUBMIT, { target: _form }); //e.target });
 
             // After triggering, check if the event was prevented
             if (submitEvent.defaultPrevented) {
