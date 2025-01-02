@@ -120,16 +120,9 @@ class Navigation {
 
       let modal = ModalObj.getInstance(modalElement);
       if(null === modal) {
-        console.log("no modal");
         modal = new ModalObj(modalElement);
       }
-      else {
-        console.log("FOUND MODAL!!");
-      }
-
-      console.log("findAndPushModal", modal);
-      console.log("ref", reference);
-
+      
       this.push(modal);
     }
 
