@@ -118,7 +118,10 @@ class Navigation {
         throw new Error(`Invalid modal rel, ${reference} doesnt exist.`);
       }
 
-      const modal = ModalObj.getInstance(modalElement);
+      let modal = ModalObj.getInstance(modalElement);
+      if(!modal) {
+        modal = new ModalObj(modalElement);
+      }
 
       console.log("findAndPushModal", modal);
       console.log("ref", reference);
