@@ -120,6 +120,9 @@ class Navigation {
 
       const modal = ModalObj.getInstance(modalElement);
 
+      console.log("findAndPushModal", modal);
+      console.log("ref", reference);
+
       this.push(modal);
     }
 
