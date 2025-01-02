@@ -120,6 +120,7 @@ class Navigation {
 
       let modal = ModalObj.getInstance(modalElement);
       if(null === modal) {
+        console.log("cr8 new modal");
         modal = new ModalObj(modalElement);
       }
       
@@ -134,6 +135,8 @@ class Navigation {
         if(this.stack.length == 0) {
             this.setBaseModal(childModal);
         }
+
+        console.log("push", childModal);
 
         this.stack.push([
             childModal._element.querySelector(".modal-header"),
