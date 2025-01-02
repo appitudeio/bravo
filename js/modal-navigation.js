@@ -119,7 +119,7 @@ class Navigation {
       }
 
       let modal = ModalObj.getInstance(modalElement);
-      if(!modal) {
+      if(null === modal) {
         console.log("no modal");
         modal = new ModalObj(modalElement);
       }
