@@ -65,8 +65,7 @@ class Navigation {
     setBaseModal(Modal) {
         // Prevent multiple Navigation instances on the same modal
         if (modalNavigationMap.has(Modal._element)) {
-            console.warn("A Navigation instance is already attached to this modal.");
-            return;
+            throw new Error("A Navigation instance is already attached to this modal.");
         }
 
         this.Modal = Modal;
@@ -107,24 +106,23 @@ class Navigation {
     }
 
     findAndPushModal(reference) {
-      // Check if reference starts with . or #
-      if (!reference.startsWith('.') && !reference.startsWith('#')) {
-        reference = `#${reference}`;
-      }
+        // Check if reference starts with . or #
+        if (!reference.startsWith('.') && !reference.startsWith('#')) {
+            reference = `#${reference}`;
+        }
 
-      const modalElement = document.querySelector(reference);
+        const modalElement = document.querySelector(reference);
 
-      if(!modalElement) {
-        throw new Error(`Invalid modal rel, ${reference} doesnt exist.`);
-      }
+        if(!modalElement) {
+            throw new Error(`Invalid modal rel, ${reference} doesnt exist.`);
+        }
 
-      let modal = ModalObj.getInstance(modalElement);
-      if(null === modal) {
-        console.log("cr8 new modal");
-        modal = new ModalObj(modalElement);
-      }
+        let modal = ModalObj.getInstance(modalElement);
+        if(null === modal) {
+            modal = new ModalObj(modalElement);
+        }
       
-      this.push(modal);
+        this.push(modal);
     }
 
     /**
@@ -136,15 +134,27 @@ class Navigation {
             this.setBaseModal(childModal);
         }
 
-        console.log("push", childModal);
+        // If "going back" is disabled, remove the last modal from the stack (revert it's content as well)
+        const existingModalStackIndex = this.stack.findIndex(([,,,{ _element }]) => _element === childModal._element);
+        if(false === this.options.backButton.disabled && existingModalStackIndex !== -1) {
+            throw new Error("Modal is already in the stack. Thus not allowed to be pushed again since BackButton is enabled.");
+        }
+        else if(existingModalStackIndex !== -1) {
+            // Extract the existing modal from the stack and push it to the end (Before removing it)
+            const [ existingHeader, existingBody, existingFooter, existingModal ] = this.stack[existingModalStackIndex];
 
-        this.stack.push([
-            childModal._element.querySelector(".modal-header"),
-            childModal._element.querySelector(".modal-body"),
-            childModal._element.querySelector(".modal-footer"),
-            childModal
-        ]);
-
+            this.stack.splice(existingModalStackIndex, 1);
+            this.stack.push([existingHeader, existingBody, existingFooter, existingModal ]);
+        }
+        else {
+            this.stack.push([
+                childModal._element.querySelector(".modal-header"),
+                childModal._element.querySelector(".modal-body"),
+                childModal._element.querySelector(".modal-footer"),
+                childModal
+            ]);
+        }
+    
         // So we can close it when the Navigation closes
         if(!this.refs[childModal._element.id]) {
             this.refs[childModal._element.id] = childModal;
@@ -157,7 +167,7 @@ class Navigation {
 
         return new Promise(resolve => {
             if(this.stack.length > 1) {
-                this.replace(this.stack[this.stack.length - 1]).then(resolve);
+                this.replace(this.stack[this.stack.length - 1]).then(() => resolve());
 
                 EventHandler.trigger(document, EVENT_NAV_FORWARD, { stack: this.refs });
             }
@@ -171,21 +181,17 @@ class Navigation {
      *  
      */
     pop() {
-        let currentStack = this.stack.pop(); // Remove last added modal
+        const currentStack = this.stack.pop(); // Remove last added modal
+        const prevStack = this.stack[this.stack.length - 1];
 
         if(currentStack.id != undefined && this.refs[currentStack.id] != undefined) {
             delete this.refs[currentStack.id];
         }
 
-        // If there was no modal to pop, resolve immediately
         if (!currentStack) {
-            return Promise.resolve();
+            return Promise.resolve(); // If there was no modal to pop, resolve immediately
         }
-
-        let prevModalContent = currentStack[3]._element.querySelector(".modal-content");
-        let prevStack = this.stack[this.stack.length - 1]; // Revert back to the previous stack
-
-        if (!prevStack) {
+        else if (!prevStack) {
             // No previous stack exists, hide the modal
             return new Promise(resolve => {
                 EventHandler.trigger(document, EVENT_NAV_BACK, { stack: this.stack });
@@ -198,19 +204,22 @@ class Navigation {
             EventHandler.trigger(document, EVENT_NAV_BACK, { stack: this.stack });
             EventHandler.trigger(currentStack[3]._element, EVENT_HIDE);
 
+            // We need to replace the current modal with the previous one since the DOM is not updated
             this.replace(prevStack, true).then(() => {
-                prevModalContent.append(currentStack[0], currentStack[1], currentStack[2]); // Put everything back
+                this.restoreOriginalModal(currentStack);
                 EventHandler.trigger(currentStack[3]._element, EVENT_HIDDEN);
-                currentStack = null;
-                prevStack = null;
-
                 resolve();
             });
         });
     }
 
-    addEventListener(...props) {
-        document.addEventListener(...props);
+    restoreOriginalModal(stack) {
+        const [ currentHeader, currentBody, currentFooter, currentModal ] = stack;
+        const currentBodyContent = currentModal._element.querySelector(".modal-content");
+        currentBodyContent.innerHTML = "";
+        currentBodyContent.append(currentHeader ?? "", currentBody, currentFooter ?? "");
+        
+        return stack;
     }
 
     close() {
@@ -280,6 +289,10 @@ class Navigation {
             }
         });
 	}
+
+    addEventListener(...props) {
+        document.addEventListener(...props);
+    }
 
     setStackClass() {
         if (this.stack.length === 1) {
