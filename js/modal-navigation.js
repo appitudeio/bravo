@@ -20,6 +20,7 @@ const EVENT_NAV_OPEN = "open.bs.nav";
 const EVENT_NAV_OPENED = "opened.bs.nav";
 const EVENT_NAV_BACK = "back.bs.nav";
 const EVENT_NAV_FORWARD = "forward.bs.nav";
+const EVENT_NAV_FORWARDED = "forwarded.bs.nav";
 const CLASS_NAVIGATION = "modal-navigation";
 const CLASS_NAVIGATION_HAS_STACK = "modal-navigation-stacked";
 const CLASS_NAVIGATION_TRANSITION = "modal-animation-transition";
@@ -144,7 +145,7 @@ class Navigation {
             const [ existingHeader, existingBody, existingFooter, existingModal ] = this.stack[existingModalStackIndex];
 
             this.stack.splice(existingModalStackIndex, 1);
-            this.stack.push([existingHeader, existingBody, existingFooter, existingModal ]);
+            this.stack.push([ existingHeader, existingBody, existingFooter, existingModal ]);
         }
         else {
             this.stack.push([
@@ -167,11 +168,14 @@ class Navigation {
 
         return new Promise(resolve => {
             if(this.stack.length > 1) {
-                this.replace(this.stack[this.stack.length - 1]).then(() => resolve());
+                this.replace(this.stack[this.stack.length - 1]).then(() => {
+                    resolve()
+                
+                    EventHandler.trigger(document, EVENT_NAV_FORWARDED, { stack });
+                });
 
                 // create an array of the stack, but with only the last item (the Modal) of each existing stack item
                 const stack = this.stack.map(([,,,Modal]) => Modal);
-
                 EventHandler.trigger(document, EVENT_NAV_FORWARD, { stack });
             }
             else {
