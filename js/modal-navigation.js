@@ -154,11 +154,13 @@ class Navigation {
                 childModal
             ]);
         }
+
     
         // So we can close it when the Navigation closes
         if(!this.refs[childModal._element.id]) {
             this.refs[childModal._element.id] = childModal;
         }
+
 
         // If closeButton is disabled via the Nav, remove it from the Modal
         if(this.options.closeButton.disabled) {
@@ -169,7 +171,7 @@ class Navigation {
             if(this.stack.length > 1) {
                 this.replace(this.stack[this.stack.length - 1]).then(() => resolve());
 
-                EventHandler.trigger(document, EVENT_NAV_FORWARD, { stack: this.refs });
+                EventHandler.trigger(document, EVENT_NAV_FORWARD, { stack: this.stack });
             }
             else {
                 resolve();
