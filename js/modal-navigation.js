@@ -169,14 +169,13 @@ class Navigation {
         return new Promise(resolve => {
             if(this.stack.length > 1) {
                 this.replace(this.stack[this.stack.length - 1]).then(() => {
-                    let stack = this.stack.map(([,,,Modal]) => Modal);
                     EventHandler.trigger(document, EVENT_NAV_FORWARDED, { stack });
 
                     resolve();
                 });
 
                 // create an array of the stack, but with only the last item (the Modal) of each existing stack item
-                let stack = this.stack.map(([,,,Modal]) => Modal);
+                const stack = this.stack.map(([,,, { _element: { id } }]) => this.refs[id]);
                 EventHandler.trigger(document, EVENT_NAV_FORWARD, { stack });
             }
             else {
