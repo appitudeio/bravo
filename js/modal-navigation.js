@@ -170,7 +170,7 @@ class Navigation {
                 this.replace(this.stack[this.stack.length - 1]).then(() => resolve());
 
                 // create an array of the stack, but with only the last item (the Modal) of each existing stack item
-                const stack = this.stack.map(([,,,{ _element }]) => _element);
+                const stack = this.stack.map(([,,,Modal]) => Modal);
 
                 EventHandler.trigger(document, EVENT_NAV_FORWARD, { stack });
             }
