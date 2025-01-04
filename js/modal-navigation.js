@@ -20,6 +20,7 @@ const EVENT_NAV_OPEN = "open.bs.nav";
 const EVENT_NAV_OPENED = "opened.bs.nav";
 const EVENT_NAV_BACK = "back.bs.nav";
 const EVENT_NAV_FORWARD = "forward.bs.nav";
+const EVENT_NAV_FORWARDING = "forwarding.bs.nav";
 const EVENT_NAV_FORWARDED = "forwarded.bs.nav";
 const CLASS_NAVIGATION = "modal-navigation";
 const CLASS_NAVIGATION_HAS_STACK = "modal-navigation-stacked";
@@ -168,9 +169,12 @@ class Navigation {
 
         return new Promise(resolve => {
             if(this.stack.length > 1) {
-                this.replace(this.stack[this.stack.length - 1]).then(() => {
+                const { outPromise, inPromise } = this.replace(this.stack[this.stack.length - 1]);
+                outPromise.then(() => {
+                    EventHandler.trigger(document, EVENT_NAV_FORWARDING, { stack });
+                });
+                inPromise.then(() => {
                     EventHandler.trigger(document, EVENT_NAV_FORWARDED, { stack });
-
                     resolve();
                 });
 
@@ -212,7 +216,8 @@ class Navigation {
             EventHandler.trigger(currentStack[3]._element, EVENT_HIDE);
 
             // We need to replace the current modal with the previous one since the DOM is not updated
-            this.replace(prevStack, true).then(() => {
+            const { outPromise, inPromise } = this.replace(prevStack, true);
+            inPromise.then(() => {
                 this.restoreOriginalModal(currentStack);
                 EventHandler.trigger(currentStack[3]._element, EVENT_HIDDEN);
                 resolve();
@@ -272,29 +277,39 @@ class Navigation {
 	replace(to, _back = false) {
         const [ newHeader, newBody, newFooter, Modal ] = to;
 
+        // Trigger the "show" event right away
         EventHandler.trigger(Modal._element, EVENT_SHOW);
 
-        return new Promise(resolve => {
-            if(_back) {
-                this.setStackClass();
-            }
+        // If the modal is completely closed, there is no "out" step.
+        let outPromise;
+        if (this.state === STATE_CLOSED) {
+            outPromise = Promise.resolve();
+        } 
+        else {
+            // Perform the "out" animation
+            outPromise = this.Animation.from(to).out(_back);
+        }
 
-            if(this.state == STATE_CLOSED) {
-                this.handleContent(newHeader, newBody, newFooter, Modal).then(() => {
-                    resolve();
-                    EventHandler.trigger(Modal._element, EVENT_SHOWN);
-                });
-            }
-            else {
-                this.Animation.from(to).out(_back).then(() => {
-                    this.handleContent(newHeader, newBody, newFooter, Modal);
-                    return this.Animation.in(_back);
-                }).then(() => {
-                    resolve();
-                    EventHandler.trigger(Modal._element, EVENT_SHOWN);
-                });
-            }
+        // Now chain that to handle content + "in" animation
+        const inPromise = outPromise
+        .then(() => {
+            // "out" is finished here.
+            // Next, actually swap the header/body/footer
+            return this.handleContent(newHeader, newBody, newFooter, Modal);
+        })
+        .then(() => {
+            // Now do the "in" animation
+            return this.Animation.in(_back);
+        })
+        .then(() => {
+            // "in" has finished, trigger "shown" event
+            EventHandler.trigger(Modal._element, EVENT_SHOWN);
         });
+
+        // Return an object containing both:
+        // - outPromise: resolves as soon as “out” is done
+        // - inPromise: resolves after everything (out + content + in) is done
+        return { outPromise, inPromise };
 	}
 
     addEventListener(...props) {
