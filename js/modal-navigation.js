@@ -169,9 +169,13 @@ class Navigation {
         return new Promise(resolve => {
             if(this.stack.length > 1) {
                 this.replace(this.stack[this.stack.length - 1]).then(() => {
-                    resolve()
-                
+                    console.log("NAV ", EVENT_NAV_FORWARDED);
+
                     EventHandler.trigger(document, EVENT_NAV_FORWARDED, { stack });
+
+                    resolve();
+
+                    console.log("---after resolve");
                 });
 
                 // create an array of the stack, but with only the last item (the Modal) of each existing stack item
