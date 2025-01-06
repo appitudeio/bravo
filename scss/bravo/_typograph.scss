@@ -3,6 +3,7 @@
  */
 $base-font-size: 1rem !default; // Base size (16px)
 $base-font-size-sm: 1rem !default; // Base size (16px)
+$base-font-size-xs: $base-font-size * .65 !default;
 $font-family-headers: var(--#{$prefix}body-font-family) !default;
 $headings-font-weight: 500 !default; // Use Bootstrap's default font-weight for headings
 

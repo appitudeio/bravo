@@ -6,6 +6,14 @@
 @import "bootstrap/scss/buttons";
 @import "bootstrap/scss/button-group";
 
+$input-btn-padding-y-xs : .15rem !default;
+$input-btn-padding-x-xs : .5rem !default;
+$input-btn-font-size-xs : $base-font-size-xs !default;
+
+$btn-padding-y-xs       : $input-btn-padding-y-xs !default;
+$btn-padding-x-xs       : $input-btn-padding-x-xs !default;
+$btn-font-size-xs       : $input-btn-font-size-xs !default;
+
 .btn {
   display: inline-flex;
   justify-content: center;
@@ -30,6 +38,10 @@
       text-indent: 0;
     }
   }
+}
+
+.btn-xs {
+  @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $btn-font-size-xs, $btn-border-radius-sm);
 }
 
 .btn-default {
