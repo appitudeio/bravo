@@ -1,6 +1,10 @@
 /**
  *  Overwrite Bootstrap's grid system has some weird names, let's fix them
  */
+.flex-auto {
+    flex-basis: auto;
+}
+
 @mixin make-grid-columns($columns: $grid-columns, $gutter: $grid-gutter-width, $breakpoints: $grid-breakpoints) {
     @each $breakpoint in map-keys($breakpoints) {
         $infix: breakpoint-infix($breakpoint, $breakpoints);
@@ -23,12 +27,8 @@
 
             // Base 'auto'-column
             .column#{$infix} {
-                @include make-col-auto();
-
-                // If no other "column" class is present, make it a flex-grow: 1 column
-                &:not([class*="column-"]) {
-                    flex: 1 0 0;
-                }
+                //@include make-col-auto();
+                flex: 1 0 0;
             }
 
             // Gutters
@@ -52,6 +52,7 @@
     }
 }
 
+// Overrides Bootstrap's version because of the gutter-y + last-child margin-bottom
 @mixin make-row($gutter: $grid-gutter-width) {
     --#{$prefix}gutter-x: #{$gutter};
     --#{$prefix}gutter-y: #{$gutter};
