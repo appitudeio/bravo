@@ -24,7 +24,11 @@
             // Base 'auto'-column
             .column#{$infix} {
                 @include make-col-auto();
-                flex: 1 0 0;
+
+                // If no other "column" class is present, make it a flex-grow: 1 column
+                &:not([class*="column-"]) {
+                    flex: 1 0 0;
+                }
             }
 
             // Gutters
