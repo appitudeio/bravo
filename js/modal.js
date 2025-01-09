@@ -17,22 +17,28 @@ const EVENT_SUBMIT = `submit${EVENT_KEY}`;
 class Modal extends BootstrapModal {
     constructor(elementOrOptions) {
         let modalElement;
+        let options = {};
         
-        if (typeof elementOrOptions === 'object') {
-            modalElement = Modal.generate(elementOrOptions);
-        } 
-        else if (typeof elementOrOptions === 'string') {
+        if (typeof elementOrOptions === 'string') {
             modalElement = document.getElementById(elementOrOptions);
             if (!modalElement) {
                 throw new Error("Element not found.");
             }
-        } 
+        }
+        else if (elementOrOptions instanceof HTMLElement) {
+            // Case 2: elementOrOptions is an HTMLElement
+            modalElement = elementOrOptions;
+        }
+        if (typeof elementOrOptions === 'object') {
+            modalElement = Modal.generate(elementOrOptions);
+            options = elementOrOptions.options || {};
+        }
         else {
             throw new Error("Invalid parameter: Must provide an element ID or options object.");
         }
 
         // Call the parent constructor with the modal element
-        super(modalElement, (typeof elementOrOptions === 'object') ? elementOrOptions : {});
+        super(modalElement, options);
 
         // Register callbacks
         this.registerEventListeners();
