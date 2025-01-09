@@ -29,7 +29,7 @@ class Modal extends BootstrapModal {
             // Case 2: elementOrOptions is an HTMLElement
             modalElement = elementOrOptions;
         }
-        if (typeof elementOrOptions === 'object') {
+        else if (typeof elementOrOptions === 'object') {
             modalElement = Modal.generate(elementOrOptions);
             options = elementOrOptions.options || {};
         }
