@@ -9,7 +9,16 @@
     @each $breakpoint in map-keys($breakpoints) {
         $infix: breakpoint-infix($breakpoint, $breakpoints);
 
-        @include media-breakpoint-down($breakpoint, $breakpoints) {
+        @include media-breakpoint-up($breakpoint, $breakpoints) {
+            // Base 'auto'-column
+            .column#{$infix} {
+                flex: 1 0 0;
+            }
+
+            .column#{$infix}-auto {
+                @include make-col-auto();
+            }
+
             @for $i from 1 through $columns {
                 .column#{$infix}-#{$i} {
                     @include make-col($i, $columns);
@@ -23,12 +32,6 @@
                         @include make-col-offset($i, $columns);
                     }
                 }
-            }
-
-            // Base 'auto'-column
-            .column#{$infix} {
-                //@include make-col-auto();
-                flex: 1 0 0;
             }
 
             // Gutters
