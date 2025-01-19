@@ -11,6 +11,7 @@ class DynamicObserver {
     componentClasses = []; // Stores registered components
     debounceTimer = null;
     debounceDelay = 100; // milliseconds
+    addedNodes = new Set();
 
     constructor() {
         if (DynamicObserver.instance) {
@@ -33,8 +34,7 @@ class DynamicObserver {
             console.error(`Component ${componentClass.name} must provide a 'selector' via static getter.`);
             return;
         }
-
-       if (this.componentClasses.includes(componentClass)) {
+        else if (this.componentClasses.includes(componentClass)) {
             return;
         }
 
@@ -52,7 +52,7 @@ class DynamicObserver {
     initializeExisting() {
         this.componentClasses.forEach(componentClass => {
             SelectorEngine.find(componentClass.selector).forEach(element => {
-                if (!componentClass.getInstance(element)) { // Check if instance exists
+                if (!componentClass.getInstance(element)) {
                     componentClass.getOrCreateInstance(element);
                 }
             });
@@ -69,25 +69,37 @@ class DynamicObserver {
 
         // Set up the MutationObserver for additions
         this.observer = new MutationObserver((mutationsList) => {
-            if (this.debounceTimer) clearTimeout(this.debounceTimer);
+            mutationsList.forEach(mutation => {
+                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === Node.ELEMENT_NODE) {
+                            this.addedNodes.add(node);
+                        } 
+                        else if (node.hasChildNodes()) {
+                            node.childNodes.forEach(child => {
+                                if (child.nodeType === Node.ELEMENT_NODE) {
+                                    this.addedNodes.add(child);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+            if (this.debounceTimer) {
+                clearTimeout(this.debounceTimer);
+            }
+
             this.debounceTimer = setTimeout(() => {
-                mutationsList.forEach(mutation => {
-                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                        mutation.addedNodes.forEach(node => {
-                            if (node.nodeType === Node.ELEMENT_NODE) {
-                                this.initializeNode(node);
-                            }
-                        });
-                    }
+                Array.from(this.addedNodes).forEach(node => {
+                    this.initializeNode(node);
                 });
+                this.addedNodes.clear();
             }, this.debounceDelay);
         });
 
-        // Configuration of the observer:
         const config = { childList: true, subtree: true };
         this.observer.observe(document.body, config);
-
-        // Set up disposal handling
         this.setupDisposalHandling();
     }
 
@@ -152,16 +164,14 @@ class DynamicObserver {
         this.componentClasses.forEach(componentClass => {
             const selector = componentClass.selector;
 
-            // Check if the node itself matches the component selector
             if (node.matches(selector)) {
-                if (!componentClass.getInstance(node)) { // Check if instance exists
+                if (!componentClass.getInstance(node)) {
                     componentClass.getOrCreateInstance(node);
                 }
             }
-
-            // Check descendants of the node for matches
+            
             SelectorEngine.find(selector, node).forEach(child => {
-                if (!componentClass.getInstance(child)) { // Check if instance exists
+                if (!componentClass.getInstance(child)) {
                     componentClass.getOrCreateInstance(child);
                 }
             });
