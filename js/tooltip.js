@@ -28,7 +28,7 @@ export default class Tooltip extends BootstrapTooltip {
             }};
         }
 
-        config.template = config.template ?? defaultTooltipTemplate;
+        config.template = config.template ?? Tooltip.defaultTooltipTemplate;
 
         super(element, config);
 
@@ -94,6 +94,15 @@ export default class Tooltip extends BootstrapTooltip {
         }
     }
 
+    static defaultTooltipTemplate = `
+        <div class="tooltip" role="tooltip">
+            <div class="${CLASS_TOOLTIP_CONTAINER}">
+                <div class="tooltip-arrow"></div>
+                <div class="tooltip-inner"></div>
+            </div>
+        </div>
+    `;
+
     static _isInteractive = (element) => element.getAttribute('data-bs-interactive') !== null;
 
     // Automatically register the component upon class definition
@@ -101,12 +110,3 @@ export default class Tooltip extends BootstrapTooltip {
         DynamicObserver.add(this);
     }
 }
-
-const defaultTooltipTemplate = `
-    <div class="tooltip" role="tooltip">
-        <div class="${CLASS_TOOLTIP_CONTAINER}">
-            <div class="tooltip-arrow"></div>
-            <div class="tooltip-inner"></div>
-        </div>
-    </div>
-`;
