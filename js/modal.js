@@ -188,6 +188,10 @@ class ModalTemplate {
 
     footer = (buttons = []) => {
         const buttonElements = buttons.map(button => {
+            if(typeof button === "string") {
+                return button;
+            }
+
             // Generate attributes string excluding the "text" property
             button.type = button.type ?? "button";
             const buttonAttributes = Object.keys(button)

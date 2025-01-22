@@ -44,6 +44,10 @@ p {
 }
 
 @include media-breakpoint-down(sm) {
+    :root {
+        font-size: #{$base-font-size-sm};
+    }
+
     @each $element, $styles in $typography-map {
         .#{$element} {
             margin-bottom: map-get($margin-bottom-map, $element) * 0.6;  // Reduce margin for smaller screens
