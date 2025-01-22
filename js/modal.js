@@ -127,15 +127,15 @@ class ModalTemplate {
             <div id="${id}" class="modal${animationClass} ${className}" tabindex="-1" role="dialog" ${isStatic ? "data-bs-backdrop='static'" : ""}>
                 <div class="modal-dialog ${sizeClass} modal-dialog-centered" role="document">
                     <div class="modal-content">
-                        ${isForm ? `<form method="post">` : ""}
+                        ${isForm && `<form method="post">`}
 
-                        ${this.header(headerObj, headerButtons)}
+                            ${this.header(headerObj, headerButtons)}
 
-                        <div class="modal-body">${content}</div>
+                                <div class="modal-body">${content}</div>
 
-                        ${this.footer(footerButtons)}
+                            ${this.footer(footerButtons)}
 
-                        ${isForm ? `</form>` : ""}
+                        ${isForm && `</form>`}
                     </div>
                 </div>
             </div>
@@ -169,14 +169,11 @@ class ModalTemplate {
         }).join('');
 
         if (buttonElements || !this.options.closeButton.disabled) {
-            // headerHTML += `<div class="modal-header-buttons">`;
             headerHTML += buttonElements;
 
             if (!this.options.closeButton.disabled) {
                 headerHTML += this.closeButton().outerHTML;
             }
-
-            //headerHTML += `</div>`;
         }
 
         return `
