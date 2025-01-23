@@ -120,7 +120,7 @@ class ModalTemplate {
     }
 
     generate = (id, headerObj, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation) => {
-        const sizeClass = size === 'sm' ? 'modal-sm' : size === 'lg' ? 'modal-lg' : 'modal-md'; // Default to medium
+        const sizeClass = (size) ? `modal-${size}` : ""; // Without size, the modal will default to Medium (md)
         const animationClass = animation ? ` ${animation}` : '';
 
         return `
