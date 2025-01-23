@@ -145,7 +145,7 @@ class ModalTemplate {
     header = (headerObj, buttons = [], isStatic = false) => {
         const { title, header } = headerObj;
 
-        let headerHTML = '';
+        let headerHTML = "";
 
         if (header) {
             headerHTML += header;
@@ -159,7 +159,7 @@ class ModalTemplate {
             const buttonAttributes = Object.keys(button)
                 .filter(key => key !== 'text' && key !== 'class')
                 .map(key => `${key}="${button[key]}"`)
-                .join(' ');
+                .join('');
 
             return `
                 <button class="btn ${ac.class ? button.class : "btn-secondary"}" ${buttonAttributes}>
@@ -176,11 +176,11 @@ class ModalTemplate {
             }
         }
 
-        return `
+        return (headerHTML != "") ? `
             <div class="modal-header">
                 ${headerHTML}
             </div>
-        `;
+        ` : "";
     }
 
     footer = (buttons = []) => {

@@ -27,3 +27,15 @@
         right: var(--#{$prefix}modal-padding);
     }
 }
+
+.modal-footer > * {
+    margin: 0 var(var(--modal-footer-gap));
+
+    &:first-child {
+        margin-left: 0;
+    }
+
+    &:last-child {
+        margin-right: 0;
+    }
+}
