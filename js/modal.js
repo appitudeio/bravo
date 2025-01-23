@@ -129,7 +129,7 @@ class ModalTemplate {
                     <div class="modal-content">
                         ${isForm && `<form method="post">`}
 
-                            ${this.header(headerObj, headerButtons)}
+                            ${this.header(headerObj, headerButtons, isStatic)}
 
                                 <div class="modal-body">${content}</div>
 
@@ -142,7 +142,7 @@ class ModalTemplate {
         `;
     }
 
-    header = (headerObj, buttons = []) => {
+    header = (headerObj, buttons = [], isStatic = false) => {
         const { title, header } = headerObj;
 
         let headerHTML = '';
@@ -171,7 +171,7 @@ class ModalTemplate {
         if (buttonElements || !this.options.closeButton.disabled) {
             headerHTML += buttonElements;
 
-            if (!this.options.closeButton.disabled) {
+            if (!this.options.closeButton.disabled || !isStatic) {
                 headerHTML += this.closeButton().outerHTML;
             }
         }
