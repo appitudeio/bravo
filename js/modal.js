@@ -127,7 +127,7 @@ class ModalTemplate {
             <div id="${id}" class="modal${animationClass} ${className}" tabindex="-1" role="dialog" ${isStatic ? "data-bs-backdrop='static'" : ""}>
                 <div class="modal-dialog ${sizeClass} modal-dialog-centered" role="document">
                     <div class="modal-content">
-                        ${isForm && `<form method="post">`}
+                        ${isForm ? `<form method="post">` : ""}
 
                             ${this.header(headerObj, headerButtons, isStatic)}
 
@@ -135,7 +135,7 @@ class ModalTemplate {
 
                             ${this.footer(footerButtons)}
 
-                        ${isForm && `</form>`}
+                        ${isForm ? `</form>` : ""}
                     </div>
                 </div>
             </div>
@@ -149,13 +149,18 @@ class ModalTemplate {
 
         if (header) {
             headerHTML += header;
-        } else if (title) {
+        } 
+        else if (title) {
             headerHTML += `
                 <h4 class="modal-title">${title}</h4>
             `;
         }
 
         const buttonElements = buttons.map(button => {
+            if(typeof button === "string") {
+                return button;
+            }
+
             const buttonAttributes = Object.keys(button)
                 .filter(key => key !== 'text' && key !== 'class')
                 .map(key => `${key}="${button[key]}"`)
