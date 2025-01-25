@@ -11,6 +11,7 @@ $yellow : #FFCF00 !default;
 $green  : #008A00 !default; 
 $teal   : #00D18B !default;
 $cyan   : #26D3D9 !default;
+$primary : $blue !default; // So we can re-use it in the theme generation
 
 $body-color-dark: #f0f6fc !default;
 $body-bg-dark:    #0d1117 !default;

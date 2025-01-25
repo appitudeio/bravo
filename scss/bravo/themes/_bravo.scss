@@ -23,6 +23,8 @@ $focus-ring-blur            : 0 !default;
 $focus-ring-width           : 1px !default;
 $focus-ring-color           : var(--primary) !default;
 
+$form-switch-focus-color    : #{$primary} !default;
+
 $tooltip-border-radius     : $border-radius-sm !default;
 
 $modal-md: 640px; // Default width (500 is a bit small because of our paddings)
