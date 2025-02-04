@@ -19,6 +19,8 @@ const EVENT_NAV_CLOSE = "close.bs.nav";
 const EVENT_NAV_OPEN = "open.bs.nav";
 const EVENT_NAV_OPENED = "opened.bs.nav";
 const EVENT_NAV_BACK = "back.bs.nav";
+const EVENT_NAV_BACKING = "backing.bs.nav";
+const EVENT_NAV_BACKED = "backed.bs.nav";
 const EVENT_NAV_FORWARD = "forward.bs.nav";
 const EVENT_NAV_FORWARDING = "forwarding.bs.nav";
 const EVENT_NAV_FORWARDED = "forwarded.bs.nav";
@@ -205,23 +207,27 @@ class Navigation {
         else if (!prevStack) {
             // No previous stack exists, hide the modal
             return new Promise(resolve => {
-                //EventHandler.trigger(document, EVENT_NAV_BACK, { stack: this.stack });
+                // EventHandler.trigger(document, EVENT_NAV_BACK, { stack: this.stack });
                 this.Modal.hide(); // Assuming you want to hide the modal when stack is empty
                 resolve();
             });
         }
 
         return new Promise(resolve => {
-            EventHandler.trigger(document, EVENT_NAV_BACK, { stack: this.stack });
-            EventHandler.trigger(currentStack[3]._element, EVENT_HIDE);
-
             // We need to replace the current modal with the previous one since the DOM is not updated
             const { outPromise, inPromise } = this.replace(prevStack, true);
+            outPromise.then(() => {
+                EventHandler.trigger(document, EVENT_NAV_BACKING, { stack });
+            });
             inPromise.then(() => {
                 this.restoreOriginalModal(currentStack);
+                EventHandler.trigger(document, EVENT_NAV_BACKED, { stack });
                 EventHandler.trigger(currentStack[3]._element, EVENT_HIDDEN);
                 resolve();
             });
+
+            EventHandler.trigger(document, EVENT_NAV_BACK, { stack: this.stack });
+            EventHandler.trigger(currentStack[3]._element, EVENT_HIDE);
         });
     }
 
