@@ -77,6 +77,7 @@ class Modal extends BootstrapModal {
           isStatic = false,
           size = 'lg',
           animation = 'fade',
+          scrollable = false,
           closeButton = {
             disabled: false,
             text: "" // &times;
@@ -90,7 +91,7 @@ class Modal extends BootstrapModal {
 
         const Template = new ModalTemplate(options);
 
-        const modalHTML = Template.generate(id, { title, header }, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation);
+        const modalHTML = Template.generate(id, { title, header }, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation, scrollable);
         const modalFragment = document.createRange().createContextualFragment(modalHTML);
 
         document.body.append(modalFragment);
@@ -119,13 +120,13 @@ class ModalTemplate {
         this.options = merge(this.options, options);
     }
 
-    generate = (id, headerObj, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation) => {
+    generate = (id, headerObj, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation, scrollable) => {
         const sizeClass = (size) ? `modal-${size}` : ""; // Without size, the modal will default to Medium (md)
         const animationClass = animation ? ` ${animation}` : '';
 
         return `
             <div id="${id}" class="modal${animationClass} ${className}" tabindex="-1" role="dialog" ${isStatic ? "data-bs-backdrop='static'" : ""}>
-                <div class="modal-dialog ${sizeClass} modal-dialog-centered" role="document">
+                <div class="modal-dialog ${sizeClass} modal-dialog-centered${scrollable && ` modal-dialog-scrollable`}" role="document">
                     <div class="modal-content">
                         ${isForm ? `<form method="post">` : ""}
 
