@@ -205,7 +205,7 @@ class Navigation {
         else if (!prevStack) {
             // No previous stack exists, hide the modal
             return new Promise(resolve => {
-                EventHandler.trigger(document, EVENT_NAV_BACK, { stack: this.stack });
+                //EventHandler.trigger(document, EVENT_NAV_BACK, { stack: this.stack });
                 this.Modal.hide(); // Assuming you want to hide the modal when stack is empty
                 resolve();
             });

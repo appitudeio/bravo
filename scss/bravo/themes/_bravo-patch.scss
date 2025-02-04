@@ -103,6 +103,14 @@
         .icon {
             @extend .me-1;
         }
+    
+        &.active, &:active {
+            color: var(--#{$prefix}dropdown-link-active-color) !important;
+        }
+
+        &.disabled, &:disabled {
+            color: var(--#{$prefix}dropdown-link-disabled-color) !important;
+        }
     }
 }
 
