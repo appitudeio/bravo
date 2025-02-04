@@ -125,7 +125,7 @@ class ModalTemplate {
         const animationClass = animation ? ` ${animation}` : '';
 
         return `
-            <div id="${id}" class="modal${animationClass} ${className}" tabindex="-1" role="dialog" ${isStatic ? "data-bs-backdrop='static'" : ""}>
+            <div id="${id}" class="modal${animationClass} ${className}" tabindex="-1" role="dialog"${isStatic && ` data-bs-backdrop="static"`}>
                 <div class="modal-dialog ${sizeClass} modal-dialog-centered${scrollable && ` modal-dialog-scrollable`}" role="document">
                     <div class="modal-content">
                         ${isForm ? `<form method="post">` : ""}
