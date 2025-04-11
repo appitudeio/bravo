@@ -9,11 +9,9 @@
     --#{$prefix}modal-padding: #{$modal-inner-padding};  
 }
 
-.modal {
-    .btn[rel=back] {
-        z-index: 2;
-        @extend %modal-header-back-btn_default;
-    }
+.modal-header .btn[rel=back] {
+    z-index: 2;
+    @extend %modal-header-back-btn_default;
 }
 
 .modal-header > .btn {
