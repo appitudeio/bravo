@@ -35,10 +35,8 @@
 /**
  *  Transitions
  */
-.modal-navigation-stacked {
-    .modal-header .btn[rel=back] {
-        @extend %modal-header-back-btn_visible;
-    }
+.modal-navigation-stacked .modal-header .btn[rel=back] {
+    @extend %modal-header-back-btn_visible;
 }
 
 // BackBtn
