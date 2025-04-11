@@ -36,7 +36,7 @@
  *  Transitions
  */
 .modal-navigation-stacked {
-    .btn[rel=back] {
+    .modal-header .btn[rel=back] {
         @extend %modal-header-back-btn_visible;
     }
 }
