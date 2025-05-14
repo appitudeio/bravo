@@ -59,6 +59,11 @@ class Modal extends BootstrapModal {
                 e.preventDefault(); // Prevent the default form submission only if requested
             }
         }));
+
+        // Always remove the Modal from the DOM when it is dismissed
+        this.addEventListener('hidden.bs.modal', () => {
+            this.remove();
+        });
     }
 
     remove() {
