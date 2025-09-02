@@ -11,6 +11,7 @@ on:
       - main
       - master
       - development
+      - documentation
 
 jobs:
   test:
