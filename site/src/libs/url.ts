@@ -15,7 +15,7 @@ export function getUrl(path: string): string {
   }
   
   // Combine base path with the requested path
-  return base ? `${base}/${cleanPath}` : `/${cleanPath}`
+  return cleanPath ? (base ? `${base}/${cleanPath}` : `/${cleanPath}`) : (base || '/')
 }
 
 /**

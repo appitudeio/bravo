@@ -18,8 +18,13 @@ export function getVersionedDocsPath(docsPath: string): string {
     generatedVersionedDocsPaths.push(sanitizedDocsPath)
   }
 
-  // Always generate absolute paths with leading slash
-  return `/docs/${docs_version}/${sanitizedDocsPath}`
+  // Get base path (e.g., '/bravo' for GitHub Pages, '/' for dev)
+  const basePath = import.meta.env.BASE_URL || '/'
+  
+  // Combine base path with docs path
+  return basePath !== '/'
+    ? `${basePath}/docs/${docs_version}/${sanitizedDocsPath}` 
+    : `/docs/${docs_version}/${sanitizedDocsPath}`
 }
 
 // Validate that all the generated versioned docs paths point to an existing page or asset.
