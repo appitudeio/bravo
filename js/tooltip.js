@@ -5,11 +5,10 @@
  */
 import BootstrapTooltip from "bootstrap/js/dist/tooltip";
 import EventHandler from "bootstrap/js/dist/dom/event-handler";
-import DynamicObserver from "./dynamicobserver";
+import dynamicObserver from "./dynamicobserver";
 
 const CLASS_TOOLTIP_CONTAINER = "tooltip-container";
 const CLASS_TOOLTIP_INTERACTIVE = "tooltip-interactive";
-const EVENT_INSERTED = "inserted";
 
 export default class Tooltip extends BootstrapTooltip {
     static selector = '[data-bs-toggle="tooltip"]';
@@ -38,51 +37,80 @@ export default class Tooltip extends BootstrapTooltip {
     }
 
     _enableInteractivity() {
-       // Show tooltip on mouseenter over the trigger
+        let listenersAttached = false;  // Track if we've already attached listeners
+        
+        // Show tooltip on mouseenter over the trigger
         EventHandler.on(this._element, 'mouseenter', () => {
             this._isTriggerHovered = true;
-            this._clearHideTimeout();
-
+            
+            // If we have a pending hide, just cancel it (tooltip is still visible)
+            if (this._hideTimeout) {
+                this._clearHideTimeout();
+                // Keep Bootstrap's hover state active
+                this._isHovered = true;
+                return;
+            }
+            
+            // Check if tooltip is actually shown (not null, but true)
             if(this._isShown()) {
                 return;
             }
-
+            
             this.show();
         });
-
+        
         // Start hide timeout on mouseleave from the trigger
         EventHandler.on(this._element, 'mouseleave', () => {
             this._isTriggerHovered = false;
             this._scheduleHide();
         });
-
-        // Listen for when the tooltip is shown to attach listeners to it
-        EventHandler.on(this._element, this.constructor.eventName(EVENT_INSERTED), () => {
+        
+        // Listen for when the tooltip is fully shown to attach listeners to it
+        EventHandler.on(this._element, 'shown.bs.tooltip', () => {
+            // Prevent attaching duplicate listeners
+            if (listenersAttached) {
+                return;
+            }
+            
             const tipElement = this._getTipElement();
-
+            
             // Handle mouseenter on tooltip
             EventHandler.on(tipElement, 'mouseenter', () => {
                 this._isTooltipHovered = true;
                 this._clearHideTimeout();
+                // Keep Bootstrap's hover state active
+                this._isHovered = true;
             });
-
+            
             // Handle mouseleave on tooltip
             EventHandler.on(tipElement, 'mouseleave', () => {
                 this._isTooltipHovered = false;
                 this._scheduleHide();
             });
+            
+            listenersAttached = true;
+        });
+        
+        // Reset flag when tooltip is hidden
+        EventHandler.on(this._element, 'hidden.bs.tooltip', () => {
+            listenersAttached = false;
         });
     }
 
     _scheduleHide() {
-        if (this._hideTimeout) {
-            this._clearHideTimeout();
-        }
+        // ALWAYS clear any existing timeout first
+        this._clearHideTimeout();
 
         this._hideTimeout = setTimeout(() => {
             if (!this._isTriggerHovered && !this._isTooltipHovered) {
+                // Only reset Bootstrap's hover state when we actually hide
+                this._isHovered = false;
                 this.hide();
                 this._hideTimeout = null;
+            } else {
+                // Keep Bootstrap's hover state active
+                this._isHovered = true;
+                this._hideTimeout = null; // Clear the timeout reference since we're not hiding
             }
         }, 100); // 100ms delay
     }
@@ -107,6 +135,6 @@ export default class Tooltip extends BootstrapTooltip {
 
     // Automatically register the component upon class definition
     static {
-        DynamicObserver.add(this);
+        dynamicObserver.add(this);
     }
 }

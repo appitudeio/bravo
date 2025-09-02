@@ -1,10 +1,10 @@
-import BootstrapPopover from "bootstrap/js/dist/popover";
-import DynamicObserver from "./dynamicobserver";
+import BootstrapPopover from "bootstrap/js/src/popover";
+import dynamicObserver from "./dynamicobserver";
 
 export default class Popover extends BootstrapPopover {
     static selector = '[data-bs-toggle="popover"]';
 
     static {
-        DynamicObserver.add(this);
+        dynamicObserver.add(this);
     }
 }

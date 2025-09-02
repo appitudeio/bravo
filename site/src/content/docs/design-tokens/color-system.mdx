@@ -1,0 +1,267 @@
+---
+title: Color system
+description: One source of truth for colors — full stepped scales, CSS variables for every shade, and utilities auto-wired to those shades.
+group: design-tokens
+---
+
+## The magic transformation
+
+Define one color, get a complete design system:
+
+<div class="d-flex align-items-center my-4">
+  <div class="flex-shrink-0">
+    <strong>You write:</strong>
+  </div>
+  <div class="flex-grow-1 mx-3">
+    <code>$custom-colors: ("brand": #5e3896)</code>
+  </div>
+  <div class="flex-shrink-0">
+    <i class="fas fa-arrow-right text-primary"></i>
+  </div>
+</div>
+
+<div class="color-palette-demo my-4">
+  <div class="d-flex mb-2">
+    <div class="flex-fill text-center"><small class="text-muted">25</small></div>
+    <div class="flex-fill text-center"><small class="text-muted">50</small></div>
+    <div class="flex-fill text-center"><small class="text-muted">100</small></div>
+    <div class="flex-fill text-center"><small class="text-muted">200</small></div>
+    <div class="flex-fill text-center"><small class="text-muted">300</small></div>
+    <div class="flex-fill text-center"><small class="text-muted">400</small></div>
+    <div class="flex-fill text-center"><small class="text-muted">500</small></div>
+    <div class="flex-fill text-center"><small class="text-muted">600</small></div>
+    <div class="flex-fill text-center"><small class="text-muted">700</small></div>
+    <div class="flex-fill text-center"><small class="text-muted">800</small></div>
+    <div class="flex-fill text-center"><small class="text-muted">900</small></div>
+    <div class="flex-fill text-center"><small class="text-muted">950</small></div>
+    <div class="flex-fill text-center"><small class="text-muted">975</small></div>
+  </div>
+  <div class="d-flex" style="height: 60px; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <div class="flex-fill" style="background: #f8f4fd;"></div>
+    <div class="flex-fill" style="background: #f1e8fb;"></div>
+    <div class="flex-fill" style="background: #e8d5f7;"></div>
+    <div class="flex-fill" style="background: #d4b5f0;"></div>
+    <div class="flex-fill" style="background: #c195e9;"></div>
+    <div class="flex-fill" style="background: #ad75e2;"></div>
+    <div class="flex-fill" style="background: #5e3896;"></div>
+    <div class="flex-fill" style="background: #533084;"></div>
+    <div class="flex-fill" style="background: #4a2d78;"></div>
+    <div class="flex-fill" style="background: #37225a;"></div>
+    <div class="flex-fill" style="background: #23163c;"></div>
+    <div class="flex-fill" style="background: #2a1a42;"></div>
+    <div class="flex-fill" style="background: #1d1230;"></div>
+  </div>
+  <div class="text-center mt-2">
+    <small class="text-muted">Complete 13-shade spectrum: --bravo-brand-25 through --bravo-brand-975</small>
+  </div>
+</div>
+
+**Result:** Complete CSS variables + utilities for theming, components, and dark mode — no manual shade calculation needed.
+
+## Extended range beyond Bootstrap
+
+Bootstrap gives you 9 shades (100-900). Bravo generates **13 shades** (25-975) with extra-light and extra-dark variations perfect for modern interfaces:
+
+<div class="row my-4">
+  <div class="col-md-6">
+    <h6>Bootstrap (9 shades)</h6>
+    <div class="d-flex mb-1">
+      <div class="flex-fill text-center"><small class="text-muted">100</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">200</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">300</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">400</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">500</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">600</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">700</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">800</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">900</small></div>
+    </div>
+    <div class="d-flex mb-2" style="height: 30px; border-radius: 6px; overflow: hidden;">
+      <div class="flex-fill" style="background: #cff4fc;"></div>
+      <div class="flex-fill" style="background: #9eeaf9;"></div>
+      <div class="flex-fill" style="background: #6dd6f2;"></div>
+      <div class="flex-fill" style="background: #3bc3eb;"></div>
+      <div class="flex-fill" style="background: #0dcaf0;"></div>
+      <div class="flex-fill" style="background: #0baccc;"></div>
+      <div class="flex-fill" style="background: #0a8ea8;"></div>
+      <div class="flex-fill" style="background: #087084;"></div>
+      <div class="flex-fill" style="background: #055160;"></div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h6>Bravo (13 shades)</h6>
+    <div class="d-flex mb-1">
+      <div class="flex-fill text-center"><small class="text-muted">25</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">50</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">100</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">200</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">300</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">400</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">500</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">600</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">700</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">800</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">900</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">950</small></div>
+      <div class="flex-fill text-center"><small class="text-muted">975</small></div>
+    </div>
+    <div class="d-flex mb-2" style="height: 30px; border-radius: 6px; overflow: hidden;">
+      <div class="flex-fill" style="background: #f0fdff;"></div>
+      <div class="flex-fill" style="background: #e6fcff;"></div>
+      <div class="flex-fill" style="background: #cff4fc;"></div>
+      <div class="flex-fill" style="background: #9eeaf9;"></div>
+      <div class="flex-fill" style="background: #6dd6f2;"></div>
+      <div class="flex-fill" style="background: #3bc3eb;"></div>
+      <div class="flex-fill" style="background: #0dcaf0;"></div>
+      <div class="flex-fill" style="background: #0baccc;"></div>
+      <div class="flex-fill" style="background: #0a8ea8;"></div>
+      <div class="flex-fill" style="background: #087084;"></div>
+      <div class="flex-fill" style="background: #055160;"></div>
+      <div class="flex-fill" style="background: #043e4a;"></div>
+      <div class="flex-fill" style="background: #032d35;"></div>
+    </div>
+  </div>
+</div>
+
+## Smart override system
+
+**Simple approach:** Just provide your brand color and get the full spectrum:
+
+```scss
+$custom-colors: (
+  "brand": #5e3896
+);
+```
+
+**Advanced approach:** Define key anchor points and Bravo calculates the gaps:
+
+```scss
+$custom-colors: (
+  "brand": (
+    300: #8a64c2,  // lighter accent
+    500: #5e3896,  // main brand color  
+    700: #4a2a7a,  // darker variant
+  )
+);
+```
+
+<div class="alert alert-info">
+  <strong>Smart interpolation:</strong> Bravo generates the missing shades (25, 50, 100, 200, 400, 600, 800, 900, 950, 975) by intelligently calculating between your defined anchor points.
+</div>
+
+**Perfect for:** Brand systems where you need specific shades but want the full spectrum generated automatically.
+
+## CSS variables you actually get
+
+All **Bootstrap defaults** (blue, indigo, purple, pink, red, orange, yellow, green, teal, cyan, gray…) **plus your custom colors** are exported to CSS:
+
+```css
+:root {
+  /* examples (pattern repeats for every color) */
+  --bs-blue-25:  …;
+  --bs-blue-50:  …;
+  …
+  --bs-blue-500: …; /* true blue */
+  …
+  --bs-blue-975: …;
+
+  --bs-brand-25:  …;
+  …
+  --bs-brand-500: #5e3896;
+  …
+  --bs-brand-975: …;
+}
+```
+
+Use them anywhere:
+
+```css
+.card {
+  background: var(--bs-gray-50);
+  border-color: var(--bs-gray-200);
+  color: var(--bs-gray-900);
+}
+```
+
+## Utilities from the same source (no hand-wiring)
+
+All shade utilities are generated from the same map:
+
+```html
+<!-- text -->
+<p class="text-blue-300">Light text</p>
+<p class="text-blue-500">Base text</p>
+<p class="text-blue-900">Dark text</p>
+
+<!-- backgrounds -->
+<div class="bg-brand-100">Brand subtle</div>
+<div class="bg-brand-500 text-white">Brand solid</div>
+
+<!-- borders -->
+<div class="border border-green-700">Strong border</div>
+```
+
+Because the variables and utilities share one source, utilities always line up with the CSS vars you'd use in components.
+
+## About dark mode
+
+Bravo doesn't ship a dark-mode algorithm. If you use Bootstrap's `[data-bs-theme="dark"]`, pick the shade numbers you want for dark contexts (e.g. `100` vs `900`) and set them in your theme or component CSS. The point: **the right shades exist** without you hand-crafting them.
+
+## Why this matters (dev POV)
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="d-flex align-items-start">
+      <div class="flex-shrink-0 me-3">
+        <span class="badge bg-primary">🎨</span>
+      </div>
+      <div>
+        <h6>Complete design system</h6>
+        <p class="small mb-0">13 usable shades per color instead of Bootstrap's 9. Perfect granularity for modern interfaces.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="d-flex align-items-start">
+      <div class="flex-shrink-0 me-3">
+        <span class="badge bg-success">⚡</span>
+      </div>
+      <div>
+        <h6>Zero manual work</h6>
+        <p class="small mb-0">CSS variables and utilities auto-generated. No more hand-calculating shade variations.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="d-flex align-items-start">
+      <div class="flex-shrink-0 me-3">
+        <span class="badge bg-info">🎯</span>
+      </div>
+      <div>
+        <h6>Brand-first theming</h6>
+        <p class="small mb-0">Drop in your brand colors, get a complete theme. Override only what needs tweaking.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="d-flex align-items-start">
+      <div class="flex-shrink-0 me-3">
+        <span class="badge bg-warning">🔄</span>
+      </div>
+      <div>
+        <h6>Consistent naming</h6>
+        <p class="small mb-0">Same naming pattern for CSS variables and utilities. <code>--bravo-brand-300</code> ↔ <code>.text-brand-300</code></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+## What changed vs Bootstrap
+
+| Aspect         | Bootstrap        | Bravo                                |
+| -------------- | ---------------- | ------------------------------------ |
+| Color steps    | 9 (100-900)      | **13** (25-975)                      |
+| Extra extremes | None             | **25/50 + 950/975**                  |
+| CSS variables  | Limited coverage | **Every shade exported**             |
+| Utilities      | Limited shades   | **All shades for text/bg/border**    |
+| Custom colors  | Manual wiring    | **Auto ladder + optional overrides** |

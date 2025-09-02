@@ -1,0 +1,155 @@
+---
+title: Modal
+description: Bravo enhances Bootstrap modals with JavaScript-based creation (no HTML templates needed), automatic form lifting for proper submit handling, smooth reveal animations, and auto-cleanup on hide.
+group: components
+---
+
+## Basic usage
+
+Create modals from JavaScript without HTML templates:
+
+<div class="bd-example mb-3">
+  <button type="button" class="btn btn-primary" onclick="(() => {
+    const m = new Bravo.Modal({
+      title: 'About This App',
+      content: '<p>Version 2.1.0</p><p>A demonstration of Bravo modals.</p>',
+      footerButtons: [
+        { text: 'Close', class: 'btn-primary' }
+      ]
+    });
+    m.show();
+  })()">
+    Open modal
+  </button>
+</div>
+
+```js
+import { Modal } from '@appitude/bravo';
+
+const modal = new Modal({
+  title: 'About This App',
+  content: '<p>Version 2.1.0</p><p>Built with Bravo framework.</p>',
+  footerButtons: [
+    { text: 'Close', class: 'btn-primary' }
+  ]
+});
+
+modal.show();
+```
+
+That's it - you've created a modal from JavaScript. The button automatically dismisses the modal because it has no `name` or `rel` attribute.
+
+## Form handling
+
+The clever part: forms in your content are automatically lifted to wrap the entire modal. This allows submit buttons in the footer to work with form fields in the body:
+
+<div class="bd-example mb-3">
+  <button type="button" class="btn btn-success" onclick="(() => {
+    const m = new Bravo.Modal({
+      title: 'Quick Feedback',
+      content: `<form><label class='form-label'>Your feedback</label><textarea name='feedback' class='form-control' rows='2' required></textarea></form>`,
+      footerButtons: [
+        { text: 'Cancel', class: 'btn-secondary' },
+        { text: 'Send', class: 'btn-success', type: 'submit' }
+      ]
+    });
+    m.addEventListener('submit.bs.modal', (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const feedback = new FormData(form).get('feedback');
+      alert('Feedback received: ' + feedback);
+      setTimeout(() => m.hide(), 100);
+    });
+    m.show();
+  })()">
+    Feedback form
+  </button>
+</div>
+
+```js
+const modal = new Modal({
+  title: 'Quick Feedback',
+  content: `
+    <form>
+      <label class="form-label">Your feedback</label>
+      <textarea name="feedback" class="form-control" rows="3" required></textarea>
+    </form>
+  `,
+  footerButtons: [
+    { text: 'Cancel', class: 'btn-secondary' },
+    { text: 'Send', class: 'btn-primary', type: 'submit' }
+  ]
+});
+
+modal.addEventListener('submit.bs.modal', (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const data = new FormData(form);
+  
+  console.log('Feedback:', data.get('feedback'));
+  // Send to server...
+  modal.hide();
+});
+
+modal.show();
+```
+
+### How it works:
+- Your form in `content` is detected and extracted
+- The form wraps the entire modal (header + body + footer)
+- Footer submit buttons can now submit the form
+- The `submit.bs.modal` event gives you the form element
+
+## Configuration reference
+
+```js
+new Modal({
+  // Styling
+  class: 'custom-class',             // Additional CSS classes
+  
+  // Content
+  title: 'Modal Title',              // Header title
+  content: '<p>HTML content</p>',    // Body content (can include forms)
+  header: '<custom>HTML</custom>',   // Custom header HTML (replaces title)
+  
+  // Buttons
+  footerButtons: [{
+    text: 'Button Text',
+    class: 'btn-primary',           // Bootstrap button class
+    type: 'submit',                 // 'button' (default) or 'submit'
+    name: 'action',                 // HTML name attribute
+    // ... any HTML attributes
+  }],
+  headerButtons: [...],             // Buttons for the header
+  
+  // Layout
+  size: 'lg',                       // 'sm', 'lg', 'xl' (omit for medium)
+  animation: 'fade',                // Animation class
+  scrollable: false,                // Make body scrollable
+  isStatic: false,                  // Prevent closing on backdrop click
+  
+  // Behavior
+  closeButton: {
+    disabled: false,
+    text: ''                        // Custom close icon
+  },
+  backButton: {                    // For modal navigation
+    disabled: false,
+    text: ''                        // Custom back icon
+  },
+  
+  // Bootstrap options (passed to Bootstrap constructor)
+  options: {
+    backdrop: true,                 // true, false, or 'static'
+    keyboard: true,                 // Close on ESC
+    focus: true                     // Focus modal on show
+  }
+})
+```
+
+## What's different from Bootstrap
+
+- **Programmatic creation** — Build modals from JavaScript objects, no HTML needed
+- **Automatic form lifting** — Forms in content wrap the entire modal for proper submit handling  
+- **Auto-cleanup** — Modals remove themselves from DOM when hidden
+- **Enhanced styling** — 3px backdrop blur effect

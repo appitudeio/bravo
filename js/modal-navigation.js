@@ -6,9 +6,8 @@
  *  Provide footerButtons or headerButtons:
  *  - { text: "Cancel", class: "btn-secondary", name: "dismiss" }
  */
-import EventHandler from "bootstrap/js/dist/dom/event-handler";
+import EventHandler from "bootstrap/js/src/dom/event-handler";
 import ModalObj, { ModalTemplate } from "./modal";
-import { merge } from "./functions";
 
 const EVENT_KEY = `.bs.modal`;
 const EVENT_HIDE = `hide${EVENT_KEY}`;
@@ -59,10 +58,7 @@ class Navigation {
     state = STATE_CLOSED;
 
     constructor(options = {}) {
-        this.options = merge(
-            this.options,
-            options
-        );
+        this.options = { ...structuredClone(this.options), ...options };
         this.Template = new ModalTemplate(this.options);
     }
 
@@ -96,8 +92,15 @@ class Navigation {
 
     relClickEventListener(e) {
         e.preventDefault();
-        const rel = e.target.getAttribute("rel");
-
+        
+        // Find the closest element with a rel attribute (handles event bubbling)
+        const elementWithRel = e.target.closest('[rel]');
+        if (!elementWithRel) {
+            return; // No rel attribute found, do nothing
+        }
+        
+        const rel = elementWithRel.getAttribute("rel");
+        
         if(rel == "back") {
             this.pop();
         }
@@ -110,6 +113,17 @@ class Navigation {
     }
 
     findAndPushModal(reference) {
+        if (!reference) {
+            return;
+        }
+        
+        // First check if we already have this modal in refs
+        const refId = reference.replace(/^#/, '');
+        if (this.refs[refId]) {
+            this.push(this.refs[refId]);
+            return;
+        }
+        
         // Check if reference starts with . or #
         if (!reference.startsWith('.') && !reference.startsWith('#')) {
             reference = `#${reference}`;
@@ -197,9 +211,11 @@ class Navigation {
         const currentStack = this.stack.pop(); // Remove last added modal
         const prevStack = this.stack[this.stack.length - 1];
 
-        if(currentStack.id != undefined && this.refs[currentStack.id] != undefined) {
-            delete this.refs[currentStack.id];
-        }
+        // Don't delete from refs - they should persist for the navigation lifetime
+        // Commenting out to fix issue where modals can't be re-navigated to after popping
+        // if(currentStack && currentStack[3] && currentStack[3]._element.id && this.refs[currentStack[3]._element.id]) {
+        //     delete this.refs[currentStack[3]._element.id];
+        // }
 
         if (!currentStack) {
             return Promise.resolve(); // If there was no modal to pop, resolve immediately
@@ -252,6 +268,13 @@ class Navigation {
 
         Promise.all(pops).then(() => {
             EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
+
+            // Clean up ALL modals we created (not just the ones in stack)
+            Object.values(this.refs).forEach(modal => {
+                if (modal && modal._element && modal._element.parentNode) {
+                    modal._element.remove();
+                }
+            });
 
             // Remove event listeners before cleaning up
             if (this.Modal && this.events) {

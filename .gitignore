@@ -1,13 +1,5 @@
-.env
-node_modules/
-web/
-
 # Ignore docs files
-_docs/
-
-# Hugo files
-/resources/
-/.hugo_build.lock
+/_site/
 
 # Numerous always-ignore extensions
 *.diff
@@ -34,4 +26,22 @@ _docs/
 *.sublime-workspace
 nbproject
 Thumbs.db
-/.vscode/
+# Local Netlify folder
+.netlify
+
+# Komodo
+.komodotools
+*.komodoproject
+
+# Folders to ignore
+/dist-sass/
+/js/coverage/
+/node_modules/
+dist/
+
+# Site
+/site/dist
+/site/node_modules
+/site/.astro
+/site/node_modules/.astro
+/site/public

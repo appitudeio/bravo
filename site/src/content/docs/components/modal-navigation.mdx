@@ -1,0 +1,464 @@
+---
+title: Modal Navigation
+description: Stack-based navigation inside modals with automatic back buttons, smooth animations, and declarative wiring via rel attributes.
+group: components
+---
+
+Build multi-step workflows without z-index nightmares. One modal shell, multiple screens, proper navigation.
+
+<div class="bd-example mb-3">
+  <button type="button" class="btn btn-primary btn-lg" onclick="(() => {
+    const nav = new Bravo.ModalNavigation();
+    
+    // Product listing
+    const products = new Bravo.Modal({
+      title: '🛍️ Shop',
+      content: `
+        <div class='list-group'>
+          <button type='button' rel='product-1' class='list-group-item list-group-item-action' style='cursor: pointer'>
+            <div class='d-flex justify-content-between align-items-center' style='pointer-events: none'>
+              <div>
+                <h6 class='mb-1'>MacBook Pro 14</h6>
+                <small class='text-muted'>M3 Pro, 18GB RAM</small>
+              </div>
+              <span class='badge bg-primary rounded-pill'>$1,999</span>
+            </div>
+          </button>
+          <button type='button' rel='product-2' class='list-group-item list-group-item-action' style='cursor: pointer'>
+            <div class='d-flex justify-content-between align-items-center' style='pointer-events: none'>
+              <div>
+                <h6 class='mb-1'>iPad Pro 11</h6>
+                <small class='text-muted'>M4, 256GB</small>
+              </div>
+              <span class='badge bg-primary rounded-pill'>$999</span>
+            </div>
+          </button>
+          <button type='button' rel='product-3' class='list-group-item list-group-item-action' style='cursor: pointer'>
+            <div class='d-flex justify-content-between align-items-center' style='pointer-events: none'>
+              <div>
+                <h6 class='mb-1'>AirPods Pro</h6>
+                <small class='text-muted'>2nd generation</small>
+              </div>
+              <span class='badge bg-primary rounded-pill'>$249</span>
+            </div>
+          </button>
+        </div>
+      `
+    });
+    
+    // Product detail
+    const product1 = new Bravo.Modal({
+      id: 'product-1',
+      title: 'MacBook Pro 14',
+      content: `
+        <div class='py-2'>
+          <div class='bg-light rounded mb-3 p-5 text-center'>
+            <span class='display-1'>💻</span>
+          </div>
+          <h5>$1,999</h5>
+          <p class='text-muted'>The most advanced Mac laptop for demanding workflows.</p>
+          <ul class='small'>
+            <li>Apple M3 Pro chip</li>
+            <li>14.2-inch Liquid Retina XDR display</li>
+            <li>18GB unified memory</li>
+            <li>512GB SSD storage</li>
+          </ul>
+          <button rel='checkout' class='btn btn-success w-100' onclick='window.selectedProduct = \`MacBook Pro\`'>
+            Buy Now
+          </button>
+        </div>
+      `
+    });
+    
+    const product2 = new Bravo.Modal({
+      id: 'product-2',
+      title: 'iPad Pro 11',
+      content: `
+        <div class='py-2'>
+          <div class='bg-light rounded mb-3 p-5 text-center'>
+            <span class='display-1'>📱</span>
+          </div>
+          <h5>$999</h5>
+          <p class='text-muted'>Supercharged by M4. Ultra portable.</p>
+          <ul class='small'>
+            <li>Apple M4 chip</li>
+            <li>11-inch Ultra Retina XDR display</li>
+            <li>256GB storage</li>
+            <li>All-day battery life</li>
+          </ul>
+          <button rel='checkout' class='btn btn-success w-100' onclick='window.selectedProduct = \`iPad Pro\`'>
+            Buy Now
+          </button>
+        </div>
+      `
+    });
+    
+    const product3 = new Bravo.Modal({
+      id: 'product-3',
+      title: 'AirPods Pro',
+      content: `
+        <div class='py-2'>
+          <div class='bg-light rounded mb-3 p-5 text-center'>
+            <span class='display-1'>🎧</span>
+          </div>
+          <h5>$249</h5>
+          <p class='text-muted'>Adaptive Audio. Now playing.</p>
+          <ul class='small'>
+            <li>Active Noise Cancellation</li>
+            <li>Adaptive Transparency</li>
+            <li>Personalized Spatial Audio</li>
+            <li>MagSafe Charging Case</li>
+          </ul>
+          <button rel='checkout' class='btn btn-success w-100' onclick='window.selectedProduct = \`AirPods Pro\`'>
+            Buy Now
+          </button>
+        </div>
+      `
+    });
+    
+    // Checkout
+    const checkout = new Bravo.Modal({
+      id: 'checkout',
+      title: 'Checkout',
+      content: `
+        <form id='checkout-form'>
+          <div class='alert alert-success mb-3'>
+            <small>Product: <strong id='selected-prod'></strong></small>
+          </div>
+          <p class='text-muted mb-3'>Sign in to complete your purchase:</p>
+          <div class='mb-3'>
+            <label class='form-label'>Username</label>
+            <input type='text' name='username' class='form-control' placeholder='Enter username' required>
+          </div>
+          <div class='mb-3'>
+            <label class='form-label'>Password</label>
+            <input type='password' name='password' class='form-control' placeholder='Enter password' required>
+          </div>
+          <button type='submit' class='btn btn-primary w-100' data-bs-loader='Processing order...'>
+            Complete Purchase
+          </button>
+        </form>
+      `
+    });
+    
+    // Success
+    const success = new Bravo.Modal({
+      id: 'success',
+      backButton: { disabled: true },
+      title: '✅ Order Confirmed',
+      content: `
+        <div class='text-center py-4'>
+          <div class='display-1 mb-3'>📦</div>
+          <h5>Thank you for your order!</h5>
+          <p class='text-muted'>You'll receive an email confirmation shortly.</p>
+          <button rel='close' class='btn btn-success'>Done</button>
+        </div>
+      `
+    });
+    
+    // Handle checkout form
+    checkout.addEventListener('submit.bs.modal', (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const btn = form.querySelector('[type=submit]');
+      const inputs = form.querySelectorAll('input');
+      
+      // Show loader and disable inputs
+      btn.showLoader();
+      inputs.forEach(input => input.disabled = true);
+      
+      // Simulate processing
+      setTimeout(() => nav.push(success), 1500);
+    });
+    
+    // Update checkout with selected product
+    checkout.addEventListener('show.bs.modal', () => {
+      const prodName = document.getElementById('selected-prod');
+      if (prodName) prodName.textContent = window.selectedProduct || 'Product';
+    });
+    
+    nav.push(products);
+    nav.show();
+  })()">
+    Try Shopping Flow
+  </button>
+</div>
+
+## Basic usage
+
+### Simple navigation
+
+```js
+import { Modal, ModalNavigation } from '@appitude/bravo';
+
+// Create a navigation instance
+const nav = new ModalNavigation();
+
+// Create a modal
+const welcome = new Modal({
+  title: 'Welcome',
+  content: '<p>Hello from modal navigation!</p>'
+});
+
+// Push the modal to navigation and show
+nav.push(welcome);
+nav.show();
+```
+
+### Using existing modals
+
+```js
+// If you already have a modal in the DOM
+const existingModal = new Modal('#my-existing-modal');
+
+const nav = new ModalNavigation();
+nav.push(existingModal);
+nav.show();
+```
+
+### Building a navigation flow
+
+```js
+const nav = new ModalNavigation();
+
+// First screen with a button to navigate forward
+const first = new Modal({
+  title: 'Step 1',
+  content: `
+    <p>This is the first screen.</p>
+    <button rel="step-2" class="btn btn-primary">Continue</button>
+  `
+});
+
+// Second screen with ID that matches the rel attribute
+const second = new Modal({
+  id: 'step-2',
+  title: 'Step 2',
+  content: `
+    <p>You made it to step 2!</p>
+    <button rel="back" class="btn btn-secondary">Go Back</button>
+    <button rel="close" class="btn btn-success">Done</button>
+  `
+});
+
+// Start the navigation
+nav.push(first);
+nav.show();
+```
+
+## Advanced navigation
+
+### Push/pop navigation
+
+```js
+const nav = new ModalNavigation();
+
+nav.push(firstModal);   // Add to stack and navigate forward
+nav.show();             // Open the navigation
+nav.push(secondModal);  // Navigate to next screen
+nav.pop();              // Go back one screen
+nav.close();            // Close entire navigation
+```
+
+### Using `rel` attributes
+
+Any element with a `rel` attribute becomes a navigation trigger:
+
+```html
+<button rel="settings">Settings</button>   <!-- Navigate to #settings modal -->
+<button rel="back">← Back</button>        <!-- Go to previous screen -->
+<button rel="close">Cancel</button>        <!-- Close entire navigation -->
+```
+
+When clicked, the navigation:
+1. First checks if a modal with that ID was already pushed (reuses from cache)
+2. Otherwise looks for an existing Modal instance with that ID
+3. If neither found, looks for an existing modal element in the DOM and creates a Modal instance from it
+4. Pushes the modal onto the navigation stack
+
+### Controlling the back button
+
+The back button automatically appears when stack depth > 1. You can disable it for specific modals:
+
+```js
+const finalStep = new Modal({
+  title: 'Complete',
+  backButton: { disabled: true },  // No going back from here
+  content: '<p>This is the final screen.</p>'
+});
+```
+
+See the shopping demo above where the order confirmation prevents going back after purchase.
+
+## Transition animations
+
+Choose between two animation styles when navigating between screens:
+
+<div class="bd-example mb-3">
+  <button type="button" class="btn btn-primary me-2" onclick="(() => {
+    const nav = new Bravo.ModalNavigation({
+      animation: 'slide'  // iOS-style horizontal slide
+    });
+    
+    const first = new Bravo.Modal({
+      title: 'Slide Animation',
+      content: `
+        <div class='py-3'>
+          <p>This navigation uses <strong>slide</strong> animation.</p>
+          <p>Watch how screens slide horizontally like iOS navigation.</p>
+          <button rel='second' class='btn btn-primary'>Continue →</button>
+        </div>
+      `
+    });
+    
+    const second = new Bravo.Modal({
+      id: 'second',
+      title: 'Second Screen',
+      content: `
+        <div class='py-4'>
+          <h5>Notice the slide transition?</h5>
+          <p>Content slides in from the right when going forward.</p>
+          <p>And slides back to the left when going back.</p>
+          <div class='d-flex gap-2'>
+            <button rel='back' class='btn btn-secondary'>← Back</button>
+            <button rel='third' class='btn btn-primary'>Next →</button>
+          </div>
+        </div>
+      `
+    });
+    
+    const third = new Bravo.Modal({
+      id: 'third',
+      title: 'Final Screen',
+      content: `
+        <div class='py-3'>
+          <p>This is perfect for step-by-step flows.</p>
+          <button rel='close' class='btn btn-success'>Done</button>
+        </div>
+      `
+    });
+    
+    nav.push(first);
+    nav.show();
+  })()">
+    Try Slide Animation
+  </button>
+  
+  <button type="button" class="btn btn-secondary" onclick="(() => {
+    const nav = new Bravo.ModalNavigation({
+      animation: 'morph'  // Smooth size morphing
+    });
+    
+    const first = new Bravo.Modal({
+      title: 'Morph Animation',
+      content: `
+        <div class='py-2'>
+          <p>This uses <strong>morph</strong> animation.</p>
+          <button rel='second' class='btn btn-primary'>See it morph →</button>
+        </div>
+      `
+    });
+    
+    const second = new Bravo.Modal({
+      id: 'second',
+      title: 'Different Size',
+      content: `
+        <div class='py-4'>
+          <h5>Watch the modal resize!</h5>
+          <p>The modal smoothly morphs between different content sizes.</p>
+          <p>Great for content that varies significantly in height.</p>
+          <p>No jarring jumps, just smooth transitions.</p>
+          <div class='d-flex gap-2'>
+            <button rel='back' class='btn btn-secondary'>← Smaller</button>
+            <button rel='third' class='btn btn-primary'>Bigger →</button>
+          </div>
+        </div>
+      `
+    });
+    
+    const third = new Bravo.Modal({
+      id: 'third',
+      title: 'Even Bigger',
+      content: `
+        <div class='py-5'>
+          <h4>More content here!</h4>
+          <p>The morph animation is perfect when your screens have different amounts of content.</p>
+          <p>It creates a smooth, organic feeling as the modal adapts to fit.</p>
+          <ul>
+            <li>No horizontal movement</li>
+            <li>Smooth height transitions</li>
+            <li>Content fades between screens</li>
+          </ul>
+          <button rel='close' class='btn btn-success'>Done</button>
+        </div>
+      `
+    });
+    
+    nav.push(first);
+    nav.show();
+  })()">
+    Try Morph Animation
+  </button>
+</div>
+
+```js
+// Slide animation (default) - iOS-style horizontal slide
+const slideNav = new ModalNavigation({
+  animation: 'slide'
+});
+
+// Morph animation - Smooth size morphing between screens
+const morphNav = new ModalNavigation({
+  animation: 'morph'
+});
+```
+
+The **slide** animation provides iOS-style navigation with horizontal movement. The **morph** animation smoothly resizes the modal between different content sizes.
+
+## Configuration & Events
+
+### Configuration
+
+```js
+new ModalNavigation({
+  animation: 'slide',     // Animation type: 'slide' or 'morph'
+  backButton: {
+    disabled: false,      // Show/hide back button
+    text: ''              // Custom back button text/icon
+  },
+  closeButton: {
+    disabled: false,      // Show/hide close button
+    text: ''              // Custom close button text/icon
+  }
+});
+```
+
+### Events
+
+```js
+// Navigation lifecycle
+document.addEventListener('open.bs.nav', handler);      // Navigation opening
+document.addEventListener('opened.bs.nav', handler);    // Navigation opened
+document.addEventListener('close.bs.nav', handler);     // Navigation closing
+
+// Navigation movement
+document.addEventListener('forward.bs.nav', handler);   // Starting forward navigation
+document.addEventListener('forwarding.bs.nav', handler); // Animation in progress
+document.addEventListener('forwarded.bs.nav', handler);  // Forward complete
+
+document.addEventListener('back.bs.nav', handler);      // Starting back navigation
+document.addEventListener('backing.bs.nav', handler);    // Animation in progress
+document.addEventListener('backed.bs.nav', handler);     // Back complete
+```
+
+All events include `e.detail.stack` with the current navigation stack.
+
+## Key features
+
+- **Navigation stack** — Push/pop screens instead of stacking multiple modals
+- **Automatic back button** — Appears when needed (stack > 1), no manual wiring
+- **Smooth transitions** — Slide or morph animations between screens
+- **Declarative navigation** — Use `rel` attributes to wire up navigation
+- **Modal reuse** — Previously shown modals are cached and reused
+- **Single backdrop** — No z-index issues or backdrop flashing
+- **CSS hooks** — `.modal-navigation` and `.modal-navigation-stacked` classes for custom styling

@@ -1,0 +1,57 @@
+title:                  "Bravo"
+baseURL:                "https://bravo.appitude.io"
+
+docsDir:                "site"
+
+subtitle:               "Clean enhancements and improvements to Bootstrap"
+description:            "Bravo extends Bootstrap with thoughtful enhancements, focusing on modal navigation, improved color systems, typography refinements, and iOS safe area support."
+authors:                "Appitude contributors"
+
+current_version:        "0.0.12-beta"
+current_ruby_version:   "0.0.12-beta"
+docs_version:           "0.0"
+bootstrap_version:      "5.3.7"
+rfs_version:            "v10.0.0"
+github_org:             "https://github.com/appitudeio"
+repo:                   "https://github.com/appitudeio/bravo"
+x:                      "appitudeio"
+opencollective:         "https://github.com/appitudeio/bravo"
+blog:                   "https://github.com/appitudeio/bravo"
+themes:                 "https://github.com/appitudeio/bravo"
+icons:                  "https://github.com/appitudeio/bravo"
+swag:                   "https://github.com/appitudeio/bravo"
+
+analytics:
+  fathom_site:          ""
+
+algolia:
+  app_id:                ""
+  api_key:               ""
+  index_name:            "bravo"
+
+download:
+  source:               "https://github.com/appitudeio/bravo/archive/v0.0.12-beta.zip"
+  dist:                 "https://github.com/appitudeio/bravo/releases/download/v0.0.12-beta/bravo-0.0.12-beta-dist.zip"
+  dist_examples:        "https://github.com/appitudeio/bravo/releases/download/v0.0.12-beta/bravo-0.0.12-beta-examples.zip"
+
+cdn:
+  # Bravo documentation uses Bootstrap's CDN for now
+  css:                  "https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+  css_hash:             "sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+  css_rtl:              "https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.rtl.min.css"
+  css_rtl_hash:         "sha384-Xbg45MqvDIk1e563NLpGEulpX6AvL404DP+/iCgW9eFa2BqztiwTexswJo2jLMue"
+  js:                   "https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
+  js_hash:              "sha384-7qAoOXltbVP82dhxHAUje59V5r2YsVfBafyUDxEdApLPmcdhBPg1DKg1ERo0BZlK"
+  js_bundle:            "https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+  js_bundle_hash:       "sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+  popper:               "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+  popper_hash:          "sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+  popper_esm:           "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/esm/popper.min.js"
+
+anchors:
+  min:                  2
+  max:                  5
+
+toc:
+  min:                  2
+  max:                  6

@@ -6,15 +6,19 @@
  *  Provide footerButtons or headerButtons:
  *  - { text: "Cancel", class: "btn-secondary", name: "dismiss" }
  */
-import BootstrapModal from "bootstrap/js/dist/modal";
-import EventHandler from "bootstrap/js/dist/dom/event-handler";
+import BootstrapModal from 'bootstrap/js/src/modal';
+import EventHandler from 'bootstrap/js/src/dom/event-handler';
 import ModalNavigation from "./modal-navigation";
-import { merge } from "./functions";
 
-const EVENT_KEY = `.bs.modal`;
+const DATA_KEY = 'bs.modal';
+const EVENT_KEY = `.${DATA_KEY}`;
 const EVENT_SUBMIT = `submit${EVENT_KEY}`;
 
+// Event constants for document handlers
+const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="modal"]';
+
 class Modal extends BootstrapModal {
+    static selector = SELECTOR_DATA_TOGGLE;
     constructor(elementOrOptions) {
         let modalElement;
         let options = {};
@@ -31,7 +35,7 @@ class Modal extends BootstrapModal {
         }
         else if (typeof elementOrOptions === 'object') {
             modalElement = Modal.generate(elementOrOptions);
-            options = elementOrOptions.options || {};
+            options = elementOrOptions;
         }
         else {
             throw new Error("Invalid parameter: Must provide an element ID or options object.");
@@ -78,7 +82,6 @@ class Modal extends BootstrapModal {
           content = '',
           footerButtons = [], // Array of footer button configurations
           headerButtons = [], // Array of header button configurations
-          isForm = false,
           isStatic = false,
           size = 'lg',
           animation = 'fade',
@@ -96,7 +99,7 @@ class Modal extends BootstrapModal {
 
         const Template = new ModalTemplate(options);
 
-        const modalHTML = Template.generate(id, { title, header }, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation, scrollable);
+        const modalHTML = Template.generate(id, { title, header }, content, footerButtons, headerButtons, className, isStatic, size, animation, scrollable);
         const modalFragment = document.createRange().createContextualFragment(modalHTML);
 
         document.body.append(modalFragment);
@@ -122,26 +125,40 @@ class ModalTemplate {
     }
 
     constructor(options) {
-        this.options = merge(this.options, options);
+        this.options = { ...structuredClone(this.options), ...options };
     }
 
-    generate = (id, headerObj, content, footerButtons, headerButtons, isForm, className, isStatic, size, animation, scrollable) => {
+    generate = (id, headerObj, content, footerButtons, headerButtons, className, isStatic, size, animation, scrollable) => {
         const sizeClass = (size) ? `modal-${size}` : ""; // Without size, the modal will default to Medium (md)
         const animationClass = animation ? ` ${animation}` : '';
+        
+        // Handle form detection and extraction
+        let processedContent = content;
+        let formAttributes = '';
+        let hasForm = false;
+        
+        if (content) {
+            // Check if content contains a form tag
+            const formMatch = content.match(/<form([^>]*)>([\s\S]*?)<\/form>/i);
+            if (formMatch) {
+                // Extract form attributes and inner content
+                formAttributes = formMatch[1] || '';
+                processedContent = formMatch[2] || '';
+                hasForm = true;
+            }
+        }
 
         return `
             <div id="${id}" class="modal${animationClass} ${className}" tabindex="-1" role="dialog"${isStatic ? ` data-bs-backdrop="static"` : ""}>
                 <div class="modal-dialog ${sizeClass} modal-dialog-centered${scrollable ? ` modal-dialog-scrollable` : ""}" role="document">
                     <div class="modal-content">
-                        ${isForm ? `<form method="post">` : ""}
+                        ${this.header(headerObj, headerButtons, isStatic)}
 
-                            ${this.header(headerObj, headerButtons, isStatic)}
+                        <div class="modal-body">
+                            ${hasForm ? `<form${formAttributes ? ' ' + formAttributes : ''}${!formAttributes.includes('method=') ? ' method="post"' : ''}>${processedContent}</form>` : processedContent}
+                        </div>
 
-                                <div class="modal-body">${content}</div>
-
-                            ${this.footer(footerButtons)}
-
-                        ${isForm ? `</form>` : ""}
+                        ${this.footer(footerButtons)}
                     </div>
                 </div>
             </div>
@@ -173,7 +190,7 @@ class ModalTemplate {
                 .join('');
 
             return `
-                <button class="btn ${ac.class ? button.class : "btn-secondary"}" ${buttonAttributes}>
+                <button class="btn ${button.class ? button.class : "btn-secondary"}" ${buttonAttributes}>
                     ${button.text}
                 </button>
             `;
@@ -208,8 +225,8 @@ class ModalTemplate {
 
             const buttonClass = button.class || (button.type === "submit" ? "btn-primary" : "btn-default");
 
-            // If the button does not have a name, set up to dismiss the modal
-            if(!button.name && !button.rel) {
+            // If the button does not have a name and is not a submit button, set up to dismiss the modal
+            if(!button.name && !button.rel && button.type !== 'submit') {
                 buttonAttributes.push(`data-bs-dismiss="modal"`)
             }
 

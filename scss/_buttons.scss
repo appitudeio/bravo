@@ -62,15 +62,15 @@ $btn-font-size-xs       : $input-btn-font-size-xs !default;
 }
 
 .btn-icon {
-  --btn-width: calc(
-    (var(--btn-padding-y) * 2) + 
-    (var(--btn-font-size) * var(--btn-line-height)) + 
-    (var(--btn-border-width) * 2)
+  --#{$prefix}btn-width: calc(
+    (var(--#{$prefix}btn-padding-y) * 2) + 
+    (var(--#{$prefix}btn-font-size) * var(--#{$prefix}btn-line-height)) + 
+    (var(--#{$prefix}btn-border-width) * 2)
   );
   
   padding: 0;
-  width: var(--btn-width);
-  height: var(--btn-width);
+  width: var(--#{$prefix}btn-width);
+  height: var(--#{$prefix}btn-width);
 }
 
 .btn-block {

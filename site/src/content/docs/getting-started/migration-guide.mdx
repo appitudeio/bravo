@@ -1,0 +1,60 @@
+---
+title: Migration Guide
+description: Migrate from Bootstrap to Bravo with minimal changes. Most markup stays the same, with enhanced behaviors and styling.
+group: getting-started
+---
+
+After [installing Bravo](/docs/getting-started/installation/), your existing Bootstrap markup will work immediately.
+
+## Immediate benefits
+
+### Import order solved
+
+Bootstrap requires specific import order to work properly and allow customization. Get it wrong, your build breaks.
+
+Bravo handles all of this internally:
+```scss
+@import "@appitude/bravo/scss/bravo";
+```
+
+Now customizations like the [enhanced color system](/docs/design-tokens/color-system/) just work without worrying about where to place your variables.
+
+<div class="alert alert-info">
+  <strong>Auto-initialization for existing markup:</strong> Import <code>@appitude/bravo/js/dynamicobserver</code> to automatically initialize tooltips, dropdowns, and other components in your existing HTML without changing markup. Learn more about <a href="/docs/javascript/dynamic-observer/">DynamicObserver</a>.
+</div>
+
+## What requires attention
+
+### Grid system
+
+Bravo doesn't include grid classes by default. To use the grid:
+
+```scss
+@import "@appitude/bravo/scss/bravo";
+@import "@appitude/bravo/scss/bravo-grid";  // Adds grid with column-* naming
+```
+
+This gives you `.column-*` classes instead of Bootstrap's `.col-*`, plus some improvements like `.flex-auto` and better gutter handling.
+
+```html
+<div class="row">
+  <div class="column-12 column-md-6 column-lg-4">
+    <!-- Cleaner than col-12 col-md-6 col-lg-4 -->
+  </div>
+</div>
+```
+
+### Visual changes to review
+
+* **Headings:** Larger sizes and lighter weights (500 vs 700)
+* **Primary color:** `#006AFF` instead of Bootstrap's `#0d6efd`
+* **Container gutters:** Responsive instead of fixed
+
+## Removed utilities
+
+To reduce CSS weight, a few rarely-used utilities are not included:
+
+* `.vw-*`, `.vh-*`, `.min-vw-*`, `.min-vh-*`
+* `.rounded-4`, `.rounded-5`
+
+👉 Need them? Re-enable in your Sass before importing Bravo or add back manually.

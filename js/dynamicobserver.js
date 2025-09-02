@@ -4,7 +4,7 @@
  *  E.g: If we have Tooltip with bs-toggle="tooltip", and something gets added dynamically, we want to be able to initialize the tooltip on that element automatically
  *  ( Observes the DOM for newly added elements and initializes registered Bootstrap components. )
  */
-import SelectorEngine from 'bootstrap/js/dist/dom/selector-engine';
+import SelectorEngine from 'bootstrap/js/src/dom/selector-engine';
 
 class DynamicObserver {
     observer = null;
@@ -41,8 +41,12 @@ class DynamicObserver {
         this.componentClasses.push(componentClass);
 
         // Initialize existing elements matching the selector
-        SelectorEngine.find(selector).forEach(element => {
-            componentClass.getOrCreateInstance(element);
+        const elements = SelectorEngine.find(selector);
+        
+        elements.forEach(element => {
+            if (!componentClass.getInstance(element)) {
+                componentClass.getOrCreateInstance(element);
+            }
         });
     }
 

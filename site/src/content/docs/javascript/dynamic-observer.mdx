@@ -1,0 +1,99 @@
+---
+title: Dynamic Observer
+description: Import Bravo's JS once. Write normal Bootstrap-style markup. Supported components auto-initialize when they appear in the DOM and are disposed when removed. No manual wiring.
+group: javascript
+---
+
+Import Bravo's JS once. Write normal Bootstrap-style markup. **Supported components auto-initialize when they appear in the DOM** and are disposed when removed. No manual wiring.
+
+## What it does
+
+* Watches for added/removed nodes.
+* Creates one instance per matching element.
+* Disposes instances on removal.
+* Debounced to avoid thrashing.
+
+## How to use
+
+```js
+// app entry
+import '@appitude/bravo/js'; // enables the observer + component auto-init
+```
+
+That's it. Render markup; the observer handles lifecycle.
+
+## What auto-initializes
+
+* **Tooltip** — incl. interactive template support (`data-bs-interactive`, `data-bs-html`).
+* **Dropdown** — incl. hover trigger (`data-bs-trigger="hover"`).
+* **Popover** — standard data-API.
+* **Button loader** — elements with `data-bs-loader` get show/hide loader methods.
+
+> **Not auto-initialized:** **Modal** and **ModalNavigation** are programmatic APIs. Use `new Modal(...)` / `new ModalNavigation(...)`.
+
+## Minimal examples (zero manual JS)
+
+**Tooltip (standard & interactive)**
+
+```html
+<button data-bs-toggle="tooltip" title="Plain tooltip">Hover</button>
+
+<button
+  data-bs-toggle="tooltip"
+  data-bs-interactive
+  data-bs-html="true"
+  title="<button class='btn btn-sm btn-primary'>Click me</button>">
+  Interactive tooltip
+</button>
+```
+
+**Dropdown with hover**
+
+```html
+<button
+  class="btn btn-primary dropdown-toggle"
+  data-bs-toggle="dropdown"
+  data-bs-trigger="hover">
+  Hover menu
+</button>
+<ul class="dropdown-menu">
+  <li><a class="dropdown-item" href="#">Action</a></li>
+</ul>
+```
+
+**Button loader**
+
+```html
+<button class="btn btn-primary" data-bs-loader="Saving…">Save</button>
+<script>
+  // Available once in DOM:
+  const btn = document.querySelector('[data-bs-loader]');
+  btn.showLoader();
+  // …do async work…
+  btn.hideLoader();
+</script>
+```
+
+## Registering custom components
+
+You can also plug in your own components.
+Just declare a static selector and register it with the observer:
+
+```js
+import { DynamicObserver } from '@appitude/bravo';
+
+class MyComponent {
+  static selector = '[data-my-component]';
+  constructor(element) {
+    this._element = element;
+    console.log('Auto-init!', element);
+  }
+}
+
+// Register once
+DynamicObserver.add(MyComponent);
+```
+
+Now any `<div data-my-component>` added to the DOM will automatically initialize, no MutationObserver boilerplate needed.
+
+Perfect for SPAs and dynamic content where components need to initialize after page load.

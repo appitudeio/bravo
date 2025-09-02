@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Components Test - Bravo</title>
+    <link href="/dist/css/bravo.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Bravo Components Test</h1>
+        
+        <!-- Dropdown (has custom Bravo features) -->
+        <h2 class="mt-4">Dropdown</h2>
+        <div class="dropdown d-inline-block me-2">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                Click Dropdown
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+            </ul>
+        </div>
+        <div class="dropdown d-inline-block">
+            <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-trigger="hover">
+                Hover Dropdown
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Hover action</a></li>
+            </ul>
+        </div>
+
+        <!-- Collapse (simplified) -->
+        <h2 class="mt-4">Collapse</h2>
+        <p>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample">
+                Toggle Collapse
+            </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                This content collapses!
+            </div>
+        </div>
+
+        <!-- Modal (has custom Bravo features) -->
+        <h2 class="mt-4">Modal</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Launch Modal
+        </button>
+        <div class="modal fade" id="exampleModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        Modal body text goes here.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab (simplified) -->
+        <h2 class="mt-4">Tabs</h2>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#home">Home</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile">Profile</button>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="home" role="tabpanel">
+                <p class="mt-2">Home tab content</p>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel">
+                <p class="mt-2">Profile tab content</p>
+            </div>
+        </div>
+
+        <!-- Carousel (simplified) -->
+        <h2 class="mt-4">Carousel</h2>
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" style="max-width: 400px;">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <svg class="bd-placeholder-img" width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="100%" height="100%" fill="#777"/>
+                        <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">First slide</text>
+                    </svg>
+                </div>
+                <div class="carousel-item">
+                    <svg class="bd-placeholder-img" width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="100%" height="100%" fill="#666"/>
+                        <text x="50%" y="50%" fill="#fff" dy=".3em" text-anchor="middle">Second slide</text>
+                    </svg>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+
+        <!-- Offcanvas (simplified) -->
+        <h2 class="mt-4">Offcanvas</h2>
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">
+            Toggle Offcanvas
+        </button>
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title">Offcanvas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                Some text as placeholder.
+            </div>
+        </div>
+
+        <!-- Button (has custom Bravo loader feature) -->
+        <h2 class="mt-4">Button</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="button">Toggle button</button>
+        <button type="button" class="btn btn-primary" data-bs-loader="Processing...">
+            Click to Show Loader
+        </button>
+
+        <div class="mt-5 p-3 bg-light">
+            <h3>Test Dynamic Content</h3>
+            <button id="addDynamicContent" class="btn btn-success">Add Dynamic Components</button>
+            <div id="dynamicContainer" class="mt-3"></div>
+        </div>
+    </div>
+
+    <script src="/dist/js/bravo.bundle.umd.js"></script>
+    <script>
+        // Test button loader
+        document.querySelector('[data-bs-loader]').addEventListener('click', function(e) {
+            this.showLoader();
+            setTimeout(() => {
+                this.hideLoader();
+            }, 2000);
+        });
+
+        // Test dynamic content (DynamicObserver)
+        document.getElementById('addDynamicContent').addEventListener('click', function() {
+            const container = document.getElementById('dynamicContainer');
+            container.innerHTML = `
+                <div class="dropdown">
+                    <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Dynamic Dropdown
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Dynamic Item 1</a></li>
+                        <li><a class="dropdown-item" href="#">Dynamic Item 2</a></li>
+                    </ul>
+                </div>
+                <button class="btn btn-info mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#dynamicCollapse">
+                    Dynamic Collapse
+                </button>
+                <div class="collapse" id="dynamicCollapse">
+                    <div class="card card-body mt-2">
+                        Dynamically added collapsible content!
+                    </div>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

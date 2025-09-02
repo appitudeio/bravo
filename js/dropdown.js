@@ -1,6 +1,6 @@
-import BootstrapDropdown from 'bootstrap/js/dist/dropdown';
-import EventHandler from 'bootstrap/js/dist/dom/event-handler';
-import DynamicObserver from "./dynamicobserver";
+import BootstrapDropdown from 'bootstrap/js/src/dropdown';
+import EventHandler from 'bootstrap/js/src/dom/event-handler';
+import dynamicObserver from "./dynamicobserver";
 
 export default class Dropdown extends BootstrapDropdown {
     static selector = '[data-bs-toggle="dropdown"]';
@@ -16,6 +16,7 @@ export default class Dropdown extends BootstrapDropdown {
     _addHoverListeners() {
         // Use the closest dropdown container if available; otherwise, use the parentNode
         const commonParent = this._element.closest('.dropdown') || this._element.parentNode;
+        this._hoverParent = commonParent;
 
         // Attach hover listeners to the common parent to handle enter and leave events
         EventHandler.on(commonParent, 'mouseenter', () => this.show());
@@ -41,8 +42,16 @@ export default class Dropdown extends BootstrapDropdown {
         }, 50);
     }
 
+    dispose() {
+        if (this._hoverParent) {
+            EventHandler.off(this._hoverParent, 'mouseenter');
+            EventHandler.off(this._hoverParent, 'mouseleave');
+        }
+        super.dispose();
+    }
+
     // Automatically register the component upon class definition
     static {
-        DynamicObserver.add(this);
+        dynamicObserver.add(this);
     }
 }

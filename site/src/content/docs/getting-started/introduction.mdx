@@ -1,0 +1,83 @@
+---
+title: Introduction
+description: Technical overview of Bravo's architecture and Bootstrap enhancement approach.
+aliases:
+ - "/docs/[[config:docs_version]]/getting-started/"
+ - "/docs/getting-started/"
+ - "/getting-started/"
+toc: true
+---
+
+## What is Bravo
+
+Bravo is a curated set of enhancements for Bootstrap 5.3 that maintains full compatibility while adding commonly-needed features. It works by:
+
+1. **SCSS layer** — Imports Bootstrap's source, then applies enhancements and patches
+2. **JavaScript extensions** — Extends Bootstrap's components with additional functionality
+3. **Opt-in architecture** — Use only what you need, from SCSS-only to full JS enhancements
+
+## Technical architecture
+
+### SCSS structure
+
+Bravo's main SCSS file (`bravo.scss`) orchestrates a specific import order:
+- Loads Bravo's custom functions and color system first
+- Imports Bootstrap's core files
+- Applies patches and overrides
+- Generates extended utilities
+
+This eliminates import order issues while maintaining Bootstrap compatibility.
+
+### JavaScript approach
+
+- **Component extensions**: Bravo's components extend Bootstrap's base classes
+- **DynamicObserver**: MutationObserver-based auto-initialization for dynamic content
+- **Tree-shakeable**: Import individual components or the full bundle
+
+### Key differences from Bootstrap
+
+- **Color system**: 13 shades per color (vs 9), all available as CSS variables
+- **Typography**: Larger scale, lighter weights, responsive sizing via RFS
+- **Grid**: Optional `.column-*` naming (requires separate import)
+- **Components**: Enhanced with loading states, interactive modes, programmatic APIs
+
+## Explore Bravo
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">Design tokens</h5>
+        <p class="card-text">Advanced color system and refined typography</p>
+        <a href="/docs/0.0/design-tokens/color-system/" class="btn btn-primary">Explore tokens</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">Components</h5>
+        <p class="card-text">Enhanced Bootstrap components with new powers</p>
+        <a href="/docs/0.0/components/modal/" class="btn btn-primary">View components</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">JavaScript</h5>
+        <p class="card-text">Auto-initialization and programmatic APIs</p>
+        <a href="/docs/0.0/javascript/dynamic-observer/" class="btn btn-primary">See features</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">Migration</h5>
+        <p class="card-text">Drop-in replacement for Bootstrap projects</p>
+        <a href="/docs/0.0/getting-started/migration-guide/" class="btn btn-primary">Start migrating</a>
+      </div>
+    </div>
+  </div>
+</div>

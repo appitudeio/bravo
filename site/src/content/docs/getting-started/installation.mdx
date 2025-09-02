@@ -1,0 +1,76 @@
+---
+title: Installation
+description: Bravo installs exactly like Bootstrap. Use it alongside your existing Bootstrap setup for testing, or as a complete drop-in replacement.
+group: getting-started
+---
+
+Same workflow, same tools, better results.
+
+```bash
+# Install like any Bootstrap project
+npm install @appitude/bravo
+# yarn add @appitude/bravo
+# pnpm add @appitude/bravo
+```
+
+```scss
+// One line change in your SCSS
+@import "@appitude/bravo/scss/bravo";
+// Instead of: @import "bootstrap/scss/bootstrap";
+```
+
+Everything else stays the same. Bravo includes Bootstrap plus all enhancements.
+
+## JavaScript (when you want enhanced behaviors)
+
+Bravo's JavaScript adds interactive tooltips, programmatic modals, loading states, and auto-initialization. **The SCSS works fine without it.**
+
+**Individual imports** (tree-shakeable)
+```js
+import Modal from '@appitude/bravo/js/modal';
+import Tooltip from '@appitude/bravo/js/tooltip';
+```
+
+**Component bundle** (when you need multiple components)
+```js
+import { Modal, Tooltip, Button } from '@appitude/bravo/js';
+// All component classes for manual initialization
+```
+
+## Easy testing (no code changes)
+
+Want to try Bravo without touching your existing Bootstrap imports? Use bundler aliases to redirect them:
+
+### Vite
+
+```js
+// vite.config.js
+import { defineConfig } from 'vite';
+import path from 'path';
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      'bootstrap/scss': path.resolve(__dirname, 'node_modules/@appitude/bravo/scss'),
+    }
+  }
+});
+```
+
+### Webpack
+
+```js
+// webpack.config.js
+const path = require('path');
+
+module.exports = {
+  resolve: {
+    alias: {
+      'bootstrap/scss': path.resolve(__dirname, 'node_modules/@appitude/bravo/scss'),
+    }
+  }
+};
+```
+
+Now your existing `@import "bootstrap/scss/bootstrap"` lines automatically use Bravo without editing files.
+

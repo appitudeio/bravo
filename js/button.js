@@ -1,9 +1,10 @@
 /**
  *  Let's add a loader functionality to the Bootstrap's button component
  */
-import BootstrapButton from 'bootstrap/js/dist/button';
-import DynamicObserver from './dynamicobserver';
+import BootstrapButton from 'bootstrap/js/src/button';
+import dynamicObserver from './dynamicobserver';
 
+// Event constants needed for document handlers
 const CLASS_LOADING = "loading";
 
 export default class Button extends BootstrapButton {
@@ -93,6 +94,6 @@ export default class Button extends BootstrapButton {
 
     // Automatically register the component upon class definition
     static {
-        DynamicObserver.add(this);
+        dynamicObserver.add(this);
     }
 }

@@ -1,0 +1,97 @@
+---
+import { getConfig } from '@libs/config'
+import { getVersionedDocsPath } from '@libs/path'
+import Code from '@components/shortcodes/Code.astro'
+import ResponsiveImage from '@layouts/partials/ResponsiveImage.astro'
+---
+
+<div class="bd-masthead" id="content">
+  <div class="container-xxl bd-gutter">
+    <div class="column-md-8 mx-auto text-center">
+      <ResponsiveImage 
+        imgPath="/assets/brand/bootstrap-logo-shadow.png"
+        alt="Bootstrap"
+        width={200}
+        height={165}
+        classes="d-none d-sm-block mx-auto mb-3"
+        lazyload={false}
+      />
+      <h1 class="mb-3 fw-semibold lh-1">Stop hacking around Bootstrap's gaps</h1>
+      <p class="lead mb-4">
+        Bravo is Bootstrap with the fixes you've been adding by hand — now built-in, cleaner, and future-proof.
+      </p>
+      <div class="d-flex flex-column flex-lg-row align-items-md-stretch justify-content-md-center gap-3 mb-4">
+        <div class="d-inline-block v-align-middle fs-5">
+          <Code code={`npm i @appitude/bravo`} lang="sh" />
+        </div>
+        <a
+          href={getVersionedDocsPath('getting-started/introduction')}
+          class="btn btn-lg bd-btn-lg btn-bd-primary d-flex align-items-center justify-content-center fw-semibold"
+        >
+          <svg class="bi me-2" aria-hidden="true"><use xlink:href="#book-half"></use></svg>
+          View Enhancements
+        </a>
+      </div>
+      <p class="text-body-secondary mb-0">
+        Currently <strong>v{getConfig().current_version}</strong>
+        <span class="px-1">&middot;</span>
+        <a href={getConfig().repo} class="link-secondary text-nowrap">GitHub</a>
+        <span class="px-1">&middot;</span>
+        <a href="https://getbootstrap.com" class="link-secondary text-nowrap">Bootstrap {getConfig().bootstrap_version}</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<section class="container-xxl bd-gutter pt-3 pb-5 mb-1">
+  <div class="row g-4">
+    <div class="column-md-4">
+      <div class="masthead-followup-icon d-inline-block mb-3" style="--bg-rgb: var(--bs-primary-rgb);">
+        <svg class="bi fs-1" aria-hidden="true">
+          <use xlink:href="#palette2"></use>
+        </svg>
+      </div>
+      <h3 class="fw-semibold">Colors that actually scale</h3>
+      <p class="text-body-secondary">Full stepped palettes, all shades available as CSS vars + utilities.</p>
+    </div>
+    <div class="column-md-4">
+      <div class="masthead-followup-icon d-inline-block mb-3" style="--bg-rgb: var(--bs-info-rgb);">
+        <svg class="bi fs-1" aria-hidden="true">
+          <use xlink:href="#box-seam"></use>
+        </svg>
+      </div>
+      <h3 class="fw-semibold">Components you wish existed</h3>
+      <p class="text-body-secondary">Programmatic modals, button loaders, interactive tooltips, hover dropdowns.</p>
+    </div>
+    <div class="column-md-4">
+      <div class="masthead-followup-icon d-inline-block mb-3" style="--bg-rgb: var(--bd-violet-rgb);">
+        <svg class="bi fs-1" aria-hidden="true">
+          <use xlink:href="#lightning-charge-fill"></use>
+        </svg>
+      </div>
+      <h3 class="fw-semibold">Automatic wiring</h3>
+      <p class="text-body-secondary">The Dynamic Observer initializes components as they hit the DOM. No more new Tooltip(...) everywhere.</p>
+    </div>
+  </div>
+  
+  <div class="row g-4 mt-0">
+    <div class="column-md-6">
+      <div class="masthead-followup-icon d-inline-block mb-3" style="--bg-rgb: var(--bs-success-rgb);">
+        <svg class="bi fs-1" aria-hidden="true">
+          <use xlink:href="#grid-fill"></use>
+        </svg>
+      </div>
+      <h3 class="fw-semibold">Layouts that fit today</h3>
+      <p class="text-body-secondary">Responsive container gutters, safe-area support, cleaner grid aliases.</p>
+    </div>
+    <div class="column-md-6">
+      <div class="masthead-followup-icon d-inline-block mb-3" style="--bg-rgb: var(--bs-danger-rgb);">
+        <svg class="bi fs-1" aria-hidden="true">
+          <use xlink:href="#magic"></use>
+        </svg>
+      </div>
+      <h3 class="fw-semibold">Animations that don't feel stuck in 2015</h3>
+      <p class="text-body-secondary">Modern transitions and effects that feel native to today's web.</p>
+    </div>
+  </div>
+</section>
