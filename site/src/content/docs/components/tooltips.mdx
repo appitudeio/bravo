@@ -1,0 +1,88 @@
+---
+title: Tooltips
+description: Bravo adds interactive tooltips that stay open on hover, smooth directional animations, and automatic initialization to Bootstrap's tooltips.
+group: components
+toc: true
+---
+
+Interactive tooltips that don't disappear when you try to click their content, plus smooth animations and auto-initialization.
+
+## Interactive tooltips
+
+The main enhancement — tooltips that stay open when hovering their content:
+
+<div class="bd-example mb-3">
+  <button type="button" 
+          class="btn btn-primary me-2"
+          data-bs-toggle="tooltip"
+          data-bs-interactive="true"
+          data-bs-html="true"
+          data-bs-placement="top"
+          title="<div class='text-center'><button class='btn btn-sm btn-success me-2' onclick='navigator.clipboard.writeText(&quot;npm install bravo&quot;); this.textContent=&quot;✓ Copied&quot;'>Copy</button><code>npm install bravo</code></div>">
+    Copy Command
+  </button>
+  
+  <button type="button"
+          class="btn btn-secondary me-2"  
+          data-bs-toggle="tooltip"
+          data-bs-interactive="true"
+          data-bs-html="true"
+          title="<div><strong>Need help?</strong><br><a href='#docs' class='text-info'>View docs</a> • <a href='#support' class='text-info'>Contact support</a></div>">
+    Help Menu
+  </button>
+  
+  <span class="badge bg-info"
+        data-bs-toggle="tooltip"
+        data-bs-interactive="true"
+        data-bs-html="true"
+        data-bs-placement="right"
+        title="<div class='small'><strong>Pro tip:</strong><br>You can select and copy this text!</div>">
+    Hover for tip
+  </span>
+</div>
+
+```html
+<button data-bs-toggle="tooltip"
+        data-bs-interactive="true"
+        data-bs-html="true"
+        title="<button onclick='...'>Copy</button>">
+  Interactive content
+</button>
+```
+
+Add `data-bs-interactive` to make tooltips interactive. This automatically:
+- Sets `trigger: "manual"` for programmatic control
+- Enables `html: true` for rich content (though you should still add it for clarity)
+- Adds hover tracking to both trigger and tooltip
+- Implements 100ms hide delay to prevent flickering
+
+## Enhanced animations
+
+Bravo replaces Bootstrap's fade with scale + directional movement:
+
+<div class="bd-example mb-3">
+  <div class="d-flex justify-content-center gap-2 align-items-center" style="height: 120px;">
+    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Scales up from bottom">Top</button>
+    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="right" title="Scales in from left">Right</button>
+    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Scales up from top">Bottom</button>
+    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="left" title="Scales in from right">Left</button>
+  </div>
+</div>
+
+The animation combines:
+- **Scale**: 0.8 → 1.0
+- **Translate**: 5px from placement direction
+- **Duration**: 300ms with ease timing
+
+This is achieved through a custom template that wraps content in `.tooltip-container` for transform animations.
+
+## Details
+
+* **Interactive mode**: Tooltips become hoverable containers, perfect for buttons/links inside
+* **Smart hover tracking**: 100ms delay prevents accidental closing when moving cursor
+* **Custom template**: Adds `.tooltip-container` wrapper for animation transforms
+* **Backwards compatible**: Regular tooltips still work exactly like Bootstrap
+
+<div class="alert alert-info mt-4">
+  <strong>Auto-initialization:</strong> Tooltips with <code>data-bs-toggle="tooltip"</code> are automatically enhanced when added to the DOM, even dynamically. Powered by Bravo's <a href="/docs/[[config:docs_version]]/javascript/dynamic-observer/">DynamicObserver</a>.
+</div>

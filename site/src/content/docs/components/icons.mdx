@@ -1,0 +1,146 @@
+---
+title: Icons
+description: A flexible SVG icon system using CSS masks that inherit color and scale with content.
+group: components
+toc: true
+---
+
+## Why CSS variables for icons?
+
+Manage icons in CSS where they belong, not inline in HTML. This enables dynamic states, theme variations, JavaScript control, and cleaner markup:
+
+```css
+/* Define icons once in CSS */
+:root {
+  --icon-check: url('data:image/svg+xml;utf8,<svg>...</svg>');
+  --icon-plus: url('data:image/svg+xml;utf8,<svg>...</svg>');
+  --icon-close: url('data:image/svg+xml;utf8,<svg>...</svg>');
+}
+
+/* Use them anywhere */
+.btn-add { --icon: var(--icon-plus); }
+.btn-add:hover { --icon: var(--icon-check); }  /* Change on hover! */
+```
+
+```html
+<!-- Clean HTML -->
+<button class="btn btn-primary">
+  <span class="icon btn-add"></span>
+  Add item
+</button>
+```
+
+## Sizes
+
+<div class="bd-example mb-3">
+  <span class="icon icon-sm me-2" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z&quot;/><path d=&quot;M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z&quot;/></svg>')"></span>
+  <span class="icon me-2" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z&quot;/><path d=&quot;M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z&quot;/></svg>')"></span>
+  <span class="icon icon-md me-2" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z&quot;/><path d=&quot;M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z&quot;/></svg>')"></span>
+  <span class="icon icon-lg" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z&quot;/><path d=&quot;M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z&quot;/></svg>')"></span>
+  <small class="text-muted ms-2">12px → 16px → 20px → 24px</small>
+</div>
+
+```html
+<span class="icon icon-sm"></span>  <!-- 12px -->
+<span class="icon"></span>          <!-- 16px (default) -->
+<span class="icon icon-md"></span>  <!-- 20px -->
+<span class="icon icon-lg"></span>  <!-- 24px -->
+```
+
+## Color inheritance
+
+Icons automatically inherit colors from Bootstrap's text utilities — one icon, any color:
+
+<div class="bd-example mb-3">
+  <div class="mb-3">
+    <strong>Same icon, different Bootstrap color classes:</strong>
+  </div>
+  <div class="d-flex gap-3 flex-wrap mb-3">
+    <span class="icon text-primary" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2z&quot;/></svg>')"></span>
+    <span class="icon text-secondary" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2z&quot;/></svg>')"></span>
+    <span class="icon text-success" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2z&quot;/></svg>')"></span>
+    <span class="icon text-danger" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2z&quot;/></svg>')"></span>
+    <span class="icon text-warning" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2z&quot;/></svg>')"></span>
+    <span class="icon text-info" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2z&quot;/></svg>')"></span>
+    <span class="icon text-dark" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2z&quot;/></svg>')"></span>
+    <span class="icon text-muted" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2z&quot;/></svg>')"></span>
+  </div>
+  
+  ```html
+  <!-- Just change the Bootstrap color class — icon follows automatically -->
+  <span class="icon text-primary" style="--icon: ..."></span>
+  <span class="icon text-success" style="--icon: ..."></span>
+  <span class="icon text-danger" style="--icon: ..."></span>
+  ```
+  
+  <div class="mt-3">
+    <strong>Works everywhere Bootstrap colors work:</strong>
+  </div>
+  <button type="button" class="btn btn-success me-2">
+    <span class="icon" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.07L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z&quot;/></svg>')"></span>
+    Save
+  </button>
+  <button type="button" class="btn btn-outline-danger">
+    <span class="icon" style="--icon: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 16 16&quot;><path d=&quot;M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z&quot;/></svg>')"></span>
+    Cancel
+  </button>
+</div>
+
+No need for different colored SVG files — one icon works with all Bootstrap's color utilities.
+
+## JavaScript control
+
+Easily change icons with JavaScript by setting the CSS variable:
+
+```js
+// Change icon dynamically
+const icon = document.querySelector('.icon');
+icon.style.setProperty('--icon', 'url("data:image/svg+xml;utf8,<svg>...</svg>")');
+
+// Toggle between states
+if (isActive) {
+  element.style.setProperty('--icon', 'var(--icon-check)');
+} else {
+  element.style.setProperty('--icon', 'var(--icon-plus)');
+}
+
+// Animate icon changes
+button.addEventListener('click', async () => {
+  icon.style.setProperty('--icon', 'var(--icon-loading)');
+  await saveData();
+  icon.style.setProperty('--icon', 'var(--icon-check)');
+});
+```
+
+No DOM manipulation needed — just change the CSS variable to instantly update any icon!
+
+## Dynamic icons
+
+Change icons based on state, theme, or any CSS condition:
+
+```css
+/* Different icons for different states */
+.nav-item { --icon: var(--icon-folder); }
+.nav-item.active { --icon: var(--icon-folder-open); }
+.nav-item:hover { --icon: var(--icon-arrow-right); }
+
+/* Theme-based icons */
+[data-bs-theme="light"] .theme-icon { --icon: var(--icon-sun); }
+[data-bs-theme="dark"] .theme-icon { --icon: var(--icon-moon); }
+
+/* Responsive icons */
+@media (max-width: 768px) {
+  .menu-icon { --icon: var(--icon-hamburger); }
+}
+@media (min-width: 769px) {
+  .menu-icon { --icon: var(--icon-grid); }
+}
+```
+
+## Benefits
+
+* **Dynamic states** — Change icons on hover, active, or any CSS state
+* **Clean HTML** — Icons defined in CSS, not cluttering markup
+* **Theme support** — Different icons for light/dark modes
+* **No JavaScript** — Pure CSS solution for icon management
+* **Works with any SVG** — Bootstrap Icons, Feather, or custom SVGs

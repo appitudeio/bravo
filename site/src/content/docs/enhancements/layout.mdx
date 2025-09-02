@@ -1,0 +1,65 @@
+---
+title: Layout
+description: Bravo builds on Bootstrap's layout system (containers, grid, utilities) with a few quality-of-life improvements.
+group: enhancements
+toc: true
+---
+
+## Safe-area support
+
+Bravo provides CSS variables for safe-area insets (notches, rounded corners, home indicators on modern devices):
+
+```css
+/* Available safe-area variables */
+--sat: env(safe-area-inset-top);    
+--sar: env(safe-area-inset-right);  
+--sab: env(safe-area-inset-bottom); /* min 3px for visibility */
+--sal: env(safe-area-inset-left);   
+
+/* Example: Fixed bottom navigation avoiding iPhone home indicator */
+.bottom-nav {
+  padding: 10px 10px calc(10px + var(--sab)) 10px;
+}
+
+/* Example: Full-screen header respecting the notch */
+.app-header {
+  padding-top: calc(1.5rem + var(--sat));
+}
+
+/* Example: Edge-to-edge content with safe zones */
+.full-width-gallery {
+  padding-left: var(--sal);
+  padding-right: var(--sar);
+}
+```
+
+Containers automatically use these variables, but you can also apply them to any custom component.
+
+## Responsive container gutters
+
+Bravo uses a responsive gutter scale instead of Bootstrap's fixed `1.5rem`:
+
+```scss
+$container-gutters: (
+  xs: 1rem,    // Mobile
+  sm: 1.5rem,
+  md: 2rem,
+  lg: 3rem,
+  xl: 4rem,
+  xxl: 5rem    // Desktop
+) !default;
+```
+
+## Grid refinements
+
+* **`.column-*` aliases**: More semantic than `.col-*` (both work)
+* **Gutter fix**: Prevents unwanted bottom margins on last rows
+
+## Reference
+
+| Feature           | Bootstrap     | Bravo                             |
+| ----------------- | ------------- | --------------------------------- |
+| Container gutters | Fixed 1.5rem  | Responsive 1rem → 5rem            |
+| Safe areas        | Manual CSS    | Automatic vars (`--sal`, `--sar`) |
+| Grid classes      | `.col-*` only | `.col-*` + `.column-*`            |
+| Gutter CSS vars   | Not exposed   | `--bravo-container-gutter-*`      |

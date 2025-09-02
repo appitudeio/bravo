@@ -1,0 +1,78 @@
+---
+title: Styling tweaks
+description: Minor but meaningful styling improvements that fix common Bootstrap pain points.
+group: enhancements
+toc: true
+---
+
+Beyond the new components and features, Bravo includes subtle design improvements that address common Bootstrap pain points. These work behind the scenes to create a more polished user experience.
+
+## Typography refinements
+
+Bravo refines Bootstrap's typography with a modern scale and improved readability:
+
+* **Larger, lighter headings** — H1 is 2.8rem (vs 2.5rem) with weight 500 (vs 700)
+* **New `.jumbo` utility** — 3.5rem hero headings for landing pages
+* **Responsive margins** — Using RFS, margins scale with screen size
+* **Better visual density** — Subtle letter-spacing on large text
+
+```html
+<h1 class="jumbo">Hero heading</h1>
+<h2>Refined subheading</h2>
+```
+
+## Form control improvements
+
+Input groups now handle focus states properly — focused inputs get elevated z-index to prevent their focus rings from being clipped by adjacent elements:
+
+<div class="bd-example mb-3">
+  <div class="input-group">
+    <span class="input-group-text">$</span>
+    <input type="text" class="form-control" placeholder="Amount" />
+    <span class="input-group-text">.00</span>
+  </div>
+</div>
+
+Try tabbing to the input above to see the clean focus ring display.
+
+## Enhanced animations
+
+Components throughout Bravo include thoughtful animation improvements:
+
+<div class="bd-example mb-3">
+  <button type="button" class="btn btn-primary me-2" data-bs-toggle="tooltip" title="Smooth scale and position animations">
+    Hover for tooltip animation
+  </button>
+  
+  <div class="dropdown d-inline-block me-2">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-trigger="hover">
+      Hover for dropdown fade-in
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Action</a></li>
+      <li><a class="dropdown-item" href="#">Another action</a></li>
+      <li><a class="dropdown-item" href="#">Something else</a></li>
+    </ul>
+  </div>
+
+  <button type="button" class="btn btn-success" onclick="(() => {
+    const m = new Bravo.Modal({
+      title: 'Enhanced Modal',
+      content: '<p>Notice the backdrop blur effect and smooth reveal animation.</p>',
+      footerButtons: [{ text: 'Close', class: 'btn-primary' }]
+    });
+    m.show();
+  })()">
+    Open modal with backdrop blur
+  </button>
+</div>
+
+These animations respect user preferences and are automatically disabled for users who prefer reduced motion.
+
+## Design consistency
+
+All improvements follow Bootstrap's existing design language while fixing usability issues. Focus colors automatically tie to your theme variables, animations use consistent timing, and enhancements are designed to feel like natural extensions of Bootstrap rather than additions.
+
+## Details
+
+These improvements are automatically applied — no configuration needed. They maintain full Bootstrap compatibility while creating a more refined experience.

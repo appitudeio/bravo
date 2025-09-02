@@ -1,0 +1,87 @@
+// Light
+$primary-text-emphasis:   var(--#{$prefix}primary-800) !default;
+$secondary-text-emphasis: var(--#{$prefix}secondary-800) !default;
+$success-text-emphasis:   var(--#{$prefix}success-800) !default;
+$info-text-emphasis:      var(--#{$prefix}info-800) !default;
+$warning-text-emphasis:   var(--#{$prefix}warning-800) !default;
+$danger-text-emphasis:    var(--#{$prefix}danger-800) !default;
+$light-text-emphasis:     var(--#{$prefix}gray-700) !default;
+$dark-text-emphasis:      var(--#{$prefix}gray-700) !default;
+
+$primary-bg-subtle:       var(--#{$prefix}primary-100) !default;
+$secondary-bg-subtle:     var(--#{$prefix}secondary-100) !default;
+$success-bg-subtle:       var(--#{$prefix}success-100) !default;
+$info-bg-subtle:          var(--#{$prefix}info-100) !default;
+$warning-bg-subtle:       var(--#{$prefix}warning-100) !default;
+$danger-bg-subtle:        var(--#{$prefix}danger-100) !default;
+$light-bg-subtle:         var(--#{$prefix}gray-100) !default;
+$dark-bg-subtle:          var(--#{$prefix}gray-400) !default;
+
+$primary-border-subtle:   var(--#{$prefix}primary-200) !default;
+$secondary-border-subtle: var(--#{$prefix}secondary-200) !default;
+$success-border-subtle:   var(--#{$prefix}success-200) !default;
+$info-border-subtle:      var(--#{$prefix}info-200) !default;
+$warning-border-subtle:   var(--#{$prefix}warning-200) !default;
+$danger-border-subtle:    var(--#{$prefix}danger-200) !default;
+$light-border-subtle:     var(--#{$prefix}gray-200) !default;
+$dark-border-subtle:      var(--#{$prefix}gray-500) !default;
+
+// Dark
+$primary-text-emphasis-dark:        var(--#{$prefix}primary-200) !default;
+$secondary-text-emphasis-dark:      var(--#{$prefix}secondary-200) !default;
+$success-text-emphasis-dark:        var(--#{$prefix}success-200) !default;
+$info-text-emphasis-dark:           var(--#{$prefix}info-200) !default;
+$warning-text-emphasis-dark:        var(--#{$prefix}warning-200) !default;
+$danger-text-emphasis-dark:         var(--#{$prefix}danger-200) !default;
+$light-text-emphasis-dark:          var(--#{$prefix}gray-100) !default;
+$dark-text-emphasis-dark:           var(--#{$prefix}gray-300) !default;
+
+$primary-bg-subtle-dark:            var(--#{$prefix}primary-900) !default;
+$secondary-bg-subtle-dark:          var(--#{$prefix}secondary-900) !default;
+$success-bg-subtle-dark:            var(--#{$prefix}success-900) !default;
+$info-bg-subtle-dark:               var(--#{$prefix}info-900) !default;
+$warning-bg-subtle-dark:            var(--#{$prefix}warning-900) !default;
+$danger-bg-subtle-dark:             var(--#{$prefix}danger-900) !default;
+$light-bg-subtle-dark:              var(--#{$prefix}gray-800) !default;
+$dark-bg-subtle-dark:               var(--#{$prefix}gray-800) !default;
+
+$primary-border-subtle-dark:        var(--#{$prefix}primary-700) !default;
+$secondary-border-subtle-dark:      var(--#{$prefix}secondary-700) !default;
+$success-border-subtle-dark:        var(--#{$prefix}success-700) !default;
+$info-border-subtle-dark:           var(--#{$prefix}info-700) !default;
+$warning-border-subtle-dark:        var(--#{$prefix}warning-700) !default;
+$danger-border-subtle-dark:         var(--#{$prefix}danger-700) !default;
+$light-border-subtle-dark:          var(--#{$prefix}gray-700) !default;
+$dark-border-subtle-dark:           var(--#{$prefix}gray-800) !default;
+
+// Global dark mode colors
+$body-secondary-color-dark:         rgba($body-color-dark, .75) !default;
+$body-secondary-bg-dark:            var(--#{$prefix}gray-800) !default;
+$body-tertiary-color-dark:          var(--#{$prefix}tertiary-color) !default;
+$body-tertiary-bg-dark:             var(--#{$prefix}tertiary-bg) !default;
+$body-emphasis-color-dark:          var(--#{$prefix}white) !default;
+$border-color-dark:                 var(--#{$prefix}gray-700) !default;
+$border-color-translucent-dark:     rgba($white, .15) !default;
+$headings-color-dark:               inherit !default;
+$link-color-dark:                   var(--#{$prefix}primary-300) !default;
+$link-hover-color-dark:             var(--#{$prefix}primary-500) !default;
+$code-color-dark:                   var(--#{$prefix}pink-300) !default;
+$mark-color-dark:                   var(--#{$prefix}body-color-dark) !default;
+$mark-bg-dark:                      var(--#{$prefix}yellow-800) !default;
+
+/**
+ *  Some additions that are not included in Bootstrap
+ */
+:root {
+    --black: #{$black};
+    --white: #{$white};
+    --lightest: #{$lightest};
+    --darkest: #{$darkest};  
+}
+
+@include color-mode(dark, true) {
+    --black: #{$white};
+    --white: #{$black};
+    --lightest: #{$lightest-dark};
+    --darkest: #{$darkest-dark};
+}

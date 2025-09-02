@@ -1,0 +1,43 @@
+# Documentation
+site/
+_site/
+_docs/
+
+# Development files
+.github/
+.claude/
+web/
+test-*.html
+debug-*.html
+vite.config.js
+
+# Config files
+config.yml
+hugo.yml
+composer.json
+astro.config.*
+postcss.config.*
+tsconfig.json
+
+# Build artifacts
+*.log
+*.map
+.DS_Store
+node_modules/
+.astro/
+
+# Git
+.git/
+.gitignore
+
+# Editor
+.idea/
+.vscode/
+*.sublime-*
+
+# Misc
+*.md
+!README.md
+!CHANGELOG.md
+package-lock.json
+yarn.lock

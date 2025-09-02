@@ -1,0 +1,91 @@
+/**
+ *  Bravo customizations
+ */
+$base-font-size: 1rem !default; // Base size (16px)
+$base-font-size-sm: 1rem !default; // Base size (16px)
+$base-font-size-xs: $base-font-size * .65 !default;
+$font-family-headers: var(--#{$prefix}body-font-family) !default;
+$headings-font-weight: 500 !default; // Use Bootstrap's default font-weight for headings
+
+/**
+ *  Override Bootstrap's default font size variables
+ */
+$h1-font-size: 2.8rem !default;
+$h2-font-size: 2.3rem !default;
+$h3-font-size: 1.8rem !default;
+$h4-font-size: 1.5rem !default;
+$h5-font-size: 1.25rem !default;
+$h6-font-size: 1rem !default; // Base size
+$jumbo-font-size: 3.5rem !default;
+
+/** 
+ * Maps for line heights and margins
+ *  - There are variables for this in _variables but they are not available here
+ */
+$line-height-map: (
+    h1: 1.2, 
+    h2: 1.2,
+    h3: 1.2,
+    h4: 1.3,
+    h5: 1.2,
+    h6: 1.3,
+    jumbo: 1.1
+) !default;
+
+$margin-bottom-map: (
+    h1: 1.5rem,
+    h2: 1rem,
+    h3: 0.85rem,
+    h4: 0.75rem,
+    h5: 0.5rem,
+    h6: 0.5rem,
+    jumbo: 2rem
+) !default;
+
+$paragraph-margin-bottom: 1rem !default;
+
+// Define Typography Styles Based on Scale and Variables
+$typography-map: (
+  h1: (
+    line-height: map-get($line-height-map, h1),
+    margin-bottom: map-get($margin-bottom-map, h1),  // Scales proportionally
+    letter-spacing: -0.02em,
+    font-family: $font-family-headers
+  ),
+  h2: (
+    line-height: map-get($line-height-map, h2),
+    margin-bottom: map-get($margin-bottom-map, h2),
+    letter-spacing: -0.015em,
+    font-family: $font-family-headers
+  ),
+  h3: (
+    line-height: map-get($line-height-map, h3),
+    margin-bottom: map-get($margin-bottom-map, h3),
+    letter-spacing: -0.01em,
+    font-family: $font-family-headers
+  ),
+  h4: (
+    line-height: map-get($line-height-map, h4),
+    margin-bottom: map-get($margin-bottom-map, h4),
+    letter-spacing: -0.005em,
+    font-family: $font-family-headers
+  ),
+  h5: (
+    line-height: map-get($line-height-map, h5),
+    margin-bottom: map-get($margin-bottom-map, h5),
+    font-family: $font-family-headers
+  ),
+  h6: (
+    line-height: map-get($line-height-map, h6),
+    margin-bottom: map-get($margin-bottom-map, h6),
+    font-family: $font-family-headers
+  ),
+  jumbo: (
+    font-size: $jumbo-font-size,
+    line-height: map-get($line-height-map, jumbo),
+    margin-bottom: map-get($margin-bottom-map, jumbo),
+    letter-spacing: -0.025em,
+    font-weight: $headings-font-weight,
+    font-family: $font-family-headers
+  )
+);

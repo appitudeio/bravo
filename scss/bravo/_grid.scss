@@ -1,0 +1,71 @@
+/**
+ *  Overwrite Bootstrap's grid system has some weird names, let's fix them
+ */
+.flex-auto {
+    flex-basis: auto;
+}
+
+@mixin make-grid-columns($columns: $grid-columns, $gutter: $grid-gutter-width, $breakpoints: $grid-breakpoints) {
+    @each $breakpoint in map-keys($breakpoints) {
+        $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+        @include media-breakpoint-up($breakpoint, $breakpoints) {
+            // Base 'auto'-column
+            .column#{$infix} {
+                flex: 1 0 0;
+            }
+
+            .column#{$infix}-auto {
+                @include make-col-auto();
+            }
+
+            @for $i from 1 through $columns {
+                .column#{$infix}-#{$i} {
+                    @include make-col($i, $columns);
+                }
+            }
+
+            // `$columns - 1` because offsetting by the width of an entire row isn't possible
+            @for $i from 0 through ($columns - 1) {
+                @if not ($infix == "" and $i == 0) { // Avoid emitting useless .offset-0
+                    .column-offset#{$infix}-#{$i} {
+                        @include make-col-offset($i, $columns);
+                    }
+                }
+            }
+
+            // Gutters
+            // Make use of `.g-*`, `.gx-*` or `.gy-*` utilities to change spacing between the columns.
+            @each $key, $value in $gutters {
+                .g#{$infix}-#{$key},
+                .gx#{$infix}-#{$key} {
+                    &, .row {
+                        --#{$prefix}gutter-x: #{$value};
+                    }
+                }
+
+                .g#{$infix}-#{$key},
+                .gy#{$infix}-#{$key} {
+                    &, .row {
+                        --#{$prefix}gutter-y: #{$value};
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Overrides Bootstrap's version because of the gutter-y + last-child margin-bottom
+@mixin make-row($gutter: $grid-gutter-width) {
+    --#{$prefix}gutter-x: #{$gutter};
+    --#{$prefix}gutter-y: #{$gutter};
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--#{$prefix}gutter-y));
+    margin-right: calc(-.5 * var(--#{$prefix}gutter-x));
+    margin-left: calc(-.5 * var(--#{$prefix}gutter-x));
+
+	&:not(:last-child) {
+	    margin-bottom: var(--#{$prefix}gutter-y);
+	}
+}

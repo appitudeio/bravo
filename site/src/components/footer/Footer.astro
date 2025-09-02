@@ -1,0 +1,67 @@
+---
+import BravoIcon from '@components/icons/BravoIcon.astro'
+import { getConfig } from '@libs/config'
+import { getVersionedDocsPath } from '@libs/path'
+import { getUrl } from '@libs/url'
+---
+
+<footer class="bd-footer py-4 py-md-5 bg-body-tertiary">
+  <div class="container py-4 py-md-5 px-4 px-md-3 text-body-secondary">
+    <div class="row">
+      <div class="column-lg-3 mb-3">
+        <a
+          class="d-inline-flex align-items-center mb-2 text-body-emphasis text-decoration-none"
+          href={getUrl('/')}
+          aria-label="Bravo"
+        >
+          <BravoIcon class="d-block me-2" height={24} width={60} />
+        </a>
+        <ul class="list-unstyled small">
+          <li class="mb-2">
+            Built by the <a href="https://appitude.io" target="_blank" rel="noopener">Appitude team</a> as an enhancement layer for <a href="https://getbootstrap.com" target="_blank" rel="noopener">Bootstrap</a> with the help of <a href={`${getConfig().repo}/graphs/contributors`}>our contributors</a>.
+          </li>
+          <li class="mb-2">
+            Code licensed <a href={`${getConfig().repo}/blob/main/LICENSE`} target="_blank" rel="license noopener"
+              >MIT</a
+            >, docs <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="license noopener"
+              >CC BY 3.0</a
+            >.
+          </li>
+          <li class="mb-2">Currently v{getConfig().current_version}.</li>
+        </ul>
+      </div>
+      <div class="column-6 column-lg-2 offset-lg-1 mb-3">
+        <h5>Links</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href={getUrl('/')}>Home</a></li>
+          <li class="mb-2"><a href={getVersionedDocsPath('/')}>Docs</a></li>
+          <li class="mb-2"><a href="https://appitude.io" target="_blank" rel="noopener">Appitude</a></li>
+          <li class="mb-2"><a href={getConfig().repo} target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+      <div class="column-6 column-lg-2 mb-3">
+        <h5>Resources</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href={getVersionedDocsPath('getting-started/introduction')}>Getting started</a></li>
+          <li class="mb-2"><a href={getVersionedDocsPath('components/buttons')}>Components</a></li>
+          <li class="mb-2"><a href={getVersionedDocsPath('design-system/colors')}>Design System</a></li>
+          <li class="mb-2"><a href={getVersionedDocsPath('javascript/dynamic-observer')}>JavaScript</a></li>
+        </ul>
+      </div>
+      <div class="column-6 column-lg-2 mb-3">
+        <h5>Community</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <a href={`${getConfig().repo}/issues`} target="_blank" rel="noopener">Issues</a>
+          </li>
+          <li class="mb-2">
+            <a href={`${getConfig().repo}/discussions`} target="_blank" rel="noopener">Discussions</a>
+          </li>
+          <li class="mb-2">
+            <a href="https://appitude.io" target="_blank" rel="noopener">Appitude</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,78 @@
+---
+title: Dropdowns
+description: Bravo adds hover triggers to Bootstrap's dropdowns.
+group: components
+toc: true
+---
+
+## Hover trigger
+
+<div class="bd-example mb-3">
+  <div class="dropdown me-2 d-inline-block">
+    <button class="btn btn-primary dropdown-toggle" 
+            data-bs-toggle="dropdown"
+            data-bs-trigger="hover">
+      Hover me
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Action</a></li>
+      <li><a class="dropdown-item" href="#">Another action</a></li>
+      <li><hr class="dropdown-divider" /></li>
+      <li><a class="dropdown-item" href="#">Something else</a></li>
+    </ul>
+  </div>
+  
+  <div class="btn-group me-2">
+    <button type="button" class="btn btn-secondary dropdown-toggle" 
+            data-bs-toggle="dropdown"
+            data-bs-trigger="hover">
+      Button group
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Menu item 1</a></li>
+      <li><a class="dropdown-item" href="#">Menu item 2</a></li>
+    </ul>
+  </div>
+  
+  <div class="dropdown d-inline-block">
+    <a class="btn btn-link dropdown-toggle text-decoration-none" 
+       data-bs-toggle="dropdown"
+       data-bs-trigger="hover">
+      Link style
+    </a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">First</a></li>
+      <li><a class="dropdown-item" href="#">Second</a></li>
+    </ul>
+  </div>
+</div>
+
+```html
+<div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" 
+          data-bs-toggle="dropdown"
+          data-bs-trigger="hover">
+    Hover me
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Action</a></li>
+  </ul>
+</div>
+```
+
+Add `data-bs-trigger="hover"` to enable hover. That's it.
+
+## Subtle animation
+
+Dropdowns fade in with a gentle slide down (7px) over 300ms, replacing Bootstrap's instant appearance.
+
+## Details
+
+* **Stays open properly** — Move from trigger to menu without it closing, even with gaps
+* **No accidental closes** — Small delay prevents flickering
+* **Works everywhere** — `.dropdown`, `.btn-group`, or any wrapper structure
+* **Smooth entrance** — 300ms fade + slide animation on desktop
+
+<div class="alert alert-info mt-4">
+  <strong>Auto-initialization:</strong> Dropdowns with <code>data-bs-toggle="dropdown"</code> are automatically enhanced when added to the DOM, even dynamically. Powered by Bravo's <a href="/docs/[[config:docs_version]]/javascript/dynamic-observer/">DynamicObserver</a>.
+</div>

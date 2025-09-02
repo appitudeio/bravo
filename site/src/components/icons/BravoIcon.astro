@@ -1,0 +1,11 @@
+---
+import type { SvgIconProps } from '@libs/icon'
+
+type Props = SvgIconProps
+
+const { class: className, height, width } = Astro.props
+---
+
+<div class={className} style={`height: ${height}px; width: ${width}px;`}>
+  <span style="font-size: 1.5rem; font-weight: 700; color: currentColor; font-family: system-ui;">BRAVO</span>
+</div>

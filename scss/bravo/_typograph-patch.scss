@@ -1,0 +1,60 @@
+p {
+    @include rfs($paragraph-margin-bottom, margin-bottom);  // Use RFS for responsive margin scaling
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+@each $element, $styles in $typography-map {
+    // Create Utility Classes like .fs-h1, .fs-h2, .fs-jumbo, etc.
+    .#{$element} {
+        @if $element != "jumbo" {
+            @extend #{$element};
+        }
+
+        @each $property, $value in $styles {
+            @if $property == "font-size" {
+                @include rfs($value, font-size);  // Use RFS for responsive font size scaling
+            } 
+            @else if $property == "margin-bottom" {
+                @include rfs($value, margin-bottom);  // Use RFS for responsive margin scaling
+            } 
+            @else {
+                #{$property}: $value;  // Apply other styles like line-height, letter-spacing, etc.
+            }
+        }
+    }
+
+    // Extend Native Headers for h1-h6 Only
+    @if $element != "jumbo" {
+        #{$element} {
+            @extend .#{$element};  // Extend .fs-h1 for h1, .fs-h2 for h2, etc.
+        }
+    }
+
+    p + .#{$element} {
+        @include rfs(3rem, margin-top) // Add space between paragraphs and headers
+    }
+}
+
+// Adjust sizes responsivly with help of RFS
+:root {
+    font-size: #{$base-font-size};
+}
+
+@include media-breakpoint-down(sm) {
+    :root {
+        font-size: #{$base-font-size-sm};
+    }
+
+    @each $element, $styles in $typography-map {
+        .#{$element} {
+            margin-bottom: map-get($margin-bottom-map, $element) * 0.6;  // Reduce margin for smaller screens
+        }
+
+        p + .#{$element} {
+            @include rfs(2rem, margin-top) // Add space between paragraphs and headers
+        }
+    }
+}

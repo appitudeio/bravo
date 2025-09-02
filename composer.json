@@ -1,0 +1,12 @@
+{
+  "name": "appitudeio/bravo",
+  "description": "Extended version of Bootstrap 5",
+  "homepage": "https://appitude.io/",
+  "authors": [
+    {
+      "name": "Mathias Eklöf",
+      "email": "mathias@appitude.io"
+    }
+  ],
+  "license": "MIT"
+}

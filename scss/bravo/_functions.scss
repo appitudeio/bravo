@@ -1,0 +1,119 @@
+// Function to generate color variations (100-900)
+$color-tints: (
+    25: -90%,
+    50: -85%,
+    100: -80%,
+    200: -60%,
+    300: -40%,
+    400: -10%,
+    500: 0%,
+    600: 20%,
+    700: 40%,
+    800: 60%,
+    900: 80%,
+    950: 85%,
+    975: 90%
+);
+
+/**
+ * @function shift-color($color, $percentage)
+ * Shifts the color by the specified percentage.
+ * @output; Put in a color and get 100-900 adjustments for it
+ */
+@function generate-color-variations($color-name, $base-color, $overrides: null) {
+    $variations: ();
+    
+    @each $shade, $percentage in $color-tints {
+        $adjusted-color : shift-color($base-color, $percentage);
+
+        @if $percentage == 0 {
+            $adjusted-color: $base-color;
+        }
+
+        $variations: map-merge($variations, ("#{$color-name}-#{$shade}": $adjusted-color));
+    }
+
+    @if $overrides != null {
+        // Merge any overrides (e.g., preserve specified shades)
+        @each $shade, $color in $overrides {
+            $variations: map-merge($variations, ("#{$color-name}-#{$shade}": $color));
+        }
+    }
+
+    @return $variations;
+}
+
+/**
+ * @function generate-custom-colors($custom-colors)
+ * Processes the $custom-colors map and returns a flattened $all-colors map.
+ */
+@function generate-custom-colors($custom-colors) {
+    $colors: ();
+
+    // Iterate through $custom-colors with both key and value
+    @each $color-key, $color-value in $custom-colors {
+        // Check if the value is a map (indicating shade overrides)
+        @if type-of($color-value) == "map" {
+            // Check if the map has a "500" shade
+            @if map-has-key($color-value, 500) {
+                // Get the "500" shade as the base color
+                $base-color: map-get($color-value, 500);
+            
+                // Generate color variations based on the base color and overrides
+                $color-variations: generate-color-variations($color-key, $base-color, $color-value);
+            
+                // Merge the generated variations into $custom-colors
+                $colors: map-merge($colors, map-merge-multiple($color-variations));
+                $colors: map-merge($colors, ("#{$color-key}": $base-color));
+            }
+            @else {
+                // If some tint levels are missing, add them based on the base color
+                @each $shade, $color in $color-value {
+                    $colors: map-merge($colors, ("#{$color-key}-#{$shade}": $color));
+                }
+            }
+        }
+        @else { // Handle simple key-value pairs like "brown": #964B00
+            // Generate color variations starting from the base color
+            $color-variations: generate-color-variations($color-key, $color-value);
+        
+            // Merge into the all colors map
+            $colors: map-merge($colors, map-merge-multiple($color-variations));
+            $colors: map-merge($colors, ("#{$color-key}": $color-value));
+        }
+    }
+
+    @return $colors;
+}
+
+@function generate-key-variable-map($colors) {
+    $variables: ();
+
+    @each $color-name, $color-value in $colors {
+        $variables: map-merge($variables, ("#{$color-name}": var(--#{$prefix}#{$color-name})));
+    }
+
+    @return $variables;
+}
+
+// E.g blues: ("blue-100": #E6F0FF, "blue-500": #C2D9FF)
+@function bs-to-bravo-colors($bs-colors) {
+    $colors: (); 
+    $first-item: map-get($bs-colors, nth(map-keys($bs-colors), 1));
+    $base-color-name: str-slice(nth(map-keys($bs-colors), 1), 1, str-index(nth(map-keys($bs-colors), 1), '-') - 1);
+    $base-color: map-get($bs-colors, "#{$base-color-name}-500");
+
+    @each $shade, $percentage in $color-tints {
+        $shade-key: "#{$base-color-name}-#{$shade}";
+
+        @if map-has-key($bs-colors, $shade-key) {
+            $colors: map-merge($colors, ($shade-key: map-get($bs-colors, $shade-key)));
+        } 
+        @else {
+            $adjusted-color: shift-color($base-color, $percentage);
+            $colors: map-merge($colors, ($shade-key: $adjusted-color));
+        }
+    }
+
+    @return $colors;
+}

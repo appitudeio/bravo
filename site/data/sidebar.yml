@@ -1,0 +1,41 @@
+# Bravo Documentation - Bootstrap Enhancements
+
+- title: Getting started
+  icon: book-half
+  icon_color: primary
+  pages:
+    - title: Introduction
+    - title: Installation
+    - title: Migration guide
+
+- title: Design tokens
+  icon: palette2
+  icon_color: danger
+  pages:
+    - title: Color system
+
+- title: Enhancements
+  icon: magic
+  icon_color: success
+  pages:
+    - title: Layout
+    - title: Styling tweaks
+
+- title: Components
+  icon: grid-fill
+  icon_color: info
+  pages:
+    - title: Buttons
+    - title: Modal
+    - title: Modal navigation
+    - title: Tooltips
+    - title: Dropdowns
+    - title: Spinners
+    - title: Icons
+
+- title: JavaScript
+  icon: code
+  icon_color: warning
+  pages:
+    - title: Dynamic Observer
+

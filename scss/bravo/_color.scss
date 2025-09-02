@@ -1,0 +1,22 @@
+/**
+ *
+ */
+$blue   : #006AFF !default;
+$indigo : #5f27cd !default;
+$purple : #9500F0 !default;
+$pink   : #FF3385 !default;
+$red    : #E50000 !default;
+$orange : #FF822E !default;
+$yellow : #FFCF00 !default;
+$green  : #008A00 !default; 
+$teal   : #00D18B !default;
+$cyan   : #26D3D9 !default;
+$primary : $blue !default; // So we can re-use it in the theme generation
+
+$body-color-dark: #f0f6fc !default;
+$body-bg-dark:    #0d1117 !default;
+$body-tertiary-bg-dark: #151b23 !default;
+$lightest: #FFFFFF !default;
+$darkest: #000000 !default;
+$lightest-dark: $darkest !default;
+$darkest-dark: $lightest !default;

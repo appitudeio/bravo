@@ -1,0 +1,109 @@
+---
+title: Buttons
+description: Bravo enhances Bootstrap buttons with a neutral variant, extra size, common shapes, built-in loading states, and small but meaningful styling improvements.
+group: components
+toc: true
+---
+
+## Built-in loading states
+
+The main enhancement is automatic loading state management — no more manual spinner handling:
+
+<div class="bd-example mb-3">
+  <button type="button" class="btn btn-primary me-2" onclick="this.showLoader(); setTimeout(() => this.hideLoader(), 2000)" data-bs-loader="Saving…">
+    Click to test loading
+  </button>
+  <button type="button" class="btn btn-success" onclick="this.showLoader(); setTimeout(() => this.hideLoader(), 2000)" data-bs-loader>
+    Auto-reset (2s)
+  </button>
+</div>
+
+```html
+<!-- Shows spinner + "Saving…" text when triggered -->
+<button type="submit" class="btn btn-primary" data-bs-loader="Saving…">
+  Save
+</button>
+
+<!-- Shows spinner only (with SR-friendly "Loading…") -->
+<button type="submit" class="btn btn-primary" data-bs-loader>
+  Submit
+</button>
+```
+
+**JavaScript API:**
+```js
+const btn = document.querySelector('#save');
+btn.showLoader();   // Disables button, shows spinner
+// ... async work ...
+btn.hideLoader();   // Restores original state
+```
+
+## New utilities
+
+**`.btn-default`** — A neutral button that automatically adapts to light/dark themes (no more manually switching between btn-light and btn-dark).
+
+**`.btn-xs`** — Extra small size for dense UIs like data tables or toolbars.
+
+**`.btn-icon`** — Square aspect-ratio button that automatically matches the height of regular buttons (no manual width/height CSS needed).
+
+**`.btn-rounded`** — Pill-shaped buttons. Combine with `.btn-icon` for perfect circles.
+
+<div class="bd-example">
+  <div class="mb-3">
+    <button type="button" class="btn btn-default me-2">Default</button>
+    <button type="button" class="btn btn-primary me-2">Primary</button>
+    <button type="button" class="btn btn-secondary">Secondary</button>
+  </div>
+  
+  <div class="mb-3">
+    <button type="button" class="btn btn-primary btn-lg me-2">Large</button>
+    <button type="button" class="btn btn-primary me-2">Normal</button>
+    <button type="button" class="btn btn-primary btn-sm me-2">Small</button>
+    <button type="button" class="btn btn-primary btn-xs">Extra Small</button>
+  </div>
+  
+  <div class="mb-3">
+    {/* Icon buttons automatically match the height of regular buttons */}
+    <button type="button" class="btn btn-primary me-2">Regular</button>
+    <button type="button" class="btn btn-primary btn-icon me-2" aria-label="Settings">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0z"/>
+      </svg>
+    </button>
+    <button type="button" class="btn btn-info btn-icon btn-rounded me-2" aria-label="Info">
+      <strong>i</strong>
+    </button>
+    <span class="text-muted small align-middle">← Same height!</span>
+  </div>
+  
+  <div>
+    <button type="button" class="btn btn-outline-primary btn-rounded me-2">Pill Button</button>
+    <button type="button" class="btn btn-outline-secondary btn-rounded btn-sm">Small Pill</button>
+  </div>
+</div>
+
+```html
+<!-- Neutral variant that adapts to theme -->
+<button class="btn btn-default">Default</button>
+
+<!-- Extra small size for compact UIs -->
+<button class="btn btn-primary btn-xs">XS</button>
+
+<!-- Square icon button with aspect ratio -->
+<button class="btn btn-secondary btn-icon" aria-label="Settings">
+  <i class="bi bi-gear"></i>
+</button>
+
+<!-- Pill-shaped button -->
+<button class="btn btn-outline-primary btn-rounded">Rounded</button>
+```
+
+## Details
+
+* **Loading states**: Automatically disable button, show spinner, handle ARIA attributes
+* **Dark mode aware**: Hover/active states adjust for visibility
+* **Focus rings**: Clean outline styling replaces Bootstrap's box-shadow
+
+<div class="alert alert-info mt-4">
+  <strong>Auto-initialization:</strong> Buttons with <code>data-bs-loader</code> are automatically enhanced when added to the DOM, even dynamically. This is powered by Bravo's <a href="/docs/[[config:docs_version]]/javascript/dynamic-observer/">DynamicObserver</a>.
+</div>

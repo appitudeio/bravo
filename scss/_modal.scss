@@ -1,0 +1,39 @@
+/**
+ *  Bootstrap's modal's are great, but not so flexible. Let's fix that with a navigation.
+ */
+@import "bootstrap/scss/modal";
+@import "modal-navigation";
+
+:root {
+    // Put these outside so they can become modified "before"
+    --#{$prefix}modal-padding: #{$modal-inner-padding};  
+}
+
+.modal-header .btn[rel=back] {
+    z-index: 2;
+    @extend %modal-header-back-btn_default;
+}
+
+.modal-header > .btn {
+    position: absolute;
+
+    &:first-child:not(:only-child) {
+        left: var(--#{$prefix}modal-padding);
+    }
+
+    &:last-child {
+        right: var(--#{$prefix}modal-padding);
+    }
+}
+
+.modal-footer > * {
+    margin: 0 var(--modal-footer-gap);
+
+    &:first-child {
+        margin-left: 0;
+    }
+
+    &:last-child {
+        margin-right: 0;
+    }
+}

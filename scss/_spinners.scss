@@ -1,0 +1,79 @@
+/**
+ *  Bootstrap's spinners are great, but let's add another version of a spinner
+ *
+ *  @usage:
+        <div class="spinner-random text-primary">
+            <svg viewBox="25 25 50 50">
+                <circle />
+            </svg>
+        </div>
+
+        <div class="spinner-random spinner-random-sm text-warning">
+            <svg viewBox="25 25 50 50">
+                <circle />
+            </svg>
+        </div>
+ */
+@import "bootstrap/scss/spinners";
+
+$scaled-border-width: $spinner-border-width * 1.6;
+$scaled-border-width-sm: $spinner-border-width-sm * 3;
+$spinner-radius: 21;
+$spinner-radius-sm: 19.5;
+
+.spinner-random {
+    @extend .spinner-border;
+
+    --#{$prefix}spinner-animation-name: none;
+    --#{$prefix}spinner-border-width: #{$scaled-border-width};
+    --r: #{$spinner-radius};
+    border: none;
+
+    svg {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        animation: 2s linear infinite spinner-random;
+    }  
+
+    circle {
+        stroke: currentColor;
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+        animation: 1.5s ease-in-out infinite spinner-random-dash;
+        stroke-linecap: round;
+        fill: none;
+        cx: 50;
+        cy: 50;
+        r: var(--r);
+        stroke-width: var(--#{$prefix}spinner-border-width);
+    }
+}
+
+.spinner-random-sm {
+    @extend .spinner-border-sm;
+    --#{$prefix}spinner-border-width: #{$scaled-border-width-sm};
+    --r: #{$spinner-radius-sm};
+}
+
+@keyframes spinner-random {
+   100%{
+	   transform: rotate(360deg);
+   }
+}
+
+@keyframes spinner-random-dash {
+   0%{
+      stroke-dasharray: 1,200;
+      stroke-dashoffset: 0;
+   }
+   50%{
+      stroke-dasharray: 89,200;
+      stroke-dashoffset: -35;
+   }
+   100%{
+      stroke-dasharray: 89,200;
+      stroke-dashoffset: -124;
+   }
+}

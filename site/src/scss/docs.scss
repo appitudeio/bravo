@@ -1,0 +1,89 @@
+// Set Bootstrap prefix for documentation compatibility - MUST be first!
+$prefix: "bs-" !default;
+
+// Grid settings for docs
+$enable-grid-classes: false;
+$enable-cssgrid: true;
+
+/*!
+ * Bootstrap Docs (https://getbootstrap.com/)
+ * Copyright 2011-2025 The Bootstrap Authors
+ * Licensed under the Creative Commons Attribution 3.0 Unported License.
+ * For details, see https://creativecommons.org/licenses/by/3.0/.
+ */
+
+// Dev notes
+//
+// Background information on nomenclature and architecture decisions here.
+//
+// - Bootstrap functions, variables, and mixins are included for easy reuse.
+//   Doing so gives us access to the same core utilities provided by Bootstrap.
+//   For example, consistent media queries through those mixins.
+//
+// - Bootstrap's **docs variables** are prefixed with `$bd-`.
+//   These custom colors avoid collision with the components Bootstrap provides.
+//
+// - Classes are prefixed with `.bd-`.
+//   These classes indicate custom-built or modified components for the design
+//   and layout of the Bootstrap docs. They are not included in our builds.
+//
+// Happy Bootstrapping!
+
+// 1. Import Bravo foundation (colors, typography, utilities + Bootstrap core)
+@import "../../../scss/bravo";
+
+// 2. Import Bravo grid system (includes Bootstrap grid + Bravo enhancements)
+@import "../../../scss/bravo-grid";
+
+// 3. Import ALL Bravo component files (each includes Bootstrap component + Bravo enhancements)
+@import "../../../scss/accordion";
+@import "../../../scss/alert";
+@import "../../../scss/badge";
+@import "../../../scss/breadcrumb";
+@import "../../../scss/buttons";
+@import "../../../scss/card";
+@import "../../../scss/carousel";
+@import "../../../scss/close";
+@import "../../../scss/containers";
+@import "../../../scss/dropdown";
+@import "../../../scss/forms";
+@import "../../../scss/icon";
+@import "../../../scss/images";
+@import "../../../scss/list-group";
+@import "../../../scss/modal";
+@import "../../../scss/modal-navigation";
+@import "../../../scss/nav";
+@import "../../../scss/navbar";
+@import "../../../scss/offcanvas";
+@import "../../../scss/pagination";
+@import "../../../scss/placeholders";
+@import "../../../scss/popover";
+@import "../../../scss/progress";
+@import "../../../scss/spinners";
+@import "../../../scss/tables";
+@import "../../../scss/toasts";
+@import "../../../scss/tooltip";
+
+// 4. Load docs-specific components and styling
+@import "variables";
+@import "navbar";
+@import "masthead";
+@import "ads";
+@import "content";
+@import "skippy";
+@import "sidebar";
+@import "layout";
+@import "toc";
+@import "footer";
+@import "component-examples";
+@import "buttons";
+@import "callouts";
+@import "brand";
+@import "colors";
+@import "clipboard-js";
+@import "placeholder-img";
+@import "scrolling";
+
+// 5. Load docs dependencies
+@import "syntax";
+@import "anchor";
