@@ -18,7 +18,9 @@ export function getVersionedDocsPath(docsPath: string): string {
     generatedVersionedDocsPaths.push(sanitizedDocsPath)
   }
 
-  return `/docs/${docs_version}/${sanitizedDocsPath}`
+  // Add base path for GitHub Pages
+  const basePath = import.meta.env.BASE_URL || ''
+  return `${basePath}/docs/${docs_version}/${sanitizedDocsPath}`
 }
 
 // Validate that all the generated versioned docs paths point to an existing page or asset.
