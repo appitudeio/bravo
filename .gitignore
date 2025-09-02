@@ -38,6 +38,9 @@ Thumbs.db
 /js/coverage/
 /node_modules/
 dist/
+_docs/
+site/
+web/
 
 # Site
 /site/dist
