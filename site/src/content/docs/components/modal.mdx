@@ -45,7 +45,7 @@ That's it - you've created a modal from JavaScript. The button automatically dis
 The clever part: forms in your content are automatically lifted to wrap the entire modal. This allows submit buttons in the footer to work with form fields in the body:
 
 <div class="bd-example mb-3">
-  <button type="button" class="btn btn-success" onclick="(() => {
+  <button type="button" class="btn btn-success" onclick="(function() {
     const m = new Bravo.Modal({
       title: 'Quick Feedback',
       content: `<form><label class='form-label'>Your feedback</label><textarea name='feedback' class='form-control' rows='2' required></textarea></form>`,

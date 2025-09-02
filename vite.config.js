@@ -9,7 +9,7 @@ export default defineConfig({
       fileName: (format) => `bravo.bundle.${format}.js`,
       formats: ['umd']
     },
-    outDir: 'dist/js',
+    outDir: 'site/static/docs/5.3/dist/js',
     emptyOutDir: false,
     rollupOptions: {
       external: [],  // Bundle everything including Bootstrap

@@ -3,6 +3,7 @@ import { getData } from '@libs/data'
 import { getConfig } from '@libs/config'
 import { docsPages } from '@libs/content'
 import { getSlug } from '@libs/utils'
+import { getVersionedDocsPath } from '@libs/path'
 
 const sidebar = getData('sidebar')
 ---
@@ -32,7 +33,7 @@ const sidebar = getData('sidebar')
                   const docSlug = getSlug(page.title)
                   const unversionedPageSlug = `${groupSlug}/${docSlug}`
 
-                  const url = `/docs/${getConfig().docs_version}/${unversionedPageSlug}`
+                  const url = getVersionedDocsPath(unversionedPageSlug)
                   const active = Astro.params.slug === unversionedPageSlug
 
                   const generatedPage = docsPages.find((page) => page.slug === unversionedPageSlug)
@@ -67,7 +68,7 @@ const sidebar = getData('sidebar')
               <li class="bd-links-span-all mt-1 mb-3 mx-4 border-top" />
               <li class="bd-links-span-all">
                 <a
-                  href={`/docs/${getConfig().docs_version}/${groupSlug}/`}
+                  href={getVersionedDocsPath(groupSlug + '/')}
                   class:list={['bd-links-link d-inline-block rounded small', { active }]}
                   aria-current={active ? 'page' : undefined}
                 >

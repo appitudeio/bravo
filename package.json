@@ -16,8 +16,7 @@
     "build": "vite build",
     "build:watch": "vite build --watch",
     "docs:dev": "astro dev --root site --port 9001",
-    "docs:build": "astro build --root site && rm -rf _site && cp -r site/dist _site",
-    "test": "echo 'Tests will be added soon' && exit 0",
+    "docs:build": "npm run build && astro build --root site && rm -rf _site && cp -r site/dist _site",
     "prepare-release": "./scripts/prepare-release.sh"
   },
   "dependencies": {

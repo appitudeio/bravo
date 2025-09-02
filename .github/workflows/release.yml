@@ -27,10 +27,6 @@ jobs:
       - name: Build distribution files
         run: npm run build
 
-      - name: Run tests
-        run: npm test
-        continue-on-error: true  # Continue even if no tests defined yet
-
       - name: Publish to NPM
         run: npm publish
         env:

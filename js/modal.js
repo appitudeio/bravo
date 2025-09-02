@@ -152,13 +152,15 @@ class ModalTemplate {
             <div id="${id}" class="modal${animationClass} ${className}" tabindex="-1" role="dialog"${isStatic ? ` data-bs-backdrop="static"` : ""}>
                 <div class="modal-dialog ${sizeClass} modal-dialog-centered${scrollable ? ` modal-dialog-scrollable` : ""}" role="document">
                     <div class="modal-content">
-                        ${this.header(headerObj, headerButtons, isStatic)}
+                        ${hasForm ? `<form${formAttributes ? ' ' + formAttributes : ''}>` : ''}
+                            ${this.header(headerObj, headerButtons, isStatic)}
 
-                        <div class="modal-body">
-                            ${hasForm ? `<form${formAttributes ? ' ' + formAttributes : ''}${!formAttributes.includes('method=') ? ' method="post"' : ''}>${processedContent}</form>` : processedContent}
-                        </div>
+                            <div class="modal-body">
+                                ${processedContent}
+                            </div>
 
-                        ${this.footer(footerButtons)}
+                            ${this.footer(footerButtons)}
+                        ${hasForm ? '</form>' : ''}
                     </div>
                 </div>
             </div>

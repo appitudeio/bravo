@@ -37,7 +37,3 @@ jobs:
 
       - name: Build documentation
         run: npm run docs:build
-
-      - name: Run tests
-        run: npm test
-        continue-on-error: true  # Continue even if no tests defined yet
