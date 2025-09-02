@@ -1,19 +1,24 @@
-# Ignore docs files
+# Build outputs
 /_site/
+/dist/
+/dist-sass/
+_docs/
 
-# Numerous always-ignore extensions
-*.diff
-*.err
-*.log
-*.orig
-*.rej
-*.swo
-*.swp
-*.vi
-*.zip
-*~
+# Dependencies
+/node_modules/
+/site/node_modules/
+/web/node_modules/
 
-# OS or Editor folders
+# Build artifacts
+/site/dist/
+/site/.astro/
+/site/public/docs/
+
+# Development
+/js/coverage/
+web/
+
+# OS or Editor files
 ._*
 .cache
 .DS_Store
@@ -26,25 +31,20 @@
 *.sublime-workspace
 nbproject
 Thumbs.db
-# Local Netlify folder
-.netlify
 
-# Komodo
+# Temporary files
+*.diff
+*.err
+*.log
+*.orig
+*.rej
+*.swo
+*.swp
+*.vi
+*.zip
+*~
+
+# Services
+.netlify
 .komodotools
 *.komodoproject
-
-# Folders to ignore
-/dist-sass/
-/js/coverage/
-/node_modules/
-dist/
-_docs/
-site/
-web/
-
-# Site
-/site/dist
-/site/node_modules
-/site/.astro
-/site/node_modules/.astro
-/site/public
