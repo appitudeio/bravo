@@ -1,4 +1,6 @@
 ---
+import { getUrl } from '@libs/url'
+
 export const title = 'Headers'
 export const extra_css = ['headers.css']
 ---
@@ -32,7 +34,7 @@ export const extra_css = ['headers.css']
 
   <div class="container">
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+      <a href={getUrl('/')} class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
         <svg class="bi me-2" width="40" height="32" aria-hidden="true"><use xlink:href="#bootstrap"/></svg>
         <span class="fs-4">Simple header</span>
       </a>
@@ -66,7 +68,7 @@ export const extra_css = ['headers.css']
   <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
       <div class="column-md-3 mb-2 mb-md-0">
-        <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+        <a href={getUrl('/')} class="d-inline-flex link-body-emphasis text-decoration-none">
           <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
         </a>
       </div>
@@ -91,7 +93,7 @@ export const extra_css = ['headers.css']
   <header class="p-3 text-bg-dark">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+        <a href={getUrl('/')} class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
           <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
         </a>
 
@@ -120,7 +122,7 @@ export const extra_css = ['headers.css']
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
+        <a href={getUrl('/')} class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
           <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
         </a>
 
@@ -221,7 +223,7 @@ export const extra_css = ['headers.css']
   </nav>
   <header class="py-3 mb-4 border-bottom">
     <div class="container d-flex flex-wrap justify-content-center">
-      <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
+      <a href={getUrl('/')} class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
         <svg class="bi me-2" width="40" height="32" aria-hidden="true"><use xlink:href="#bootstrap"/></svg>
         <span class="fs-4">Double header</span>
       </a>
@@ -237,7 +239,7 @@ export const extra_css = ['headers.css']
     <div class="px-3 py-2 text-bg-dark border-bottom">
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+          <a href={getUrl('/')} class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
             <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
           </a>
 

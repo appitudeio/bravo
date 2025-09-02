@@ -2,6 +2,7 @@
 import BravoIcon from '@components/icons/BravoIcon.astro'
 import { getConfig } from '@libs/config'
 import { getVersionedDocsPath } from '@libs/path'
+import { getUrl } from '@libs/url'
 ---
 
 <footer class="bd-footer py-4 py-md-5 bg-body-tertiary">
@@ -10,7 +11,7 @@ import { getVersionedDocsPath } from '@libs/path'
       <div class="column-lg-3 mb-3">
         <a
           class="d-inline-flex align-items-center mb-2 text-body-emphasis text-decoration-none"
-          href="/"
+          href={getUrl('/')}
           aria-label="Bravo"
         >
           <BravoIcon class="d-block me-2" height={24} width={60} />
@@ -32,7 +33,7 @@ import { getVersionedDocsPath } from '@libs/path'
       <div class="column-6 column-lg-2 offset-lg-1 mb-3">
         <h5>Links</h5>
         <ul class="list-unstyled">
-          <li class="mb-2"><a href="/">Home</a></li>
+          <li class="mb-2"><a href={getUrl('/')}>Home</a></li>
           <li class="mb-2"><a href={getVersionedDocsPath('/')}>Docs</a></li>
           <li class="mb-2"><a href="https://appitude.io" target="_blank" rel="noopener">Appitude</a></li>
           <li class="mb-2"><a href={getConfig().repo} target="_blank" rel="noopener">GitHub</a></li>

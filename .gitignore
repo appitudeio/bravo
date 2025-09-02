@@ -12,7 +12,7 @@ _docs/
 # Build artifacts
 /site/dist/
 /site/.astro/
-/site/public/docs/
+/site/public/
 
 # Development
 /js/coverage/
