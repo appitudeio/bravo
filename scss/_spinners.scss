@@ -26,7 +26,7 @@ $spinner-radius-sm: 19.5;
 
     --#{$prefix}spinner-animation-name: none;
     --#{$prefix}spinner-border-width: #{$scaled-border-width};
-    --r: #{$spinner-radius};
+    --#{$prefix}spinner-radius: #{$spinner-radius};
     border: none;
 
     svg {
@@ -46,7 +46,7 @@ $spinner-radius-sm: 19.5;
         fill: none;
         cx: 50;
         cy: 50;
-        r: var(--r);
+        r: var(--#{$prefix}spinner-radius);
         stroke-width: var(--#{$prefix}spinner-border-width);
     }
 }
@@ -54,7 +54,7 @@ $spinner-radius-sm: 19.5;
 .spinner-random-sm {
     @extend .spinner-border-sm;
     --#{$prefix}spinner-border-width: #{$scaled-border-width-sm};
-    --r: #{$spinner-radius-sm};
+    --#{$prefix}spinner-radius: #{$spinner-radius-sm};
 }
 
 @keyframes spinner-random {

@@ -7,8 +7,10 @@ subtitle:               "Clean enhancements and improvements to Bootstrap"
 description:            "Bravo extends Bootstrap with thoughtful enhancements, focusing on modal navigation, improved color systems, typography refinements, and iOS safe area support."
 authors:                "Appitude contributors"
 
-current_version:        "5.3.8"
-current_ruby_version:   "5.3.8"
+# NOTE: These version values are automatically overridden from package.json
+# by site/src/libs/config.ts - no need to update manually
+current_version:        "5.3.8-1"
+current_ruby_version:   "5.3.8-1"
 docs_version:           "5.3"
 bootstrap_version:      "5.3.8"
 rfs_version:            "v10.0.0"
@@ -29,20 +31,22 @@ algolia:
   api_key:               ""
   index_name:            "bravo"
 
+# NOTE: Version numbers in URLs below are automatically updated from package.json
 download:
-  source:               "https://github.com/appitudeio/bravo/archive/v5.3.8.zip"
-  dist:                 "https://github.com/appitudeio/bravo/releases/download/v5.3.8/bravo-5.3.8-dist.zip"
-  dist_examples:        "https://github.com/appitudeio/bravo/releases/download/v5.3.8/bravo-5.3.8-examples.zip"
+  source:               "https://github.com/appitudeio/bravo/archive/v5.3.8-1.zip"
+  dist:                 "https://github.com/appitudeio/bravo/releases/download/v5.3.8-1/bravo-5.3.8-1-dist.zip"
+  dist_examples:        "https://github.com/appitudeio/bravo/releases/download/v5.3.8-1/bravo-5.3.8-1-examples.zip"
 
 cdn:
+  # NOTE: Version numbers in CDN URLs are automatically updated from package.json
   # Bravo CDN URLs - will be available after NPM publish
-  css:                  "https://cdn.jsdelivr.net/npm/@appitude/bravo@5.3.8/dist/css/bravo.min.css"
+  css:                  "https://cdn.jsdelivr.net/npm/@appitude/bravo@5.3.8-1/dist/css/bravo.min.css"
   css_hash:             ""
-  css_rtl:              "https://cdn.jsdelivr.net/npm/@appitude/bravo@5.3.8/dist/css/bravo.rtl.min.css"
+  css_rtl:              "https://cdn.jsdelivr.net/npm/@appitude/bravo@5.3.8-1/dist/css/bravo.rtl.min.css"
   css_rtl_hash:         ""
-  js:                   "https://cdn.jsdelivr.net/npm/@appitude/bravo@5.3.8/dist/js/bravo.min.js"
+  js:                   "https://cdn.jsdelivr.net/npm/@appitude/bravo@5.3.8-1/dist/js/bravo.min.js"
   js_hash:              ""
-  js_bundle:            "https://cdn.jsdelivr.net/npm/@appitude/bravo@5.3.8/dist/js/bravo.bundle.min.js"
+  js_bundle:            "https://cdn.jsdelivr.net/npm/@appitude/bravo@5.3.8-1/dist/js/bravo.bundle.min.js"
   js_bundle_hash:       ""
   popper:               "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
   popper_hash:          "sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

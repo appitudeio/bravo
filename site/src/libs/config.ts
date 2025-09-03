@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import yaml from 'js-yaml'
 import { z } from 'zod'
 import { zPrefixedVersionSemver, zVersionMajorMinor, zVersionSemver } from './validation'
+import packageJson from '../../../package.json'
 
 // The config schema used to validate the config file content and ensure all values required by the site are valid.
 const configSchema = z.object({
@@ -76,6 +77,23 @@ export function getConfig(): Config {
 
     // Parse the config using the config schema to validate its content and get back a fully typed config object.
     config = configSchema.parse(rawConfig)
+
+    // Override version with package.json version (single source of truth)
+    config.current_version = packageJson.version
+    config.current_ruby_version = packageJson.version
+    
+    // Update CDN URLs to use the current version
+    const versionPattern = /@[\d.]+(-[\w.]+)?/g
+    config.cdn.css = config.cdn.css.replace(versionPattern, `@${packageJson.version}`)
+    config.cdn.css_rtl = config.cdn.css_rtl.replace(versionPattern, `@${packageJson.version}`)
+    config.cdn.js = config.cdn.js.replace(versionPattern, `@${packageJson.version}`)
+    config.cdn.js_bundle = config.cdn.js_bundle.replace(versionPattern, `@${packageJson.version}`)
+    
+    // Update download URLs to use the current version
+    const downloadVersionPattern = /v[\d.]+(-[\w.]+)?/g
+    config.download.source = config.download.source.replace(downloadVersionPattern, `v${packageJson.version}`)
+    config.download.dist = config.download.dist.replace(downloadVersionPattern, `v${packageJson.version}`)
+    config.download.dist_examples = config.download.dist_examples.replace(downloadVersionPattern, `v${packageJson.version}`)
 
     return config
   } catch (error) {

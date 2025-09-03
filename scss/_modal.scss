@@ -27,7 +27,7 @@
 }
 
 .modal-footer > * {
-    margin: 0 var(--modal-footer-gap);
+    margin: 0 var(--#{$prefix}modal-footer-gap, 0.5rem);
 
     &:first-child {
         margin-left: 0;

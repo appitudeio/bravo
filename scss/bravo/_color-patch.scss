@@ -73,15 +73,15 @@ $mark-bg-dark:                      var(--#{$prefix}yellow-800) !default;
  *  Some additions that are not included in Bootstrap
  */
 :root {
-    --black: #{$black};
-    --white: #{$white};
-    --lightest: #{$lightest};
-    --darkest: #{$darkest};  
+    --#{$prefix}black: #{$black};
+    --#{$prefix}white: #{$white};
+    --#{$prefix}lightest: #{$lightest};
+    --#{$prefix}darkest: #{$darkest};  
 }
 
 @include color-mode(dark, true) {
-    --black: #{$white};
-    --white: #{$black};
-    --lightest: #{$lightest-dark};
-    --darkest: #{$darkest-dark};
+   // --#{$prefix}black: #{$white};
+   // --#{$prefix}white: #{$black};
+    --#{$prefix}lightest: #{$lightest-dark};
+    --#{$prefix}darkest: #{$darkest-dark};
 }

@@ -26,26 +26,27 @@
 
 // Fix Modal spacings
 .modal {
-    --modal-layouts-spacing-compensation-inner: .5;
-    --modal-layouts-spacing-compensation-outer: .75; 
-    --modal-layout-space-compensation-inner-y: calc(var(--#{$prefix}modal-padding) * calc(var(--modal-layouts-spacing-compensation-inner) * -1));
-    --modal-layout-space-compensation-outer-y: calc(var(--#{$prefix}modal-padding) * var(--modal-layouts-spacing-compensation-outer));
-    backdrop-filter: blur(#{$modal-backdrop-blur});
+    --#{$prefix}modal-layouts-spacing-compensation-inner: .5;
+    --#{$prefix}modal-layouts-spacing-compensation-outer: .75;
+    --#{$prefix}modal-layout-space-compensation-inner-y: calc(var(--#{$prefix}modal-padding) * calc(var(--#{$prefix}modal-layouts-spacing-compensation-inner) * -1));
+    --#{$prefix}modal-layout-space-compensation-outer-y: calc(var(--#{$prefix}modal-padding) * var(--#{$prefix}modal-layouts-spacing-compensation-outer));
+    --#{$prefix}modal-backdrop-blur: #{$modal-backdrop-blur};
+    backdrop-filter: blur(var(--#{$prefix}modal-backdrop-blur));
     
     .modal-header {
-        padding: var(--modal-layout-space-compensation-outer-y) var(--#{$prefix}modal-padding) 0 var(--#{$prefix}modal-padding);
-        margin-bottom: var(--modal-layout-space-compensation-inner-y);
+        padding: var(--#{$prefix}modal-layout-space-compensation-outer-y) var(--#{$prefix}modal-padding) 0 var(--#{$prefix}modal-padding);
+        margin-bottom: var(--#{$prefix}modal-layout-space-compensation-inner-y);
     }
 
     .modal-footer {
-        padding: 0 var(--#{$prefix}modal-padding) var(--modal-layout-space-compensation-outer-y) var(--#{$prefix}modal-padding);
-        margin-top: var(--modal-layout-space-compensation-inner-y);
+        padding: 0 var(--#{$prefix}modal-padding) var(--#{$prefix}modal-layout-space-compensation-outer-y) var(--#{$prefix}modal-padding);
+        margin-top: var(--#{$prefix}modal-layout-space-compensation-inner-y);
     }
 }
 
 .modal-content {
     --#{$prefix}modal-box-shadow: #{$modal-content-box-shadow-xs};
-    box-shadow: var(--modal-box-shadow);
+    box-shadow: var(--#{$prefix}modal-box-shadow);
 }
 
 .modal-footer {
@@ -119,8 +120,8 @@
  *  - We use an inner container in order to create the animation effect
  */
 .tooltip {
-    --scale: .95;
-    --transform-distance: 5px;
+    --#{$prefix}tooltip-scale: .95;
+    --#{$prefix}tooltip-transform-distance: 5px;
 
     &[data-popper-placement^="top"] .tooltip-container { @extend %tooltip-container_top-reset; }
     &[data-popper-placement^="right"] .tooltip-container { @extend %tooltip-container_end-reset; }
@@ -173,8 +174,8 @@
 
 @include media-breakpoint-down(md) {
     .modal {
-        --modal-layouts-spacing-compensation-inner: .2;
-        --modal-layouts-spacing-compensation-outer: .5;
+        --#{$prefix}modal-layouts-spacing-compensation-inner: .2;
+        --#{$prefix}modal-layouts-spacing-compensation-outer: .5;
 
         .modal-dialog {
             --#{$prefix}modal-padding: #{$modal-inner-padding-md};
@@ -184,13 +185,13 @@
     }
 
     .modal-lg {
-        --modal-width: 100% !important;
+        --#{$prefix}modal-width: 100% !important;
     }
 }
 
 @include media-breakpoint-down(sm) {
     .modal {
-        --modal-layouts-spacing-compensation-inner: .1;
+        --#{$prefix}modal-layouts-spacing-compensation-inner: .1;
         padding: 0;
 
         .modal-dialog {
@@ -250,41 +251,41 @@
 }
 
 @keyframes tooltipAppearTop {
-    from { transform: translateY(var(--transform-distance)) scale(var(--scale)); }
+    from { transform: translateY(var(--#{$prefix}tooltip-transform-distance)) scale(var(--#{$prefix}tooltip-scale)); }
     to { transform: translateY(0) scale(1); opacity: 1; }
 }
 
 @keyframes tooltipDisappearTop {
     from { transform: translateY(0) scale(1); opacity: 1; }
-    to { transform: translateY(var(--transform-distance)) scale(var(--scale)); }
+    to { transform: translateY(var(--#{$prefix}tooltip-transform-distance)) scale(var(--#{$prefix}tooltip-scale)); }
 }
 
 @keyframes tooltipAppearEnd {
-    from { transform: translateX(calc(var(--transform-distance) * -1)) scale(var(--scale)); }
+    from { transform: translateX(calc(var(--#{$prefix}tooltip-transform-distance) * -1)) scale(var(--#{$prefix}tooltip-scale)); }
     to { transform: translateX(0) scale(1); opacity: 1; }
 }
 
 @keyframes tooltipDisappearEnd {
     from { transform: translateX(0) scale(1); opacity: 1; }
-    to { transform: translateX(calc(var(--transform-distance) * -1)) scale(var(--scale)); }
+    to { transform: translateX(calc(var(--#{$prefix}tooltip-transform-distance) * -1)) scale(var(--#{$prefix}tooltip-scale)); }
 }
 
 @keyframes tooltipAppearBottom {
-    from { transform: translateY(calc(var(--transform-distance) * -1)) scale(var(--scale)); }
+    from { transform: translateY(calc(var(--#{$prefix}tooltip-transform-distance) * -1)) scale(var(--#{$prefix}tooltip-scale)); }
     to { transform: translateY(0) scale(1); opacity: 1; }
 }
 
 @keyframes tooltipDisappearBottom {
     from { transform: translateY(0) scale(1); opacity: 1; }
-    to { transform: translateY(calc(var(--transform-distance) * -1)) scale(var(--scale)); }
+    to { transform: translateY(calc(var(--#{$prefix}tooltip-transform-distance) * -1)) scale(var(--#{$prefix}tooltip-scale)); }
 }
 
 @keyframes tooltipAppearStart {
-    from { transform: translateX(var(--transform-distance)) scale(var(--scale)); }
+    from { transform: translateX(var(--#{$prefix}tooltip-transform-distance)) scale(var(--#{$prefix}tooltip-scale)); }
     to { transform: translateX(0) scale(1); opacity: 1; }
 }
 
 @keyframes tooltipDisappearStart {
     from { transform: translateX(0) scale(1); opacity: 1; }
-    to { transform: translateX(var(--transform-distance)) scale(var(--scale)); }
+    to { transform: translateX(var(--#{$prefix}tooltip-transform-distance)) scale(var(--#{$prefix}tooltip-scale)); }
 }
