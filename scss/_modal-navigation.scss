@@ -4,17 +4,17 @@
 @import "bootstrap/scss/modal";
 
 :root {
-    --modal-stack-animation-slide-duration: 350ms;
-    --modal-stack-animation-slide-out: -10px;
-    --modal-stack-animation-slide-in: 10px;
-    --modal-stack-animation-morph-duration: 300ms;
-    --modal-stack-animation-morph-scale: .95;
+    --#{$prefix}modal-stack-animation-slide-duration: 350ms;
+    --#{$prefix}modal-stack-animation-slide-out: -10px;
+    --#{$prefix}modal-stack-animation-slide-in: 10px;
+    --#{$prefix}modal-stack-animation-morph-duration: 300ms;
+    --#{$prefix}modal-stack-animation-morph-scale: .95;
 }
 
 .modal-navigation {
     .modal-header > * {
         z-index: 1;
-        transition: all var(--modal-stack-animation-duration) ease;
+        transition: all var(--#{$prefix}modal-stack-animation-duration) ease;
     }
 
     .modal-title {
@@ -24,11 +24,11 @@
     }
 
     .modal-body {
-        transition: opacity var(--modal-stack-animation-duration) ease, margin var(--modal-stack-animation-duration) ease, height var(--modal-stack-animation-duration) ease;
+        transition: opacity var(--#{$prefix}modal-stack-animation-duration) ease, margin var(--#{$prefix}modal-stack-animation-duration) ease, height var(--#{$prefix}modal-stack-animation-duration) ease;
     }
 
     .modal-content, .modal-content > * {
-        transition: height var(--modal-stack-animation-duration) ease, opacity var(--modal-stack-animation-duration) ease;
+        transition: height var(--#{$prefix}modal-stack-animation-duration) ease, opacity var(--#{$prefix}modal-stack-animation-duration) ease;
     }
 }
 
@@ -42,7 +42,7 @@
 // BackBtn
 %modal-header-back-btn_default {
     opacity: 0;
-    margin: 0 0 0 calc(var(--btn-width) * -1);
+    margin: 0 0 0 calc(var(--#{$prefix}btn-width, 2.5rem) * -1);
 }
 
 %modal-header-back-btn_visible {
@@ -67,11 +67,11 @@
 
 // Slide 
 .modal-animation-slide {
-    --modal-stack-animation-duration: var(--modal-stack-animation-slide-duration);
-    --modal-stack-animation-out-forward: modal-body-slide-out-forward;
-    --modal-stack-animation-in-forward: modal-body-slide-in-forward;
-    --modal-stack-animation-out-back: modal-body-slide-out-back;
-    --modal-stack-animation-in-back: modal-body-slide-in-back;
+    --#{$prefix}modal-stack-animation-duration: var(--#{$prefix}modal-stack-animation-slide-duration);
+    --#{$prefix}modal-stack-animation-out-forward: modal-body-slide-out-forward;
+    --#{$prefix}modal-stack-animation-in-forward: modal-body-slide-in-forward;
+    --#{$prefix}modal-stack-animation-out-back: modal-body-slide-out-back;
+    --#{$prefix}modal-stack-animation-in-back: modal-body-slide-in-back;
 }
 
 .modal-animation-transition-slide {
@@ -95,43 +95,43 @@
 }
 
 %modal-navigation-transition_slide-out-forward {
-    --modal-stack-travel: var(--modal-stack-animation-slide-out);
+    --#{$prefix}modal-stack-travel: var(--#{$prefix}modal-stack-animation-slide-out);
 
     .modal-body, .modal-header > *:not(.btn) {
-        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-out-forward) ease forwards;
+        animation: var(--#{$prefix}modal-stack-animation-duration) var(--#{$prefix}modal-stack-animation-out-forward) ease forwards;
     }
 }
 
 %modal-navigation-transition_slide-in-forward {
-    --modal-stack-travel: var(--modal-stack-animation-slide-in);
+    --#{$prefix}modal-stack-travel: var(--#{$prefix}modal-stack-animation-slide-in);
 
     .modal-body, .modal-header > *:not(.btn) {
-        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-in-forward) ease forwards;
+        animation: var(--#{$prefix}modal-stack-animation-duration) var(--#{$prefix}modal-stack-animation-in-forward) ease forwards;
     }
 }
 
 %modal-navigation-transition_slide-out-back {
-    --modal-stack-travel: var(--modal-stack-animation-slide-out);
+    --#{$prefix}modal-stack-travel: var(--#{$prefix}modal-stack-animation-slide-out);
 
     .modal-body, .modal-header > *:not(.btn) {
-        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-out-back) ease forwards;
+        animation: var(--#{$prefix}modal-stack-animation-duration) var(--#{$prefix}modal-stack-animation-out-back) ease forwards;
     }
 }
 
 %modal-navigation-transition_slide-in-back {
-    --modal-stack-travel: var(--modal-stack-animation-slide-in);
+    --#{$prefix}modal-stack-travel: var(--#{$prefix}modal-stack-animation-slide-in);
 
     .modal-body, .modal-header > *:not(.btn) {
-        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-in-back) ease forwards;
+        animation: var(--#{$prefix}modal-stack-animation-duration) var(--#{$prefix}modal-stack-animation-in-back) ease forwards;
     }
 }
 
 // Morph
 .modal-animation-morph {
-    --modal-stack-animation-duration: var(--modal-stack-animation-morph-duration);
-    --modal-stack-animation-out: modal-body-morph-out;
-    --modal-stack-animation-in: modal-body-morph-in;
-    --modal-stack-travel: var(--modal-stack-animation-morph-scale);
+    --#{$prefix}modal-stack-animation-duration: var(--#{$prefix}modal-stack-animation-morph-duration);
+    --#{$prefix}modal-stack-animation-out: modal-body-morph-out;
+    --#{$prefix}modal-stack-animation-in: modal-body-morph-in;
+    --#{$prefix}modal-stack-travel: var(--#{$prefix}modal-stack-animation-morph-scale);
 }
 
 .modal-animation-transition-morph {
@@ -144,7 +144,7 @@
 
 %modal-navigation-transition_morph-out {
     .modal-body {
-        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-out) ease forwards;
+        animation: var(--#{$prefix}modal-stack-animation-duration) var(--#{$prefix}modal-stack-animation-out) ease forwards;
     }
 
     .modal-header > *:not(.btn) {
@@ -154,7 +154,7 @@
 
 %modal-navigation-transition_morph-in {
     .modal-body {
-        animation: var(--modal-stack-animation-duration) var(--modal-stack-animation-in) ease forwards;
+        animation: var(--#{$prefix}modal-stack-animation-duration) var(--#{$prefix}modal-stack-animation-in) ease forwards;
     }
 
     .modal-header > *:not(.btn) {
@@ -168,14 +168,14 @@
     }
     to {
         opacity: 0;
-        transform: translateX(var(--modal-stack-travel));
+        transform: translateX(var(--#{$prefix}modal-stack-travel));
     }
 }
 
 @keyframes modal-body-slide-in-forward {
     from {
         opacity: 0;
-        transform: translateX(var(--modal-stack-travel));
+        transform: translateX(var(--#{$prefix}modal-stack-travel));
     }
     to {
         opacity: 1;
@@ -189,14 +189,14 @@
     }
     to {
         opacity: 0;
-        transform: translateX(calc(var(--modal-stack-travel) * -1));
+        transform: translateX(calc(var(--#{$prefix}modal-stack-travel) * -1));
     }
 }
 
 @keyframes modal-body-slide-in-back {
     from {
         opacity: 0;
-        transform: translateX(calc(var(--modal-stack-travel) * -1));
+        transform: translateX(calc(var(--#{$prefix}modal-stack-travel) * -1));
     }
     to {
         opacity: 1;
@@ -210,14 +210,14 @@
     }
     to {
         opacity: 0;
-        transform: scale(var(--modal-stack-travel));
+        transform: scale(var(--#{$prefix}modal-stack-travel));
     }
 }
 
 @keyframes modal-body-morph-in {
     from {
         opacity: 0;
-        transform: scale(var(--modal-stack-travel));
+        transform: scale(var(--#{$prefix}modal-stack-travel));
     }
     to {
         opacity: 1;
