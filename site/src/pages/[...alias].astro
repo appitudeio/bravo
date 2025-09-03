@@ -3,7 +3,7 @@ import type { InferGetStaticPropsType } from 'astro'
 import RedirectLayout from '@layouts/RedirectLayout.astro'
 import { getVersionedDocsPath } from '@libs/path'
 import { trimLeadingAndTrailingSlashes } from '@libs/utils'
-import { replaceConfigInText } from '@libs/remark'
+import { replaceConfigInText, replaceDocsrefInText } from '@libs/remark'
 import { aliasedDocsPages } from '@libs/content'
 import { getAliasedExamplesPages, getExampleNameFromPagePath } from '@libs/examples'
 
@@ -13,7 +13,9 @@ export async function getStaticPaths() {
   }
 
   function getAliasStaticPath(alias: string, path: string) {
-    return { params: { alias: trimLeadingAndTrailingSlashes(replaceConfigInText(alias)) }, props: { path } }
+    // Process both [[config:...]] and [[docsref:...]] patterns
+    const processedAlias = replaceDocsrefInText(replaceConfigInText(alias))
+    return { params: { alias: trimLeadingAndTrailingSlashes(processedAlias) }, props: { path } }
   }
 
   const staticPaths = []
