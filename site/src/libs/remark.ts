@@ -108,7 +108,7 @@ function replaceConfigInAttributes(attributes: (MdxJsxAttribute | MdxJsxExpressi
   })
 }
 
-function replaceDocsrefInText(text: string) {
+export function replaceDocsrefInText(text: string) {
   return text.replace(docsrefRegExp, (_match, path) => {
     return getVersionedDocsPath(path)
   })
