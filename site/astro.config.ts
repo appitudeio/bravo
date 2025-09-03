@@ -14,14 +14,14 @@ const site = isDev
     ? // If deploying on Netlify, use the `DEPLOY_PRIME_URL` environment variable.
       process.env.DEPLOY_PRIME_URL
     : process.env.GITHUB_PAGES
-    ? // If deploying on GitHub Pages
-      'https://appitudeio.github.io/bravo'
+    ? // If deploying on GitHub Pages with custom domain
+      'https://bravo.appitude.io'
     : // Otherwise, use the `baseURL` value defined in the `config.yml` file.
       getConfig().baseURL
 
 // https://astro.build/config
 export default defineConfig({
-  base: process.env.GITHUB_PAGES ? '/bravo' : undefined,
+  base: undefined, // No base path needed with custom domain
   build: {
     assets: `docs/${getConfig().docs_version}/assets`
   },
