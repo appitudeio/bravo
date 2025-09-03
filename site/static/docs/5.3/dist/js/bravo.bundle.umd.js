@@ -5085,7 +5085,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     Toast: Toast$1,
     Tooltip: Tooltip$1
   }, Symbol.toStringTag, { value: "Module" }));
-  const version = "5.3.8";
+  const version = "5.3.8-1";
   const packageJson = {
     version
   };

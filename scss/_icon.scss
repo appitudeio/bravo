@@ -4,14 +4,14 @@ $icon-size-md: 20px;
 $icon-size-lg: 24px;
 
 .icon {
-    --icon-size: #{$icon-size-base};
-    --icon-size-sm: #{$icon-size-sm};
-    --icon-size-md: #{$icon-size-md};
-    --icon-size-lg: #{$icon-size-lg};
+    --#{$prefix}icon-size: #{$icon-size-base};
+    --#{$prefix}icon-size-sm: #{$icon-size-sm};
+    --#{$prefix}icon-size-md: #{$icon-size-md};
+    --#{$prefix}icon-size-lg: #{$icon-size-lg};
 
 	display: inline-block;
-	width: var(--icon-size);
-	height: var(--icon-size);
+	width: var(--#{$prefix}icon-size);
+	height: var(--#{$prefix}icon-size);
     background-color: currentColor;
     mask: var(--icon);
 	mask-repeat: no-repeat;
@@ -21,13 +21,13 @@ $icon-size-lg: 24px;
 }
 
 .icon-sm {
-    --icon-size: var(--icon-size-sm);
+    --#{$prefix}icon-size: var(--#{$prefix}icon-size-sm);
 }
 
 .icon-md {
-    --icon-size: var(--icon-size-md);
+    --#{$prefix}icon-size: var(--#{$prefix}icon-size-md);
 }
 
 .icon-lg {
-    --icon-size: var(--icon-size-lg);
+    --#{$prefix}icon-size: var(--#{$prefix}icon-size-lg);
 }
