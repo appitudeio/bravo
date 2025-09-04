@@ -22,6 +22,7 @@ class Modal extends BootstrapModal {
     constructor(elementOrOptions) {
         let modalElement;
         let options = {};
+        let fromDOM = true; // Default: assume modal is from DOM
         
         if (typeof elementOrOptions === 'string') {
             modalElement = document.getElementById(elementOrOptions);
@@ -36,6 +37,7 @@ class Modal extends BootstrapModal {
         else if (typeof elementOrOptions === 'object') {
             modalElement = Modal.generate(elementOrOptions);
             options = elementOrOptions;
+            fromDOM = false; // This modal is NOT from DOM, it was generated
         }
         else {
             throw new Error("Invalid parameter: Must provide an element ID or options object.");
@@ -43,6 +45,9 @@ class Modal extends BootstrapModal {
 
         // Call the parent constructor with the modal element
         super(modalElement, options);
+
+        // Store whether this modal originated from DOM
+        this._fromDOM = fromDOM;
 
         // Register callbacks
         this.registerEventListeners();
@@ -64,9 +69,11 @@ class Modal extends BootstrapModal {
             }
         }));
 
-        // Always remove the Modal from the DOM when it is dismissed
+        // Only remove the Modal from the DOM if it was not originally from DOM
         this.addEventListener('hidden.bs.modal', () => {
-            this.remove();
+            if (!this._fromDOM) {
+                this.remove();
+            }
         });
     }
 
