@@ -269,9 +269,9 @@ class Navigation {
         Promise.all(pops).then(() => {
             EventHandler.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
 
-            // Clean up ALL modals we created (not just the ones in stack)
+            // Clean up only modals that were NOT originally from DOM
             Object.values(this.refs).forEach(modal => {
-                if (modal && modal._element && modal._element.parentNode) {
+                if (modal && modal._element && modal._element.parentNode && !modal._fromDOM) {
                     modal._element.remove();
                 }
             });

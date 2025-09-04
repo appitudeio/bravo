@@ -5555,7 +5555,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       Promise.all(pops).then(() => {
         EventHandler$1.trigger(document, EVENT_NAV_CLOSE, { stack: Object.values(this.refs) });
         Object.values(this.refs).forEach((modal) => {
-          if (modal && modal._element && modal._element.parentNode) {
+          if (modal && modal._element && modal._element.parentNode && !modal._fromDOM) {
             modal._element.remove();
           }
         });
@@ -5767,6 +5767,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     constructor(elementOrOptions) {
       let modalElement;
       let options = {};
+      let fromDOM = true;
       if (typeof elementOrOptions === "string") {
         modalElement = document.getElementById(elementOrOptions);
         if (!modalElement) {
@@ -5777,10 +5778,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       } else if (typeof elementOrOptions === "object") {
         modalElement = Modal.generate(elementOrOptions);
         options = elementOrOptions;
+        fromDOM = false;
       } else {
         throw new Error("Invalid parameter: Must provide an element ID or options object.");
       }
       super(modalElement, options);
+      this._fromDOM = fromDOM;
       this.registerEventListeners();
     }
     addEventListener(...props) {
@@ -5794,7 +5797,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         }
       }));
       this.addEventListener("hidden.bs.modal", () => {
-        this.remove();
+        if (!this._fromDOM) {
+          this.remove();
+        }
       });
     }
     remove() {
