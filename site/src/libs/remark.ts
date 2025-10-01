@@ -70,13 +70,14 @@ export const remarkBsDocsref: Plugin<[], Root> = function () {
 
     // https://github.com/syntax-tree/mdast#nodes
     // https://github.com/syntax-tree/mdast-util-mdx-jsx#nodes
-    visit(ast, ['definition', 'link', 'mdxJsxTextElement'], (node) => {
+    visit(ast, ['definition', 'link', 'mdxJsxFlowElement', 'mdxJsxTextElement'], (node) => {
       switch (node.type) {
         case 'definition':
         case 'link': {
           node.url = replaceDocsrefInText(node.url)
           break
         }
+        case 'mdxJsxFlowElement':
         case 'mdxJsxTextElement': {
           node.attributes = replaceDocsrefInAttributes(node.attributes)
           break
