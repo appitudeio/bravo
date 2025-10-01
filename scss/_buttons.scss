@@ -18,7 +18,7 @@ $btn-font-size-xs       : $input-btn-font-size-xs !default;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-   
+  
   &:focus:not(:focus-visible), &:focus-visible {
     outline-offset: 2px;
     outline-color: var(--#{$prefix}btn-active-bg);
