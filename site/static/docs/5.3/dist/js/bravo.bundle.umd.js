@@ -5591,6 +5591,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     replace(to, _back = false) {
       const [newHeader, newBody, newFooter, Modal2, newForm] = to;
       EventHandler$1.trigger(Modal2._element, EVENT_SHOW);
+      const targetShouldHaveBackButton = this.stack.length >= 1 && // After push, stack will have at least 2
+      !Modal2._config?.backButton?.disabled && !this.options.backButton?.disabled;
+      const currentHasBackButton = this.Modal._element.classList.contains(CLASS_NAVIGATION_HAS_STACK);
+      if (currentHasBackButton && !targetShouldHaveBackButton) {
+        this.Modal._element.classList.remove(CLASS_NAVIGATION_HAS_STACK);
+      }
       let outPromise;
       if (this.state === STATE_CLOSED) {
         outPromise = Promise.resolve();
@@ -5600,6 +5606,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       const inPromise = outPromise.then(() => {
         return this.handleContent(newHeader, newBody, newFooter, Modal2, newForm);
       }).then(() => {
+        if (!currentHasBackButton && targetShouldHaveBackButton) {
+          this.Modal._element.classList.add(CLASS_NAVIGATION_HAS_STACK);
+        }
         return this.Animation.in(_back);
       }).then(() => {
         EventHandler$1.trigger(Modal2._element, EVENT_SHOWN);
@@ -5644,7 +5653,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           newHeader.prepend(this.Template.backButton());
         }
       }
-      this.setStackClass();
       return new Promise((resolve) => resolve());
     }
     handleHeader(newHeader, newModal) {
@@ -5699,15 +5707,20 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     out = (directionBack = false, intoModal) => new Promise((resolve) => resolve());
     in = (directionBack = false) => new Promise((resolve) => resolve());
     /**
-     * 
+     *
      */
     createFakeModalContent() {
       let cssStyle = "visibility: hidden; z-index: -1;";
-      const [newHeader, newBody, newFooter] = this.stack;
+      const [newHeader, newBody, newFooter, , newForm] = this.stack;
       if (newBody) {
         newBody.removeAttribute("style");
       }
-      let fakeContainer = document.createElement("div");
+      let fakeContainer;
+      if (newForm) {
+        fakeContainer = document.createElement("form");
+      } else {
+        fakeContainer = document.createElement("div");
+      }
       fakeContainer.style.cssText = cssStyle;
       let fakeBody = newBody ? newBody.cloneNode(true) : document.createElement("div");
       let fakeHeader = newHeader?.cloneNode(true);
@@ -5716,14 +5729,19 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       return fakeContainer;
     }
     /**
-     * 
+     *
      */
     calculateFakeModalHeight(fakeModalContent) {
       const container = this.Modal._element.querySelector(".modal-body").parentNode;
+      const modalContent = this.Modal._element.querySelector(".modal-content");
       container.append(fakeModalContent);
       const fakeModalHeight = fakeModalContent.offsetHeight;
+      const modalContentStyles = getComputedStyle(modalContent);
+      const borderTop = parseFloat(modalContentStyles.borderTopWidth) || 0;
+      const borderBottom = parseFloat(modalContentStyles.borderBottomWidth) || 0;
+      const totalHeight = fakeModalHeight + borderTop + borderBottom;
       fakeModalContent.remove();
-      return fakeModalHeight;
+      return totalHeight;
     }
     getAnimationDuration = (element) => {
       let computedStyle = getComputedStyle(element ?? this.Modal._element.querySelector(".modal-body"));
@@ -5736,19 +5754,18 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     className = "modal-animation-slide";
     out = (directionBack = false) => new Promise((resolve) => {
       const animationDirection = directionBack ? CLASS_NAVIGATION_BACK : CLASS_NAVIGATION_FORWARD;
-      const ModalBody = this.Modal._element.querySelector(".modal-body");
-      if (!ModalBody || !ModalBody.parentNode) {
+      const ModalContent = this.Modal._element.querySelector(".modal-content");
+      if (!ModalContent) {
         resolve();
         return;
       }
-      const ModalContainer = ModalBody.parentNode;
-      const currentContainerHeight = ModalContainer.offsetHeight;
-      ModalContainer.style.height = `${currentContainerHeight}px`;
+      const currentContainerHeight = ModalContent.offsetHeight;
+      ModalContent.style.height = `${currentContainerHeight}px`;
       const hiddenFakeModalHeight = this.calculateFakeModalHeight(
         this.createFakeModalContent()
       );
       this.Modal._element.classList.add(CLASS_NAVIGATION_TRANSITION, animationDirection);
-      ModalContainer.style.height = `${hiddenFakeModalHeight}px`;
+      ModalContent.style.height = `${hiddenFakeModalHeight}px`;
       const transitionDuration = this.getAnimationDuration();
       setTimeout(() => resolve(), transitionDuration);
     });
@@ -5759,9 +5776,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       const transitionDuration = this.getAnimationDuration();
       setTimeout(() => {
         this.Modal._element.classList.remove(CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN, animationDirection);
-        const modalBody = this.Modal._element.querySelector(".modal-body");
-        if (modalBody && modalBody.parentNode) {
-          modalBody.parentNode.removeAttribute("style");
+        const modalContent = this.Modal._element.querySelector(".modal-content");
+        if (modalContent) {
+          modalContent.removeAttribute("style");
         }
         resolve();
       }, transitionDuration);
@@ -5771,33 +5788,31 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     className = "modal-animation-morph";
     heightMultiplyer = 0.85;
     out = (directionBack = false) => new Promise((resolve) => {
-      const ModalBody = this.Modal._element.querySelector(".modal-body");
-      if (!ModalBody || !ModalBody.parentNode) {
+      const ModalContent = this.Modal._element.querySelector(".modal-content");
+      if (!ModalContent) {
         resolve();
         return;
       }
-      const ModalContainer = ModalBody.parentNode;
-      const currentContainerHeight = ModalContainer.offsetHeight;
-      ModalContainer.style.height = `${currentContainerHeight}px`;
+      const currentContainerHeight = ModalContent.offsetHeight;
+      ModalContent.style.height = `${currentContainerHeight}px`;
       this.Modal._element.classList.add(this.className, CLASS_NAVIGATION_TRANSITION);
-      setTimeout(() => ModalContainer.style.height = `${currentContainerHeight * this.heightMultiplyer}px`, 10);
+      setTimeout(() => ModalContent.style.height = `${currentContainerHeight * this.heightMultiplyer}px`, 10);
       const transitionDuration = this.getAnimationDuration();
       setTimeout(() => resolve(), transitionDuration);
     });
     in = (directionBack) => new Promise((resolve) => {
-      const ModalBody = this.Modal._element.querySelector(".modal-body");
-      const ModalContainer = ModalBody.parentNode;
+      const ModalContent = this.Modal._element.querySelector(".modal-content");
       const hiddenFakeModalHeight = this.calculateFakeModalHeight(
         this.createFakeModalContent()
       );
       this.Modal._element.classList.add(CLASS_NAVIGATION_TRANSITION_IN);
-      ModalContainer.style.height = `${hiddenFakeModalHeight}px`;
+      ModalContent.style.height = `${hiddenFakeModalHeight}px`;
       this.Modal.handleUpdate();
       const transitionDuration = this.getAnimationDuration();
       setTimeout(() => {
         this.Modal._element.classList.remove(Animation.className, CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN);
-        if (ModalContainer) {
-          ModalContainer.removeAttribute("style");
+        if (ModalContent) {
+          ModalContent.removeAttribute("style");
         }
         resolve();
       }, transitionDuration);

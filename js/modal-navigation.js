@@ -323,11 +323,27 @@ class Navigation {
         // Trigger the "show" event right away
         EventHandler.trigger(Modal._element, EVENT_SHOW);
 
+        // Determine if the TARGET modal should have a back button
+        const targetShouldHaveBackButton = (
+            this.stack.length >= 1 && // After push, stack will have at least 2
+            (!Modal._config?.backButton?.disabled) &&
+            (!this.options.backButton?.disabled)
+        );
+
+        // Check if back button currently exists
+        const currentHasBackButton = this.Modal._element.classList.contains(CLASS_NAVIGATION_HAS_STACK);
+
+        // Update stack class BEFORE animation if back button needs to disappear
+        if (currentHasBackButton && !targetShouldHaveBackButton) {
+            // Back button needs to fade out - do it before "out" animation
+            this.Modal._element.classList.remove(CLASS_NAVIGATION_HAS_STACK);
+        }
+
         // If the modal is completely closed, there is no "out" step.
         let outPromise;
         if (this.state === STATE_CLOSED) {
             outPromise = Promise.resolve();
-        } 
+        }
         else {
             // Perform the "out" animation
             outPromise = this.Animation.from(to).out(_back);
@@ -341,6 +357,12 @@ class Navigation {
             return this.handleContent(newHeader, newBody, newFooter, Modal, newForm);
         })
         .then(() => {
+            // Update stack class BEFORE "in" animation if back button needs to appear
+            if (!currentHasBackButton && targetShouldHaveBackButton) {
+                // Back button needs to fade in - do it before "in" animation
+                this.Modal._element.classList.add(CLASS_NAVIGATION_HAS_STACK);
+            }
+
             // Now do the "in" animation
             return this.Animation.in(_back);
         })
@@ -350,7 +372,7 @@ class Navigation {
         });
 
         // Return an object containing both:
-        // - outPromise: resolves as soon as “out” is done
+        // - outPromise: resolves as soon as "out" is done
         // - inPromise: resolves after everything (out + content + in) is done
         return { outPromise, inPromise };
 	}
@@ -371,7 +393,7 @@ class Navigation {
     handleContent(newHeader, newBody, newFooter, newModal, newForm) {
         const modalContent = this.Modal._element.querySelector(".modal-content");
         const currentForm = modalContent.querySelector(":scope > form");
-        
+
         if (newForm && !currentForm) {
             // Need to add form wrapper
             modalContent.innerHTML = '';
@@ -408,8 +430,6 @@ class Navigation {
                 newHeader.prepend(this.Template.backButton());
             }
         }
-        
-        this.setStackClass();
 
         return new Promise(resolve => resolve());
     }
@@ -439,7 +459,7 @@ class Navigation {
             else {
                 currentContainer.append(newHeader);
             }
-        } 
+        }
         else if(currentHeader) {
             // If there's no new header, remove the existing one
             currentHeader.remove();
@@ -488,19 +508,28 @@ class Animation {
     in = (directionBack = false) => new Promise(resolve => resolve());
 
     /**
-     * 
+     *
      */
     createFakeModalContent() {
         let cssStyle = "visibility: hidden; z-index: -1;";
-        const [ newHeader, newBody, newFooter] = this.stack;
+        const [ newHeader, newBody, newFooter, , newForm ] = this.stack;
 
         // Check if newBody exists before trying to manipulate it
         if (newBody) {
             newBody.removeAttribute("style");
         }
-        
-        let fakeContainer = document.createElement("div");
+
+        // Create fake container matching the final structure (with or without form wrapper)
+        let fakeContainer;
+        if (newForm) {
+            // If new content will have a form, create fake container as form
+            fakeContainer = document.createElement("form");
+        } else {
+            // If new content won't have a form, use plain div
+            fakeContainer = document.createElement("div");
+        }
         fakeContainer.style.cssText = cssStyle;
+
         let fakeBody = newBody ? newBody.cloneNode(true) : document.createElement("div");
         let fakeHeader = newHeader?.cloneNode(true);
         let fakeFooter = newFooter?.cloneNode(true);
@@ -511,15 +540,24 @@ class Animation {
     }
 
     /**
-     * 
+     *
      */
     calculateFakeModalHeight(fakeModalContent) {
         const container = this.Modal._element.querySelector(".modal-body").parentNode;
+        const modalContent = this.Modal._element.querySelector(".modal-content");
+
         container.append(fakeModalContent);
         const fakeModalHeight = fakeModalContent.offsetHeight;
+
+        // Account for .modal-content borders since that's what we're animating
+        const modalContentStyles = getComputedStyle(modalContent);
+        const borderTop = parseFloat(modalContentStyles.borderTopWidth) || 0;
+        const borderBottom = parseFloat(modalContentStyles.borderBottomWidth) || 0;
+        const totalHeight = fakeModalHeight + borderTop + borderBottom;
+
         fakeModalContent.remove();
 
-        return fakeModalHeight;
+        return totalHeight;
     }
 
     getAnimationDuration = (element) => {
@@ -541,16 +579,15 @@ class ModalNavigationTransitionSlide extends Animation {
     out = (directionBack = false) => new Promise(resolve => {
         const animationDirection = (directionBack) ? CLASS_NAVIGATION_BACK : CLASS_NAVIGATION_FORWARD;
 
-        // 1) Set current height of the Modal body
-        const ModalBody = this.Modal._element.querySelector(".modal-body");
-        if (!ModalBody || !ModalBody.parentNode) {
-            // If modal body doesn't exist, resolve immediately
+        // 1) Set current height - always use .modal-content as the stable container
+        const ModalContent = this.Modal._element.querySelector(".modal-content");
+        if (!ModalContent) {
+            // If modal content doesn't exist, resolve immediately
             resolve();
             return;
         }
-        const ModalContainer = ModalBody.parentNode;
-        const currentContainerHeight = ModalContainer.offsetHeight;
-        ModalContainer.style.height = `${currentContainerHeight}px`;
+        const currentContainerHeight = ModalContent.offsetHeight;
+        ModalContent.style.height = `${currentContainerHeight}px`;
 
         // 2) Calculate the new height
         const hiddenFakeModalHeight = this.calculateFakeModalHeight(
@@ -559,7 +596,7 @@ class ModalNavigationTransitionSlide extends Animation {
 
         // 3) Start the animation w setting the animation class
         this.Modal._element.classList.add(CLASS_NAVIGATION_TRANSITION, animationDirection);
-        ModalContainer.style.height = `${hiddenFakeModalHeight}px`;
+        ModalContent.style.height = `${hiddenFakeModalHeight}px`;
 
         const transitionDuration = this.getAnimationDuration();
 
@@ -580,10 +617,10 @@ class ModalNavigationTransitionSlide extends Animation {
             // Clear all classes that trigger transitions
             this.Modal._element.classList.remove(CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN, animationDirection);
 
-            // Remove height on the body
-            const modalBody = this.Modal._element.querySelector(".modal-body");
-            if (modalBody && modalBody.parentNode) {
-                modalBody.parentNode.removeAttribute("style");
+            // Remove height - target .modal-content which is the stable container
+            const modalContent = this.Modal._element.querySelector(".modal-content");
+            if (modalContent) {
+                modalContent.removeAttribute("style");
             }
 
             resolve();
@@ -600,21 +637,20 @@ class ModalNavigationTransitionMorph extends Animation {
     heightMultiplyer = .85;
 
     out = (directionBack = false) => new Promise(resolve => {
-        // 1) Set current height of the Modal body
-        const ModalBody = this.Modal._element.querySelector(".modal-body");
-        if (!ModalBody || !ModalBody.parentNode) {
-            // If modal body doesn't exist, resolve immediately
+        // 1) Set current height - always use .modal-content as the stable container
+        const ModalContent = this.Modal._element.querySelector(".modal-content");
+        if (!ModalContent) {
+            // If modal content doesn't exist, resolve immediately
             resolve();
             return;
         }
-        const ModalContainer = ModalBody.parentNode;
-        const currentContainerHeight = ModalContainer.offsetHeight;
-        ModalContainer.style.height = `${currentContainerHeight}px`;
-        
+        const currentContainerHeight = ModalContent.offsetHeight;
+        ModalContent.style.height = `${currentContainerHeight}px`;
+
         // 2) Start the animation w setting the animation class
         this.Modal._element.classList.add(this.className, CLASS_NAVIGATION_TRANSITION);
 
-        setTimeout(() => ModalContainer.style.height = `${currentContainerHeight * this.heightMultiplyer}px`, 10);
+        setTimeout(() => ModalContent.style.height = `${currentContainerHeight * this.heightMultiplyer}px`, 10);
 
         const transitionDuration = this.getAnimationDuration();
 
@@ -622,8 +658,7 @@ class ModalNavigationTransitionMorph extends Animation {
     });
 
     in = (directionBack) => new Promise(resolve => {
-        const ModalBody = this.Modal._element.querySelector(".modal-body");
-        const ModalContainer = ModalBody.parentNode;
+        const ModalContent = this.Modal._element.querySelector(".modal-content");
 
         // 1) Calculate the new height to be
         const hiddenFakeModalHeight = this.calculateFakeModalHeight(
@@ -632,7 +667,7 @@ class ModalNavigationTransitionMorph extends Animation {
 
         // 2) Animate in the new content
         this.Modal._element.classList.add(CLASS_NAVIGATION_TRANSITION_IN);
-        ModalContainer.style.height = `${hiddenFakeModalHeight}px`;
+        ModalContent.style.height = `${hiddenFakeModalHeight}px`;
 
         this.Modal.handleUpdate(); // Adjust modal size
 
@@ -643,9 +678,9 @@ class ModalNavigationTransitionMorph extends Animation {
             // Clear all classes that trigger transitions
             this.Modal._element.classList.remove(Animation.className, CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN);
 
-            // Remove height on the body
-            if (ModalContainer) {
-                ModalContainer.removeAttribute("style");
+            // Remove height - target .modal-content which is the stable container
+            if (ModalContent) {
+                ModalContent.removeAttribute("style");
             }
 
             resolve();
