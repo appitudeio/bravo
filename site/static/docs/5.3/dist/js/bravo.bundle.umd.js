@@ -5085,7 +5085,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     Toast: Toast$1,
     Tooltip: Tooltip$1
   }, Symbol.toStringTag, { value: "Module" }));
-  const version = "5.3.8-1";
+  const version = "5.3.8-2";
   const packageJson = {
     version
   };
@@ -5475,15 +5475,18 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       if (false === this.options.backButton.disabled && existingModalStackIndex !== -1) {
         throw new Error("Modal is already in the stack. Thus not allowed to be pushed again since BackButton is enabled.");
       } else if (existingModalStackIndex !== -1) {
-        const [existingHeader, existingBody, existingFooter, existingModal] = this.stack[existingModalStackIndex];
+        const [existingHeader, existingBody, existingFooter, existingModal, existingForm] = this.stack[existingModalStackIndex];
         this.stack.splice(existingModalStackIndex, 1);
-        this.stack.push([existingHeader, existingBody, existingFooter, existingModal]);
+        this.stack.push([existingHeader, existingBody, existingFooter, existingModal, existingForm]);
       } else {
+        const form = childModal._element.querySelector(".modal-content > form");
         this.stack.push([
           childModal._element.querySelector(".modal-header"),
           childModal._element.querySelector(".modal-body"),
           childModal._element.querySelector(".modal-footer"),
-          childModal
+          childModal,
+          form
+          // Store form element or null
         ]);
       }
       if (!this.refs[childModal._element.id]) {
@@ -5540,10 +5543,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       });
     }
     restoreOriginalModal(stack) {
-      const [currentHeader, currentBody, currentFooter, currentModal] = stack;
+      const [currentHeader, currentBody, currentFooter, currentModal, currentForm] = stack;
       const currentBodyContent = currentModal._element.querySelector(".modal-content");
       currentBodyContent.innerHTML = "";
-      currentBodyContent.append(currentHeader ?? "", currentBody, currentFooter ?? "");
+      if (currentForm) {
+        currentBodyContent.appendChild(currentForm);
+      } else {
+        currentBodyContent.append(currentHeader ?? "", currentBody, currentFooter ?? "");
+      }
       return stack;
     }
     close() {
@@ -5568,6 +5575,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           modalNavigationMap.delete(this.Modal._element);
         }
         this.Modal = null;
+        this.stack = [];
+        this.refs = {};
+        this.state = STATE_CLOSED;
       });
     }
     show() {
@@ -5579,7 +5589,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
      *  Actually inject the content (header, body, footer)
      */
     replace(to, _back = false) {
-      const [newHeader, newBody, newFooter, Modal2] = to;
+      const [newHeader, newBody, newFooter, Modal2, newForm] = to;
       EventHandler$1.trigger(Modal2._element, EVENT_SHOW);
       let outPromise;
       if (this.state === STATE_CLOSED) {
@@ -5588,7 +5598,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         outPromise = this.Animation.from(to).out(_back);
       }
       const inPromise = outPromise.then(() => {
-        return this.handleContent(newHeader, newBody, newFooter, Modal2);
+        return this.handleContent(newHeader, newBody, newFooter, Modal2, newForm);
       }).then(() => {
         return this.Animation.in(_back);
       }).then(() => {
@@ -5606,10 +5616,34 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         this.Modal._element.classList.add(CLASS_NAVIGATION_HAS_STACK);
       }
     }
-    handleContent(newHeader, newBody, newFooter, newModal) {
-      this.handleHeader(newHeader, newModal);
-      this.handleBody(newBody);
-      this.handleFooter(newFooter);
+    handleContent(newHeader, newBody, newFooter, newModal, newForm) {
+      const modalContent = this.Modal._element.querySelector(".modal-content");
+      const currentForm = modalContent.querySelector(":scope > form");
+      if (newForm && !currentForm) {
+        modalContent.innerHTML = "";
+        modalContent.appendChild(newForm);
+        const formElement = modalContent.querySelector("form");
+        if (newHeader) formElement.appendChild(newHeader);
+        formElement.appendChild(newBody);
+        if (newFooter) formElement.appendChild(newFooter);
+      } else if (!newForm && currentForm) {
+        modalContent.innerHTML = "";
+        if (newHeader) modalContent.appendChild(newHeader);
+        modalContent.appendChild(newBody);
+        if (newFooter) modalContent.appendChild(newFooter);
+      } else if (newForm && currentForm) {
+        modalContent.replaceChild(newForm, currentForm);
+      } else {
+        this.handleHeader(newHeader, newModal);
+        this.handleBody(newBody);
+        this.handleFooter(newFooter);
+      }
+      if (newHeader && this.stack.length > 1) {
+        const shouldHaveBackButton = !newModal._config?.backButton?.disabled && !this.options.backButton?.disabled;
+        if (shouldHaveBackButton && !newHeader.querySelector("button[rel=back]")) {
+          newHeader.prepend(this.Template.backButton());
+        }
+      }
       this.setStackClass();
       return new Promise((resolve) => resolve());
     }
@@ -5670,10 +5704,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     createFakeModalContent() {
       let cssStyle = "visibility: hidden; z-index: -1;";
       const [newHeader, newBody, newFooter] = this.stack;
-      newBody.removeAttribute("style");
+      if (newBody) {
+        newBody.removeAttribute("style");
+      }
       let fakeContainer = document.createElement("div");
       fakeContainer.style.cssText = cssStyle;
-      let fakeBody = newBody.cloneNode(true);
+      let fakeBody = newBody ? newBody.cloneNode(true) : document.createElement("div");
       let fakeHeader = newHeader?.cloneNode(true);
       let fakeFooter = newFooter?.cloneNode(true);
       fakeContainer.append(fakeHeader ?? "", fakeBody, fakeFooter ?? "");
@@ -5701,6 +5737,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     out = (directionBack = false) => new Promise((resolve) => {
       const animationDirection = directionBack ? CLASS_NAVIGATION_BACK : CLASS_NAVIGATION_FORWARD;
       const ModalBody = this.Modal._element.querySelector(".modal-body");
+      if (!ModalBody || !ModalBody.parentNode) {
+        resolve();
+        return;
+      }
       const ModalContainer = ModalBody.parentNode;
       const currentContainerHeight = ModalContainer.offsetHeight;
       ModalContainer.style.height = `${currentContainerHeight}px`;
@@ -5719,7 +5759,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       const transitionDuration = this.getAnimationDuration();
       setTimeout(() => {
         this.Modal._element.classList.remove(CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN, animationDirection);
-        this.Modal._element.querySelector(".modal-body").parentNode.removeAttribute("style");
+        const modalBody = this.Modal._element.querySelector(".modal-body");
+        if (modalBody && modalBody.parentNode) {
+          modalBody.parentNode.removeAttribute("style");
+        }
         resolve();
       }, transitionDuration);
     });
@@ -5729,6 +5772,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     heightMultiplyer = 0.85;
     out = (directionBack = false) => new Promise((resolve) => {
       const ModalBody = this.Modal._element.querySelector(".modal-body");
+      if (!ModalBody || !ModalBody.parentNode) {
+        resolve();
+        return;
+      }
       const ModalContainer = ModalBody.parentNode;
       const currentContainerHeight = ModalContainer.offsetHeight;
       ModalContainer.style.height = `${currentContainerHeight}px`;
@@ -5749,7 +5796,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       const transitionDuration = this.getAnimationDuration();
       setTimeout(() => {
         this.Modal._element.classList.remove(Animation.className, CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN);
-        ModalContainer.removeAttribute("style");
+        if (ModalContainer) {
+          ModalContainer.removeAttribute("style");
+        }
         resolve();
       }, transitionDuration);
     });
@@ -5790,12 +5839,17 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       this._element.addEventListener(...props);
     }
     registerEventListeners() {
-      this._element.querySelectorAll("form").forEach((_form) => _form.addEventListener("submit", (e) => {
-        const submitEvent = EventHandler$1.trigger(this._element, EVENT_SUBMIT, { target: _form });
-        if (submitEvent.defaultPrevented) {
-          e.preventDefault();
+      this._element.querySelectorAll("form").forEach((_form) => {
+        if (!_form.hasAttribute("data-modal-listener")) {
+          _form.addEventListener("submit", (e) => {
+            const submitEvent = EventHandler$1.trigger(this._element, EVENT_SUBMIT, { target: _form });
+            if (submitEvent.defaultPrevented) {
+              e.preventDefault();
+            }
+          });
+          _form.setAttribute("data-modal-listener", "true");
         }
-      }));
+      });
       this.addEventListener("hidden.bs.modal", () => {
         if (!this._fromDOM) {
           this.remove();

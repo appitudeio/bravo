@@ -159,17 +159,20 @@ class Navigation {
         }
         else if(existingModalStackIndex !== -1) {
             // Extract the existing modal from the stack and push it to the end (Before removing it)
-            const [ existingHeader, existingBody, existingFooter, existingModal ] = this.stack[existingModalStackIndex];
+            const [ existingHeader, existingBody, existingFooter, existingModal, existingForm ] = this.stack[existingModalStackIndex];
 
             this.stack.splice(existingModalStackIndex, 1);
-            this.stack.push([ existingHeader, existingBody, existingFooter, existingModal ]);
+            this.stack.push([ existingHeader, existingBody, existingFooter, existingModal, existingForm ]);
         }
         else {
+            // Check if content is wrapped in a form
+            const form = childModal._element.querySelector(".modal-content > form");
             this.stack.push([
                 childModal._element.querySelector(".modal-header"),
                 childModal._element.querySelector(".modal-body"),
                 childModal._element.querySelector(".modal-footer"),
-                childModal
+                childModal,
+                form  // Store form element or null
             ]);
         }
 
@@ -248,10 +251,17 @@ class Navigation {
     }
 
     restoreOriginalModal(stack) {
-        const [ currentHeader, currentBody, currentFooter, currentModal ] = stack;
+        const [ currentHeader, currentBody, currentFooter, currentModal, currentForm ] = stack;
         const currentBodyContent = currentModal._element.querySelector(".modal-content");
         currentBodyContent.innerHTML = "";
-        currentBodyContent.append(currentHeader ?? "", currentBody, currentFooter ?? "");
+        
+        if (currentForm) {
+            // Restore with form wrapper
+            currentBodyContent.appendChild(currentForm);
+        } else {
+            // Restore without form wrapper
+            currentBodyContent.append(currentHeader ?? "", currentBody, currentFooter ?? "");
+        }
         
         return stack;
     }
@@ -288,7 +298,11 @@ class Navigation {
                 modalNavigationMap.delete(this.Modal._element);
             }
 
+            // Reset navigation state for reuse
             this.Modal = null;
+            this.stack = [];
+            this.refs = {};
+            this.state = STATE_CLOSED;
         });
     }
 
@@ -304,7 +318,7 @@ class Navigation {
      *  Actually inject the content (header, body, footer)
      */
 	replace(to, _back = false) {
-        const [ newHeader, newBody, newFooter, Modal ] = to;
+        const [ newHeader, newBody, newFooter, Modal, newForm ] = to;
 
         // Trigger the "show" event right away
         EventHandler.trigger(Modal._element, EVENT_SHOW);
@@ -324,7 +338,7 @@ class Navigation {
         .then(() => {
             // "out" is finished here.
             // Next, actually swap the header/body/footer
-            return this.handleContent(newHeader, newBody, newFooter, Modal);
+            return this.handleContent(newHeader, newBody, newFooter, Modal, newForm);
         })
         .then(() => {
             // Now do the "in" animation
@@ -354,10 +368,47 @@ class Navigation {
         }
     }
 
-    handleContent(newHeader, newBody, newFooter, newModal) {
-        this.handleHeader(newHeader, newModal);
-        this.handleBody(newBody);
-        this.handleFooter(newFooter);
+    handleContent(newHeader, newBody, newFooter, newModal, newForm) {
+        const modalContent = this.Modal._element.querySelector(".modal-content");
+        const currentForm = modalContent.querySelector(":scope > form");
+        
+        if (newForm && !currentForm) {
+            // Need to add form wrapper
+            modalContent.innerHTML = '';
+            // Clone the form element to preserve its attributes and event listeners
+            modalContent.appendChild(newForm);
+            // Now the form is the container, update content inside it
+            const formElement = modalContent.querySelector("form");
+            if (newHeader) formElement.appendChild(newHeader);
+            formElement.appendChild(newBody);
+            if (newFooter) formElement.appendChild(newFooter);
+        } else if (!newForm && currentForm) {
+            // Need to remove form wrapper
+            modalContent.innerHTML = '';
+            if (newHeader) modalContent.appendChild(newHeader);
+            modalContent.appendChild(newBody);
+            if (newFooter) modalContent.appendChild(newFooter);
+        } else if (newForm && currentForm) {
+            // Both have forms - replace the entire form
+            modalContent.replaceChild(newForm, currentForm);
+        } else {
+            // No form change needed, just update content normally
+            this.handleHeader(newHeader, newModal);
+            this.handleBody(newBody);
+            this.handleFooter(newFooter);
+        }
+        
+        // Update the back button after content change
+        if (newHeader && this.stack.length > 1) {
+            const shouldHaveBackButton = (
+                (!newModal._config?.backButton?.disabled) &&
+                (!this.options.backButton?.disabled)
+            );
+            if (shouldHaveBackButton && !newHeader.querySelector("button[rel=back]")) {
+                newHeader.prepend(this.Template.backButton());
+            }
+        }
+        
         this.setStackClass();
 
         return new Promise(resolve => resolve());
@@ -443,10 +494,14 @@ class Animation {
         let cssStyle = "visibility: hidden; z-index: -1;";
         const [ newHeader, newBody, newFooter] = this.stack;
 
-		newBody.removeAttribute("style");
+        // Check if newBody exists before trying to manipulate it
+        if (newBody) {
+            newBody.removeAttribute("style");
+        }
+        
         let fakeContainer = document.createElement("div");
         fakeContainer.style.cssText = cssStyle;
-		let fakeBody = newBody.cloneNode(true);
+        let fakeBody = newBody ? newBody.cloneNode(true) : document.createElement("div");
         let fakeHeader = newHeader?.cloneNode(true);
         let fakeFooter = newFooter?.cloneNode(true);
 
@@ -488,6 +543,11 @@ class ModalNavigationTransitionSlide extends Animation {
 
         // 1) Set current height of the Modal body
         const ModalBody = this.Modal._element.querySelector(".modal-body");
+        if (!ModalBody || !ModalBody.parentNode) {
+            // If modal body doesn't exist, resolve immediately
+            resolve();
+            return;
+        }
         const ModalContainer = ModalBody.parentNode;
         const currentContainerHeight = ModalContainer.offsetHeight;
         ModalContainer.style.height = `${currentContainerHeight}px`;
@@ -521,7 +581,10 @@ class ModalNavigationTransitionSlide extends Animation {
             this.Modal._element.classList.remove(CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN, animationDirection);
 
             // Remove height on the body
-            this.Modal._element.querySelector(".modal-body").parentNode.removeAttribute("style");
+            const modalBody = this.Modal._element.querySelector(".modal-body");
+            if (modalBody && modalBody.parentNode) {
+                modalBody.parentNode.removeAttribute("style");
+            }
 
             resolve();
         }, transitionDuration);
@@ -539,6 +602,11 @@ class ModalNavigationTransitionMorph extends Animation {
     out = (directionBack = false) => new Promise(resolve => {
         // 1) Set current height of the Modal body
         const ModalBody = this.Modal._element.querySelector(".modal-body");
+        if (!ModalBody || !ModalBody.parentNode) {
+            // If modal body doesn't exist, resolve immediately
+            resolve();
+            return;
+        }
         const ModalContainer = ModalBody.parentNode;
         const currentContainerHeight = ModalContainer.offsetHeight;
         ModalContainer.style.height = `${currentContainerHeight}px`;
@@ -576,7 +644,9 @@ class ModalNavigationTransitionMorph extends Animation {
             this.Modal._element.classList.remove(Animation.className, CLASS_NAVIGATION_TRANSITION, CLASS_NAVIGATION_TRANSITION_IN);
 
             // Remove height on the body
-            ModalContainer.removeAttribute("style");
+            if (ModalContainer) {
+                ModalContainer.removeAttribute("style");
+            }
 
             resolve();
         }, transitionDuration);
