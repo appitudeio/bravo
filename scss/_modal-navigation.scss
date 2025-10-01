@@ -35,6 +35,10 @@
 /**
  *  Transitions
  */
+.modal-navigation .modal-header .btn[rel=back] {
+    @extend %modal-header-back-btn_default;
+}
+
 .modal-navigation-stacked .modal-header .btn[rel=back] {
     @extend %modal-header-back-btn_visible;
 }
@@ -43,11 +47,13 @@
 %modal-header-back-btn_default {
     opacity: 0;
     margin: 0 0 0 calc(var(--#{$prefix}btn-width, 2.5rem) * -1);
+    pointer-events: none;
 }
 
 %modal-header-back-btn_visible {
     opacity: 1;
     margin: 0 10px 0 0;
+    pointer-events: auto;
 }
 
 // Activate transition effect

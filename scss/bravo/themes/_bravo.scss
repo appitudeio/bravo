@@ -37,6 +37,7 @@ $modal-header-border-width: 0 !default;
 $modal-header-padding-x: 2rem !default;
 $modal-header-padding-y: 1.5rem !default;
 $modal-header-padding: 1.5rem 2rem !default;
+$modal-footer-bg: var(--#{$prefix}body-bg) !default;
 $modal-content-border-width: 0 !default;
 $modal-content-box-shadow-xs: 0 10px 30px rgba(0, 0, 0, 0.1) !default;
 $modal-backdrop-bg: var(--#{$prefix}body-bg) !default;

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Navigation Form Fix Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .test-results {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            max-width: 300px;
+            z-index: 10000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Modal Navigation Form Submission Test</h1>
+        <p>This test verifies that form submission events work correctly in modal navigation.</p>
+        
+        <button type="button" class="btn btn-primary btn-lg" id="startTest">Start Test</button>
+        
+        <div class="test-results"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="site/static/docs/5.3/dist/js/bravo.bundle.umd.js"></script>
+    
+    <script>
+    function addResult(message, type = 'info') {
+        const resultsDiv = document.querySelector('.test-results');
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type} alert-dismissible fade show`;
+        alert.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        resultsDiv.appendChild(alert);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            alert.classList.remove('show');
+            setTimeout(() => alert.remove(), 150);
+        }, 5000);
+    }
+
+    document.getElementById('startTest').addEventListener('click', () => {
+        addResult('Test started', 'info');
+        
+        const nav = new Bravo.ModalNavigation();
+        
+        // Step 1: Products screen
+        const products = new Bravo.Modal({
+            title: 'Step 1: Products',
+            content: `
+                <p>Click below to go to checkout with form:</p>
+                <button type='button' rel='checkout' class='btn btn-primary'>
+                    Go to Checkout →
+                </button>
+            `
+        });
+        
+        // Step 2: Checkout with form
+        const checkout = new Bravo.Modal({
+            id: 'checkout',
+            title: 'Step 2: Checkout Form',
+            content: `
+                <form id='test-checkout-form'>
+                    <div class='alert alert-info'>
+                        Fill in the form and click submit to test if events fire correctly.
+                    </div>
+                    <div class='mb-3'>
+                        <label class='form-label'>Username</label>
+                        <input type='text' name='username' class='form-control' value='testuser' required>
+                    </div>
+                    <div class='mb-3'>
+                        <label class='form-label'>Password</label>
+                        <input type='password' name='password' class='form-control' value='testpass' required>
+                    </div>
+                    <button type='submit' class='btn btn-success w-100'>
+                        Submit Form
+                    </button>
+                </form>
+            `
+        });
+        
+        // Step 3: Success
+        const success = new Bravo.Modal({
+            id: 'success',
+            title: '✅ Test Passed!',
+            content: `
+                <div class='text-center py-4'>
+                    <h4 class='text-success'>Form submission event worked!</h4>
+                    <p>The submit.bs.modal event was successfully triggered.</p>
+                    <button rel='close' class='btn btn-success'>Close</button>
+                </div>
+            `
+        });
+        
+        // Attach event listener to checkout modal
+        let listenerAttached = false;
+        checkout.addEventListener('show.bs.modal', () => {
+            if (!listenerAttached) {
+                addResult('Checkout modal shown', 'info');
+                listenerAttached = true;
+            }
+        });
+        
+        checkout.addEventListener('submit.bs.modal', (e) => {
+            e.preventDefault();
+            addResult('✅ submit.bs.modal event fired!', 'success');
+            console.log('Form submission event triggered successfully!', e);
+            
+            // Show success after a short delay
+            setTimeout(() => {
+                nav.push(success);
+            }, 500);
+        });
+        
+        // Also listen for regular form submit to detect if event isn't firing
+        document.addEventListener('submit', (e) => {
+            if (e.target.id === 'test-checkout-form') {
+                if (!e.defaultPrevented) {
+                    addResult('⚠️ Regular form submit (event not caught)', 'warning');
+                    e.preventDefault();
+                }
+            }
+        }, true);
+        
+        nav.push(products);
+        nav.show();
+        
+        addResult('Modal navigation opened', 'info');
+    });
+    </script>
+</body>
+</html>

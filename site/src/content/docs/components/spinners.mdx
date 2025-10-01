@@ -22,11 +22,10 @@ toc: true
       <div class="small text-muted">Bootstrap grow</div>
     </div>
     <div>
-      <div class="spinner-random text-primary mb-2" role="status">
+      <div class="spinner-random text-primary mb-2">
         <svg viewBox="25 25 50 50">
-          <circle />
+          <circle cx="50" cy="50" r="21"/>
         </svg>
-        <span class="visually-hidden">Loading...</span>
       </div>
       <div class="small text-muted">Bravo random</div>
     </div>
@@ -38,29 +37,26 @@ toc: true
 <div class="bd-example mb-3">
   <div class="d-flex align-items-center gap-4">
     <div>
-      <div class="spinner-random spinner-random-sm text-primary mb-2" role="status">
+      <div class="spinner-random spinner-random-sm text-primary mb-2">
         <svg viewBox="25 25 50 50">
-          <circle />
+          <circle cx="50" cy="50" r="19.5"/>
         </svg>
-        <span class="visually-hidden">Loading...</span>
       </div>
       <div class="small text-muted">Small (.spinner-random-sm)</div>
     </div>
     <div>
-      <div class="spinner-random text-primary mb-2" role="status">
+      <div class="spinner-random text-primary mb-2">
         <svg viewBox="25 25 50 50">
-          <circle />
+          <circle cx="50" cy="50" r="21"/>
         </svg>
-        <span class="visually-hidden">Loading...</span>
       </div>
       <div class="small text-muted">Default (.spinner-random)</div>
     </div>
     <div>
-      <div class="spinner-random text-primary mb-2" style="width: 3rem; height: 3rem;" role="status">
+      <div class="spinner-random text-primary mb-2" style="width: 3rem; height: 3rem;">
         <svg viewBox="25 25 50 50">
-          <circle />
+          <circle cx="50" cy="50" r="21"/>
         </svg>
-        <span class="visually-hidden">Loading...</span>
       </div>
       <div class="small text-muted">Custom size</div>
     </div>
@@ -73,77 +69,78 @@ Works with Bootstrap's color system:
 
 <div class="bd-example mb-3">
   <div class="d-flex align-items-center gap-3">
-    <div class="spinner-random text-primary" role="status">
+    <div class="spinner-random text-primary">
       <svg viewBox="25 25 50 50">
-        <circle />
+        <circle cx="50" cy="50" r="21"/>
       </svg>
-      <span class="visually-hidden">Loading...</span>
     </div>
-    <div class="spinner-random text-secondary" role="status">
+    <div class="spinner-random text-secondary">
       <svg viewBox="25 25 50 50">
-        <circle />
+        <circle cx="50" cy="50" r="21"/>
       </svg>
-      <span class="visually-hidden">Loading...</span>
     </div>
-    <div class="spinner-random text-success" role="status">
+    <div class="spinner-random text-success">
       <svg viewBox="25 25 50 50">
-        <circle />
+        <circle cx="50" cy="50" r="21"/>
       </svg>
-      <span class="visually-hidden">Loading...</span>
     </div>
-    <div class="spinner-random text-danger" role="status">
+    <div class="spinner-random text-danger">
       <svg viewBox="25 25 50 50">
-        <circle />
+        <circle cx="50" cy="50" r="21"/>
       </svg>
-      <span class="visually-hidden">Loading...</span>
     </div>
-    <div class="spinner-random text-warning" role="status">
+    <div class="spinner-random text-warning">
       <svg viewBox="25 25 50 50">
-        <circle />
+        <circle cx="50" cy="50" r="21"/>
       </svg>
-      <span class="visually-hidden">Loading...</span>
     </div>
   </div>
 </div>
 
 ## Usage
 
-The SVG-based spinner requires the SVG markup inside:
+The SVG spinner uses minimal markup:
 
 ```html
 <!-- Default size -->
-<div class="spinner-random text-primary" role="status">
+<div class="spinner-random text-primary">
   <svg viewBox="25 25 50 50">
-    <circle />
+    <circle cx="50" cy="50" r="21"/>
   </svg>
-  <span class="visually-hidden">Loading...</span>
 </div>
 
 <!-- Small size -->
-<div class="spinner-random spinner-random-sm text-success" role="status">
+<div class="spinner-random spinner-random-sm text-success">
   <svg viewBox="25 25 50 50">
-    <circle />
+    <circle cx="50" cy="50" r="19.5"/>
   </svg>
-  <span class="visually-hidden">Loading...</span>
 </div>
 
 <!-- Custom size -->
-<div class="spinner-random text-danger" style="width: 4rem; height: 4rem;" role="status">
+<div class="spinner-random text-danger" style="width: 4rem; height: 4rem;">
   <svg viewBox="25 25 50 50">
-    <circle />
+    <circle cx="50" cy="50" r="21"/>
   </svg>
-  <span class="visually-hidden">Loading...</span>
+</div>
+
+<!-- Custom thickness -->
+<div class="spinner-random text-info" style="--bs-spinner-stroke-width: .3em;">
+  <svg viewBox="25 25 50 50">
+    <circle cx="50" cy="50" r="21"/>
+  </svg>
 </div>
 ```
 
 ## Features
 
 - **Bootstrap compatible** — Uses the same color classes and sizing approach
-- **Smooth stroke animation** — More natural than traditional rotation-based spinners
-- **Vector-based** — Remains crisp at any size since it's SVG-based
+- **Material Design animation** — Smooth arc growth/shrink effect using stroke-dasharray
+- **SVG-based** — Minimal markup with inline geometry attributes for Safari compatibility
+- **Cross-browser** — Works reliably in Safari by using inline `cx`, `cy`, `r` attributes
 - **Flexible sizing** — Small preset, default size, or custom dimensions
+- **Reduced motion** — Respects `prefers-reduced-motion` for accessibility
 
-Use it anywhere you'd use Bootstrap's spinners but want smoother animation.
+Use it anywhere you'd use Bootstrap's spinners but want Material Design animation.
 
 <div class="alert alert-info">
   <strong>💡 For button loading states</strong>, see <a href="[[docsref:/components/buttons/]]">Buttons</a>

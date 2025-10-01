@@ -58,16 +58,22 @@ class Modal extends BootstrapModal {
     }
 
     registerEventListeners() {
-        // If a form is included
-        this._element.querySelectorAll('form').forEach(_form => _form.addEventListener('submit', (e) => {
-            // Trigger submit-event
-            const submitEvent = EventHandler.trigger(this._element, EVENT_SUBMIT, { target: _form }); //e.target });
-
-            // After triggering, check if the event was prevented
-            if (submitEvent.defaultPrevented) {
-                e.preventDefault(); // Prevent the default form submission only if requested
+        // Attach directly to forms so listener moves with the form element
+        // This makes forms self-contained and portable
+        this._element.querySelectorAll('form').forEach(_form => {
+            // Check if this form already has a listener to avoid duplicates
+            if (!_form.hasAttribute('data-modal-listener')) {
+                _form.addEventListener('submit', (e) => {
+                    // Trigger custom submit event on the modal element
+                    const submitEvent = EventHandler.trigger(this._element, EVENT_SUBMIT, { target: _form });
+                    
+                    if (submitEvent.defaultPrevented) {
+                        e.preventDefault();
+                    }
+                });
+                _form.setAttribute('data-modal-listener', 'true');
             }
-        }));
+        });
 
         // Only remove the Modal from the DOM if it was not originally from DOM
         this.addEventListener('hidden.bs.modal', () => {
