@@ -66,3 +66,9 @@ $bs-color-maps: ($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, 
     $theme-colors-bg-subtle-dark: map-merge($theme-colors-bg-subtle-dark, ("#{$color-name}": map-get($colors, #{$color-name}-900)));
     $theme-colors-border-subtle-dark: map-merge($theme-colors-border-subtle-dark, ("#{$color-name}": map-get($colors, #{$color-name}-700)));
 }
+
+// A new "fit" util, perfectly used in tables for not breaking words
+.w-fit {
+    width: 1%;
+    white-space: nowrap;
+}

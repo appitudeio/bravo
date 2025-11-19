@@ -46,6 +46,9 @@ $modal-fade-transform: translate(0, 25px) scale(.96) !default;
 $modal-backdrop-blur: 3px !default;
 
 $dropdown-border-radius: $border-radius-md !default;
+$dropdown-item-padding-x: 0.75rem !default;
+$dropdown-padding-x: .5rem !default;
+$dropdown-divider-margin-x: $dropdown-padding-x * -1 !default;
 
 /**
  *  Icons overrides
