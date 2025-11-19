@@ -96,7 +96,7 @@
         display: flex;
         align-items: center;
         border-radius: calc(var(--#{$prefix}dropdown-border-radius) - (var(--#{$prefix}dropdown-padding-x) * .75));
-        gap: map-get($spacers, 2);
+        gap: map-get($spacers, 1);
     
         &.active, &:active {
             color: var(--#{$prefix}dropdown-link-active-color) !important;
