@@ -87,24 +87,30 @@ $btn-font-size-xs       : $input-btn-font-size-xs !default;
 }*/
 
 /**
- *  In darkmode- we switch light with dark
- *  (--Only works with the light-btn for now)
+ *  In darkmode - swap light/dark button colors
+ *  Uses button-variant mixin with map-get for proper specificity
  */
-%btn-dark_copy {
-  @extend .btn-dark;
-}
-
-%btn-light_copy {
-  @extend .btn-light;
-}
-
 @include color-mode(dark) {
-  .btn-light {
-    @extend %btn-dark_copy;
+  .btn-dark {
+    $light-val: map-get($theme-colors, "light");
+    @include button-variant(
+      $light-val, $light-val,
+      $hover-background: shade-color($light-val, $btn-hover-bg-shade-amount),
+      $hover-border: shade-color($light-val, $btn-hover-border-shade-amount),
+      $active-background: shade-color($light-val, $btn-active-bg-shade-amount),
+      $active-border: shade-color($light-val, $btn-active-border-shade-amount)
+    );
   }
 
-  .btn-dark {
-    @extend %btn-light_copy;
+  .btn-light {
+    $dark-val: map-get($theme-colors, "dark");
+    @include button-variant(
+      $dark-val, $dark-val,
+      $hover-background: tint-color($dark-val, $btn-hover-bg-tint-amount),
+      $hover-border: tint-color($dark-val, $btn-hover-border-tint-amount),
+      $active-background: tint-color($dark-val, $btn-active-bg-tint-amount),
+      $active-border: tint-color($dark-val, $btn-active-border-tint-amount)
+    );
   }
 
   .btn-default {
@@ -121,11 +127,13 @@ $btn-font-size-xs       : $input-btn-font-size-xs !default;
   }
 
   @each $color, $value in $theme-colors {
-    .btn-#{$color} {
-      --#{$prefix}btn-hover-bg: #{tint-color($value, $btn-hover-bg-tint-amount)};
-      --#{$prefix}btn-hover-border-color: #{tint-color($value, $btn-hover-border-tint-amount)};
-      --#{$prefix}btn-active-bg: #{tint-color($value, $btn-active-bg-tint-amount)};
-      --#{$prefix}btn-active-border-color: #{tint-color($value, $btn-active-border-tint-amount)};
+    @if $color != "light" and $color != "dark" {
+      .btn-#{$color} {
+        --#{$prefix}btn-hover-bg: #{tint-color($value, $btn-hover-bg-tint-amount)};
+        --#{$prefix}btn-hover-border-color: #{tint-color($value, $btn-hover-border-tint-amount)};
+        --#{$prefix}btn-active-bg: #{tint-color($value, $btn-active-bg-tint-amount)};
+        --#{$prefix}btn-active-border-color: #{tint-color($value, $btn-active-border-tint-amount)};
+      }
     }
   }
 }
