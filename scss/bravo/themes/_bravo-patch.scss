@@ -69,10 +69,10 @@
 .btn {
     gap: map-get($spacers, 1);
     
-    /*&:focus:not(:focus-visible), &:focus-visible {
+    &:focus:not(:focus-visible), &:focus-visible {
         outline-offset: 0 !important;
         outline-width: 0 !important;
-    }*/
+    }
 
     &:active {
         transform: scale(.95);
@@ -81,6 +81,10 @@
 
 .nav-link:focus-visible {
     box-shadow: none !important;
+}
+
+.nav-pills {
+    --#{$prefix}nav-pills-border-radius: var(--#{$prefix}border-radius-sm);
 }
 
 .input-group .btn {
