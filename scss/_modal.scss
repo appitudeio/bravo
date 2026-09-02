@@ -37,3 +37,13 @@
         margin-right: 0;
     }
 }
+
+// Fix for form wrapper breaking Bootstrap's scrollable modal flex chain
+// When ModalObj wraps header/body/footer in a form, this preserves the flex layout
+.modal-dialog-scrollable .modal-content > form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    max-height: 100%;
+}
